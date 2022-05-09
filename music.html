@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Micah Huff's Site</title>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <!-- ***********Navbar************* -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand d-md-none" href="index.html">
+          <img src="img/sitelogo.png" alt="logo"/>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerTarget" aria-controls="navbarTogglerTarget" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerTarget">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+            <li class="nav-item pe-4 ps-4">
+              <a class="nav-link h4" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item h4 pe-4 ps-4">
+              <a class="nav-link" href="resume.html">Resume</a>
+            </li>
+            <li class="nav-item d-none d-md-block pe-4 ps-4">
+              <a class="nav-link" href="index.html">
+                <img src="img/sitelogo.png" alt="logo"/>
+              </a>
+            </li>
+            <li class="nav-item h4 pe-4 ps-4">
+              <a class="nav-link active" href="music.html">Music</a>
+            </li>
+            <li class="nav-item h4 pe-4 ps-4">
+              <a class="nav-link" href="projects.html">Projects</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+    <!-- **************** End of Navbar ************************** -->
+
+    <!-- **************************Music Player***************** -->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-9 text-center mt-3">
+          <h1 class="">Music Player</h1>
+        </div>
+      </div>
+
+      <div class="row mt-3 mb-4">
+        <!-- Play Controls -->
+        <div class="col-lg-6">
+          <div class="border p-3" id="mainPlayerColumn">
+            <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
+            <img src="img\2021-02-20 13.29.58.jpg" alt="Album Cover" class="img-fluid">
+            <p class="text-nowrap mt-4 h4">Track Name - Album</p>
+            <!-- Slidy Bit -->
+            <input type="range" class="form-range" id="trackTime">
+
+            <!-- Buttons for days -->
+            <div class="btn-group btn-group-lg d-flex justify-content-center">
+              <a href="#" class="btn btn-primary">Prev</a>
+              <a href="#" class="btn btn-primary active">Play</a>
+              <a href="#" class="btn btn-primary">Next</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Track Selection -->
+        <div class="col-lg-6 mt-3 mt-lg-0" id="trackSelectionColumn">
+          <div class="border p-3 h-100">
+
+              <div class="row align-items-center" id="albumSelection" style="height: 8%;">
+                <!-- Select Album Area -->
+                <div class="col-5">
+                  <label for="albumSelect" class="form-label h4 d-none d-xl-block">Show tracks from:</label>
+                  <label for="albumSelect" class="form-label h5 d-none d-sm-block d-xl-none">Show tracks from:</label>
+                  <label for="albumSelect" class="form-label mt-1 h6 d-sm-none">Show tracks from:</label>
+                </div>
+
+                <div class="col-7">
+                  <select id="albumSelect" class="form-select" aria-label="Default select example">
+                    <option selected>Choose an album...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+              </div>
+
+              <hr class="d-none d-sm-block">
+              <br class="d-sm-none">
+              <!-- Song List -->
+              <div class="row overflow-auto" id="trackSelectionScroll" style="height: 87%;">
+                <div class="col-12">
+
+                  <ul class="list-group">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                  </ul>
+
+                </div>
+              </div>
+
+              <!-- End of Song List -->
+
+
+          </div>
+        </div>
+        <!-- End of Track Selection -->
+      </div>
+    </div>
+
+    <!-- **************************End of Music Player***************** -->
+
+    <!-- ******************Footer******************** -->
+    <footer class="mt-auto py-2 bg-dark">
+            <img src="img/sitelogo.png" alt="logo" class="mx-auto d-block"/>
+    </footer>
+    <!-- ******************End Footer******************** -->
+
+    <!-- ********Script Linking ****************** -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js\music.js"></script>
+  </body>
+</html>
