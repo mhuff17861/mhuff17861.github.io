@@ -7,7 +7,7 @@ This is the repository I'm using to build my own portfolio website using Django 
 ## Dependencies
 
 - Node Package Manager
- - This takes care of other dependencies via the below commands. Check package.json for specifics
+  - This takes care of other dependencies via the below commands. Check package.json for specifics
 - Django (coming soon)
 
 ## Setup
