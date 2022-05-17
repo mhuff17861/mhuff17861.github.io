@@ -12,5 +12,5 @@ This is the repository I'm using to build my own portfolio website using Django 
 
 ## Setup
 
-- run 'npm -i'
-- run 'gulp devSetup'
+- run `npm -i`
+- run `gulp devSetup`
