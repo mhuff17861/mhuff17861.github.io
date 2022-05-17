@@ -4,10 +4,10 @@ const sass = require('gulp-sass')(require('sass'));
 
 //Define pathnames
 const sassSrc = 'scss/bootstrap.scss'
-const sassDest = 'css/'
+const sassDest = 'portfoliosite/static/css'
 const sassInc = [ 'node_modules/bootstrap/scss' ]
 const jsSrc = [ 'node_modules/bootstrap/dist/js/bootstrap.min.js' ]
-const jsDest = 'js/'
+const jsDest = 'portfoliosite/static/js'
 
 function transpileSass() {
         return gulp.src(sassSrc)
