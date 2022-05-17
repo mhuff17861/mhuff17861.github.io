@@ -6,9 +6,9 @@ This is the repository I'm using to build my own portfolio website using Django 
 
 ## Dependencies
 
-- Node Package Manager
+- Node Package Manager 8.10^
   - This takes care of other dependencies via the below commands. Check package.json for specifics
-- Python 3.10
+- Python 3.10 (Go higher at your own risk, newest at time of original development)
 
 ## Setup
 
