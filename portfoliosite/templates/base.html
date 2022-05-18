@@ -30,21 +30,21 @@
         <div class="collapse navbar-collapse" id="navbarTogglerTarget">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
             <li class="nav-item pe-4 ps-4">
-              <a class="nav-link h4 active" aria-current="page" href="index.html">Home</a>
+              <a class="nav-link h4 active" aria-current="page" href="{% url 'resume:index' %}">Home</a>
             </li>
             <li class="nav-item h4 pe-4 ps-4">
-              <a class="nav-link" href="resume.html">Resume</a>
+              <a class="nav-link" href="{% url 'resume:resume' %}">Resume</a>
             </li>
             <li class="nav-item d-none d-md-block pe-4 ps-4">
-              <a class="nav-link" href="index.html">
+              <a class="nav-link" href="{% url 'resume:index' %}">
                 <img src="{% static 'img/sitelogo.png' %}" alt="logo"/>
               </a>
             </li>
             <li class="nav-item h4 pe-4 ps-4">
-              <a class="nav-link" href="music.html">Music</a>
+              <a class="nav-link" href="#">Music</a>
             </li>
             <li class="nav-item h4 pe-4 ps-4">
-              <a class="nav-link" href="projects.html">Projects</a>
+              <a class="nav-link" href="{% url 'resume:projects' %}">Projects</a>
             </li>
           </ul>
         </div>
