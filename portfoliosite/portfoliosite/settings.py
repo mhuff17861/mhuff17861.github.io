@@ -80,9 +80,14 @@ WSGI_APPLICATION = 'portfoliosite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'service': 'django_service',
-        },
+        'HOST': 'localhost',
+        'PORT': 5432,
+        'NAME': 'portfoliosite',
+        'USER': 'portfolioadmin',
+        'PASSWORD': 'temppass',
+        #'OPTIONS': {
+        #    'service': 'django_service',
+        #},
     }
 }
 
@@ -110,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
