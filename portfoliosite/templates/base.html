@@ -29,11 +29,13 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerTarget">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
-            <li class="nav-item pe-4 ps-4">
-              <a class="nav-link h4 active" aria-current="page" href="{% url 'resume:index' %}">Home</a>
+            <li class="nav-item h4 pe-4 ps-4">
+              {% url 'resume:index' as index %}
+              <a class="nav-link {% if request.path == index %}active{% endif %}" aria-current="page" href="{{ index }}">Home</a>
             </li>
             <li class="nav-item h4 pe-4 ps-4">
-              <a class="nav-link" href="{% url 'resume:resume' %}">Resume</a>
+              {% url 'resume:resume' as resume %}
+              <a class="nav-link {% if request.path == resume %}active{% endif %}" href="{{ resume }}">Resume</a>
             </li>
             <li class="nav-item d-none d-md-block pe-4 ps-4">
               <a class="nav-link" href="{% url 'resume:index' %}">
@@ -44,7 +46,8 @@
               <a class="nav-link" href="#">Music</a>
             </li>
             <li class="nav-item h4 pe-4 ps-4">
-              <a class="nav-link" href="{% url 'resume:projects' %}">Projects</a>
+              {% url 'resume:projects' as projects %}
+              <a class="nav-link {% if request.path == projects %}active{% endif %}" href="{{ projects }}">Projects</a>
             </li>
           </ul>
         </div>
