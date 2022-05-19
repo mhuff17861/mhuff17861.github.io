@@ -31,5 +31,7 @@ Coming Soon. I gotta build a website first.
 
 ## Known Weirdness
 
-- The Postgre DB settings don't look like the documentation
+- The password is directly in the settings!?
+  - Was going to use pgpass and a pg_service.conf file (see below), but those don't work with testing at the moment, see [this support ticket](https://code.djangoproject.com/ticket/33685). Once I get closer to production there will either be a fix or I'll just make an entry in .gitignore for a secret config file.
+- The (currently commented out) Postgre DB settings don't look like the documentation
   - The 'passfile' setting for Postgre did not work. When I got rid of the setting, leaving only the service file link and a chmodded 0600 .pgpass in my home folder (where Postgre expects it), suddenly everything worked.
