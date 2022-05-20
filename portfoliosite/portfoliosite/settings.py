@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'resume.apps.ResumeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -90,6 +91,9 @@ DATABASES = {
         #},
     }
 }
+
+# Users App
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
