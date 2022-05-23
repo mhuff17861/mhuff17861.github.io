@@ -1,0 +1,28 @@
+{% if card_list %}
+  {% for card in card_list %}
+    {% if forloop.counter0|divisibleby:"3" %}
+      <div class="row row-cols-1 row-cols-md-3 mb-4 justify-content-center">
+    {% endif %}
+
+      <div class="col mb-3">
+        <div class="card">
+          <img src="{{ card.image.url }}" class="card-img-top p-3" alt="Image of {{ card.title }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ card.title }}</h5>
+            <p class="card-text">{{ card.short_description }}</p>
+            {% if card.link and card.link_name %}
+              <a href="{{ card.link }}" class="btn btn-primary">{{ card.link_name }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    {% if forloop.last or forloop.counter0|divisibleby:"3" and forloop.counter0 != 0 %}
+      </div>
+    {% endif %}
+  {% endfor %}
+  {% else %}
+    <div class="row mb-2 text-center">
+        <p>Oops! No cards to show I guess</p>
+    </div>
+  {% endif %}

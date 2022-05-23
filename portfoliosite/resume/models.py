@@ -23,10 +23,30 @@ class Page_Header(models.Model):
     title = models.TextField(max_length=25)
     body = models.TextField(max_length=25)
 
+# ProjectQuerySet. Provides functions for common queries on the Projects table.
+# NOTE: NEEDS TO GET PROJECT LINK SOMEHOW.
+class ProjectQuerySet(models.QuerySet):
+    # --- get_projects_by_priority(num_projects) - Retrieves up to the designated number of projects from the
+    # project model, with highest priority first.
+    def get_projects_by_priority(self, num_projects):
+        if self.count() <= num_projects:
+            return self.order_by('priority')
+
+        return self.order_by('priority')[:num_projects]
+
+    # --- get_projects_by_start_date(num_projects): - Retrieves up to the
+    # designated number of projects from the project model, with most recent start date first
+    def get_projects_by_start_date(self, num_projects):
+        if self.count() <= num_projects:
+            return self.order_by('start_date')
+
+        return self.order_by('start_date')[:num_projects]
+
+
 # Project Model. Basic information and things that can be used for list displays
 # (like the image and short/long descriptions). Can be extended later with
 # related table allowing a "detail" construction.
-class Project (models.Model):
+class Project(models.Model):
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -37,7 +57,12 @@ class Project (models.Model):
     short_description = models.TextField(max_length=120)
     long_description = models.TextField(max_length=600)
     start_date = models.DateField()
-    end_date = models.DateField(blank=True)
+    end_date = models.DateField(blank=True, null=True)
+
+    projects = ProjectQuerySet.as_manager()
+
+    def __str__(self):
+        return self.title
 
 # Project_Link Model. Allows user to have one or more links to project
 # information/locations depending on the scope of the project. Priority
@@ -47,6 +72,9 @@ class Project_Link(models.Model):
     url = models.TextField(max_length=100)
     display_name = models.TextField(max_length=20)
     priority = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.url
 
 # CV_Category Model. Defines broad categories, under which each line of a CV can be
 # displayed.
@@ -61,6 +89,9 @@ class CV_Category(models.Model):
     )
     priority = models.PositiveSmallIntegerField()
 
+    def __str__(self):
+        return self.category_name
+
 # CV_Line Model. A single line entry meant to go under a CV category
 class CV_Line(models.Model):
     user_id = models.ForeignKey(
@@ -69,8 +100,11 @@ class CV_Line(models.Model):
     )
     category = models.ForeignKey(CV_Category, on_delete=models.CASCADE)
     start_date = models.DateField()
-    end_date = models.DateField(blank=True)
+    end_date = models.DateField(blank=True, null=True)
     entry = models.TextField(max_length=300)
+
+    def __str__(self):
+        return "-".join([self.category, self.entry])
 
 # CV_Sub_Line Model. Meant to make lines under CV lines, think 2nd level
 # of a list in display.
@@ -80,3 +114,6 @@ class CV_Sub_Line(models.Model):
 
     cv_line_id = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
     sub_entry = models.TextField(max_length=300)
+
+    def __str__(self):
+        return self.sub_entry
