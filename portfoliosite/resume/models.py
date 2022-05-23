@@ -59,23 +59,13 @@ class Project(models.Model):
     long_description = models.TextField(max_length=600)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
+    url = models.TextField(max_length=100, blank=True, null=True)
+    url_title = models.TextField(max_length=20, blank=True, null=True)
 
     projects = ProjectQuerySet.as_manager()
 
     def __str__(self):
         return self.title
-
-# Project_Link Model. Allows user to have one or more links to project
-# information/locations depending on the scope of the project. Priority
-# used to establish link order/ decision in the case of cards.
-class Project_Link(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    url = models.TextField(max_length=100)
-    display_name = models.TextField(max_length=20)
-    priority = models.PositiveSmallIntegerField()
-
-    def __str__(self):
-        return self.url
 
 # CV_Category Model. Defines broad categories, under which each line of a CV can be
 # displayed.
