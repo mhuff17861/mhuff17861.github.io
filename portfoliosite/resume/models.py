@@ -4,6 +4,13 @@ from django.db.models import F
 
 # ******** Models *****************
 
+# Page_Header_QuerySet. Provides functions for common queries on the Page_Header table.
+class Page_Header_QuerySet(models.QuerySet):
+    # --- get_header_for_page(page_name) - Retrieves CV lines and their sub lines
+    # for a specified category
+    def get_header_for_page(self, page_name):
+        return self.filter(name__iexact=page_name)
+
 # Created for Page headers. Currently set to what portfolio app is for,
 # home, resume, and projects.
 class Page_Header(models.Model):
@@ -11,9 +18,9 @@ class Page_Header(models.Model):
         unique_together = (('name', 'user_id'),)
 
     PAGE_CHOICES = (
-        ('H', 'Home'),
-        ('P', 'Projects'),
-        ('R', 'Resume'),
+        ('Home', 'Home page'),
+        ('Projects', 'Projects page'),
+        ('Resume', 'Resume page'),
     )
     name = models.TextField(choices=PAGE_CHOICES)
     user_id = models.ForeignKey(
@@ -22,11 +29,12 @@ class Page_Header(models.Model):
     )
     image = models.ImageField(upload_to="page_headers")
     title = models.TextField(max_length=25)
-    body = models.TextField(max_length=25)
+    body = models.TextField(max_length=700)
 
-# ProjectQuerySet. Provides functions for common queries on the Projects table.
-# NOTE: NEEDS TO GET PROJECT LINK SOMEHOW.
-class ProjectQuerySet(models.QuerySet):
+    page_headers = Page_Header_QuerySet.as_manager()
+
+# Project_QuerySet. Provides functions for common queries on the Projects table.
+class Project_QuerySet(models.QuerySet):
     # --- get_projects_by_priority(num_projects) - Retrieves up to the designated number of projects from the
     # project model, with highest priority first.
     def get_projects_by_priority(self, num_projects):
@@ -62,10 +70,16 @@ class Project(models.Model):
     url = models.TextField(max_length=100, blank=True, null=True)
     url_title = models.TextField(max_length=20, blank=True, null=True)
 
-    projects = ProjectQuerySet.as_manager()
+    projects = Project_QuerySet.as_manager()
 
     def __str__(self):
         return self.title
+
+# CV_Category_QuerySet. Provides functions for common queries on the CV_Cateogorys table.
+class CV_Category_QuerySet(models.QuerySet):
+    # --- get_categories_by_priority() - Retrieves CV categories in order of priority
+    def get_categories_by_priority(self):
+        return self.order_by('priority')
 
 # CV_Category Model. Defines broad categories, under which each line of a CV can be
 # displayed.
@@ -80,8 +94,21 @@ class CV_Category(models.Model):
     )
     priority = models.PositiveSmallIntegerField()
 
+    cv_categories = CV_Category_QuerySet.as_manager()
+
     def __str__(self):
         return self.category_name
+
+# CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
+class CV_Line_QuerySet(models.QuerySet):
+    # --- get_lines_full() - Retrieves CV lines and their sub lines
+    def get_lines_full(self):
+        return self.prefetch_related('cv_sub_lines_set')
+
+    # --- get_lines_full_for_category() - Retrieves CV lines and their sub lines
+    # for a specified category
+    def get_lines_full_for_category(self, category):
+        return self.filter(category__iexact=category).prefetch_related('cv_sub_line_set')
 
 # CV_Line Model. A single line entry meant to go under a CV category
 class CV_Line(models.Model):
@@ -94,8 +121,17 @@ class CV_Line(models.Model):
     end_date = models.DateField(blank=True, null=True)
     entry = models.TextField(max_length=300)
 
+    cv_lines = CV_Line_QuerySet.as_manager()
+
     def __str__(self):
         return "-".join([self.category, self.entry])
+
+# CV_Sub_Line_QuerySet. Provides functions for common queries on the CV_Sub_Lines table.
+class CV_Sub_Line_QuerySet(models.QuerySet):
+    # --- get_sub_lines_for_line(line) - Retrieves CV lines and their sub lines
+    # for a specified category
+    def get_sub_lines_for_line(self, line):
+        return self.filter(cv_line_id__exact=line)
 
 # CV_Sub_Line Model. Meant to make lines under CV lines, think 2nd level
 # of a list in display.
@@ -105,6 +141,8 @@ class CV_Sub_Line(models.Model):
 
     cv_line_id = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
     sub_entry = models.TextField(max_length=300)
+
+    cv_sub_lines = CV_Sub_Line_QuerySet.as_manager()
 
     def __str__(self):
         return self.sub_entry
