@@ -17,16 +17,25 @@ class Page_Header(models.Model):
     class Meta:
         unique_together = (('name', 'user_id'),)
 
+    user_id = models.ForeignKey(
+       settings.AUTH_USER_MODEL,
+       on_delete=models.CASCADE
+    )
+
     PAGE_CHOICES = (
         ('Home', 'Home page'),
         ('Projects', 'Projects page'),
         ('Resume', 'Resume page'),
     )
     name = models.TextField(choices=PAGE_CHOICES)
-    user_id = models.ForeignKey(
-       settings.AUTH_USER_MODEL,
-       on_delete=models.CASCADE
+
+    ALIGNMENT_CHOICES = (
+        ('L', 'Picture left aligned'),
+        ('R', 'Picture right aligned'),
+        ('C', 'Picture/text centered'),
     )
+    alignment = models.TextField(choices=ALIGNMENT_CHOICES, default="L")
+
     image = models.ImageField(upload_to="page_headers")
     title = models.TextField(max_length=25)
     body = models.TextField(max_length=700)
@@ -105,6 +114,10 @@ class CV_Line_QuerySet(models.QuerySet):
     def get_lines_full(self):
         return self.prefetch_related('cv_sub_lines_set')
 
+    # --- get_lines_full() - Retrieves CV lines and their sub lines
+    def get_lines_full_by_date(self):
+        return self.order_by('-start_date').prefetch_related('cv_sub_lines_set')
+
     # --- get_lines_full_for_category() - Retrieves CV lines and their sub lines
     # for a specified category
     def get_lines_full_for_category(self, category):
@@ -124,7 +137,7 @@ class CV_Line(models.Model):
     cv_lines = CV_Line_QuerySet.as_manager()
 
     def __str__(self):
-        return "-".join([self.category, self.entry])
+        return str(self.category) + "-" + str(self.entry)
 
 # CV_Sub_Line_QuerySet. Provides functions for common queries on the CV_Sub_Lines table.
 class CV_Sub_Line_QuerySet(models.QuerySet):
