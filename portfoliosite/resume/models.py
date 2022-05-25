@@ -42,6 +42,9 @@ class Page_Header(models.Model):
 
     page_headers = Page_Header_QuerySet.as_manager()
 
+    def __str__(self):
+        return str(self.user_id) + " - " + str(self.name)
+
 # Project_QuerySet. Provides functions for common queries on the Projects table.
 class Project_QuerySet(models.QuerySet):
     # --- get_projects_by_priority(num_projects) - Retrieves up to the designated number of projects from the
@@ -56,9 +59,9 @@ class Project_QuerySet(models.QuerySet):
     # designated number of projects from the project model, with most recent start date first
     def get_projects_by_start_date(self, num_projects):
         if self.count() <= num_projects:
-            return self.order_by('start_date')
+            return self.order_by('-start_date')
 
-        return self.order_by('start_date')[:num_projects]
+        return self.order_by('-start_date')[:num_projects]
 
 
 # Project Model. Basic information and things that can be used for list displays
@@ -109,19 +112,22 @@ class CV_Category(models.Model):
         return self.category_name
 
 # CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
+# NOTE: Prefetch not working!!!!!!!
 class CV_Line_QuerySet(models.QuerySet):
     # --- get_lines_full() - Retrieves CV lines and their sub lines
     def get_lines_full(self):
-        return self.prefetch_related('cv_sub_lines_set')
+        return self.prefetch_related('cv_sub_line_set')
 
     # --- get_lines_full() - Retrieves CV lines and their sub lines
     def get_lines_full_by_date(self):
-        return self.order_by('-start_date').prefetch_related('cv_sub_lines_set')
+        return self.order_by('-start_date').prefetch_related('cv_sub_line_set')
 
     # --- get_lines_full_for_category() - Retrieves CV lines and their sub lines
     # for a specified category
     def get_lines_full_for_category(self, category):
-        return self.filter(category__iexact=category).prefetch_related('cv_sub_line_set')
+        return self.filter(category__exact=category).prefetch_related('cv_sub_line_set')
+
+        #CV_Line.cv_lines.get_lines_full_for_category(4)[0].cv_sub_line_set.all()[0]
 
 # CV_Line Model. A single line entry meant to go under a CV category
 class CV_Line(models.Model):
