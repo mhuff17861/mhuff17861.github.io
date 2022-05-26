@@ -5,7 +5,7 @@ from django.urls import reverse
 
 class IndexViewTests(TestCase):
 
-    def test_index_response(self):
+    def test_index_no_data_response(self):
         """
             Test the index url for error free page return
         """
@@ -15,7 +15,7 @@ class IndexViewTests(TestCase):
 
 class ProjectsViewTests(TestCase):
 
-    def test_projects_response(self):
+    def test_projects_no_data_response(self):
         """
             Test the index url for error free page return
         """
@@ -26,10 +26,12 @@ class ProjectsViewTests(TestCase):
 
 class ResumeViewTests(TestCase):
 
-    def test_resume_response(self):
+    def test_resume_no_data_response(self):
         """
             Test the index url for error free page return
         """
         client = Client()
         response = self.client.get(reverse('resume:resume'))
         self.assertEqual(response.status_code, 200)
+
+#****************** Model Tests ****************
