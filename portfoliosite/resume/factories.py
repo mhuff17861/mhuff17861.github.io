@@ -47,3 +47,21 @@ class CVCategoryFactory(DjangoModelFactory):
     category_name = factory.Faker('sentence', nb_words=10)
     user_id = factory.SubFactory(UserFactory)
     priority = factory.Faker('random_number', digits=1)
+
+class CVLineFactory(DjangoModelFactory):
+    class Meta:
+        model = 'resume.CV_Line'
+
+    category = factory.SubFactory(CVCategoryFactory)
+    user_id = factory.SubFactory(UserFactory)
+    start_date = factory.Faker('date_between',
+        start_date=datetime.fromisoformat('2012-09-01'),
+        end_date=datetime.fromisoformat('2022-04-01'))
+    entry = factory.Faker('sentence', nb_words=25)
+
+class CVSubLineFactory(DjangoModelFactory):
+    class Meta:
+        model = 'resume.CV_Sub_Line'
+
+    cv_line_id = factory.SubFactory(CVLineFactory)
+    sub_entry = factory.Faker('sentence', nb_words=25)
