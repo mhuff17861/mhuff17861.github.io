@@ -37,6 +37,7 @@ class Page_Header(models.Model):
     alignment = models.TextField(choices=ALIGNMENT_CHOICES, default="L")
 
     image = models.ImageField(upload_to="page_headers")
+    image_alt_text = models.TextField(max_length=50, default="picture description")
     title = models.TextField(max_length=25)
     body = models.TextField(max_length=700)
 
@@ -75,6 +76,7 @@ class Project(models.Model):
     priority = models.PositiveSmallIntegerField()
     title = models.TextField(max_length=50)
     image = models.ImageField(upload_to="projects")
+    image_alt_text = models.TextField(max_length=50, default="picture description")
     short_description = models.TextField(max_length=120)
     long_description = models.TextField(max_length=600)
     start_date = models.DateField()
@@ -149,13 +151,13 @@ class CV_Sub_Line_QuerySet(models.QuerySet):
     # --- get_sub_lines_for_line(line) - Retrieves CV lines and their sub lines
     # for a specified category
     def get_sub_lines_for_line(self, line):
-        return self.filter(cv_line_id__exact=line)
+        return self.filter(cv_line__exact=line)
 
 # CV_Sub_Line Model. Meant to make lines under CV lines, think 2nd level
 # of a list in display.
 class CV_Sub_Line(models.Model):
     class Meta:
-        unique_together = (('cv_line_id', 'sub_entry'),)
+        unique_together = (('cv_line', 'sub_entry'),)
 
     cv_line = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
     sub_entry = models.TextField(max_length=300)

@@ -22,6 +22,7 @@ class PageHeaderFactory(DjangoModelFactory):
     name = factory.Iterator(PAGE_CHOICES)
     alignment = factory.Iterator(ALIGNMENT_CHOICES)
     image = factory.django.ImageField(color='blue')
+    image_alt_text = "blue"
     title = factory.Faker('sentence', nb_words=3)
     body = factory.Faker('sentence', nb_words=100)
 
@@ -33,6 +34,7 @@ class ProjectFactory(DjangoModelFactory):
     priority = factory.Faker('random_number', digits=1)
     title = factory.Faker('sentence', nb_words=4)
     image = factory.django.ImageField(color='blue')
+    image_alt_text = "blue"
     short_description = factory.Faker('sentence', nb_words=40)
     long_description = factory.Faker('sentence', nb_words=100)
     start_date = factory.Faker('date_between',

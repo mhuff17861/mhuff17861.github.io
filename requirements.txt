@@ -3,6 +3,7 @@ Django==4.0.4
 django-nested-admin==3.4.0
 factory-boy==3.2.1
 Faker==13.12.0
+Markdown==3.3.7
 Pillow==9.1.1
 psycopg2==2.9.3
 python-dateutil==2.8.2
