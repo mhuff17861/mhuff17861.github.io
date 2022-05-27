@@ -1,0 +1,26 @@
+{% if card_list %}
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+  {% for card in card_list %}
+
+      <div class="col">
+
+        <div class="card h-100">
+          <img src="{{ card.image.url }}" class="card-img-top p-3" alt="Image of {{ card.title }}">
+          <div class="card-body">
+            <h5 class="card-title h3">{{ card.title }}</h5>
+            <p class="card-text">{{ card.description }}</p>
+            {% if card.url and card.url_title %}
+              <a href="{{ card.url }}" class="btn btn-primary">{{ card.url_title }}</a>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+  {% endfor %}
+</div>
+{% else %}
+  <div class="row mb-2 text-center">
+      <p>Oops! No cards to show I guess</p>
+  </div>
+{% endif %}
