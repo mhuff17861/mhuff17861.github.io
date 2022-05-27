@@ -5,8 +5,7 @@ from datetime import date
 from .models import Page_Header, Project, CV_Category, CV_Line, CV_Sub_Line
 from .factories import *
 
-#****************** Model Tests ****************
-
+# ****************Helper Functions/Variables***********
 # Global settings for testing data creation.
 NUM_PROJECTS = 5
 NUM_CV_CATEGORIES = 10
@@ -25,7 +24,7 @@ def setup_data():
         for cv_line in cv_lines:
             CVSubLineFactory.create_batch(NUM_CV_SUB_LINES, cv_line=cv_line)
 
-
+#****************** Model Tests ****************
 
 class PageHeaderTests(TestCase):
 
@@ -58,34 +57,38 @@ class ProjectTests(TestCase):
         """
             Test the queryset get_projects_by_priority
         """
+        msg_amount = "Project QuerySet get_projects_by_priority did not return the correct amount of projects -- "
         projects = Project.projects.get_projects_by_priority(NUM_PROJECTS)
-        self.assertEqual(len(projects), NUM_PROJECTS)
+        self.assertEqual(len(projects), NUM_PROJECTS, msg=msg_amount + "Max Num Test")
         projects = Project.projects.get_projects_by_priority(NUM_PROJECTS-1)
-        self.assertEqual(len(projects), NUM_PROJECTS-1)
+        self.assertEqual(len(projects), NUM_PROJECTS-1, msg=msg_amount + "Less than Max Num Test")
         projects = Project.projects.get_projects_by_priority(NUM_PROJECTS+1)
-        self.assertEqual(len(projects), NUM_PROJECTS)
+        self.assertEqual(len(projects), NUM_PROJECTS, msg=msg_amount + "More than Max Num Test")
 
         priority_test = 0
         for i, project in enumerate(projects):
             if i != (len(projects) - 1):
-                self.assertGreaterEqual(project.priority, priority_test)
+                self.assertGreaterEqual(project.priority, priority_test,
+                    msg="Project Queryset get_projects_by_priority returned projects in the wrong order of priority. Expect lowest number (highest priority) first")
                 priority_test = project.priority
 
     def test_get_projects_by_start_date(self):
         """
             Test the queryset get_projects_by_start_date
         """
+        msg_amount = "Project QuerySet get_projects_by_start_date did not return the correct amount of projects -- "
         projects = Project.projects.get_projects_by_start_date(NUM_PROJECTS)
-        self.assertEqual(len(projects), NUM_PROJECTS)
+        self.assertEqual(len(projects), NUM_PROJECTS, msg=msg_amount  + "Max Num Test")
         projects = Project.projects.get_projects_by_start_date(NUM_PROJECTS-1)
-        self.assertEqual(len(projects), NUM_PROJECTS-1)
+        self.assertEqual(len(projects), NUM_PROJECTS-1, msg=msg_amount  + "Less than Max Num Test")
         projects = Project.projects.get_projects_by_start_date(NUM_PROJECTS+1)
-        self.assertEqual(len(projects), NUM_PROJECTS)
+        self.assertEqual(len(projects), NUM_PROJECTS, msg=msg_amount + "More than Max Num Test")
 
         date_test = date.fromisoformat('2030-01-01')
         for i, project in enumerate(projects):
             if i != (len(projects) - 1):
-                self.assertLessEqual(project.start_date, date_test)
+                self.assertLessEqual(project.start_date, date_test,
+                    msg="Project Queryset get_projects_by_start_date returned projects in the wrong order for start_date. Expect most recent first.")
                 date_test = project.start_date
 
 class CVCategoryTests(TestCase):
@@ -107,7 +110,8 @@ class CVCategoryTests(TestCase):
         priority_test = 0
         for i, category in enumerate(categories):
             if i != (len(categories) - 1):
-                self.assertGreaterEqual(category.priority, priority_test)
+                self.assertGreaterEqual(category.priority, priority_test,
+                    msg="CV_Category Queryset get_categories_by_priority returned projects in the wrong order of priority. Expect lowest number (highest priority) first")
                 priority_test = category.priority
 
 class CV_Line_Tests(TestCase):
@@ -124,25 +128,26 @@ class CV_Line_Tests(TestCase):
             Test the queryset get_lines_full
         """
         lines = CV_Line.cv_lines.get_lines_full()
-        self.assertTrue(lines)
+        self.assertTrue(lines, msg="CV_Line Queryset get_lines_full failed to return data")
 
         for line in lines:
-            self.assertTrue(line.cv_sub_line_set.all())
+            self.assertTrue(line.cv_sub_line_set.all(), msg="CV_Line Queryset get_lines_full failed to retrieve cv_sub_lines")
 
     def test_get_lines_full_by_start_date(self):
         """
             Test the queryset get_lines_full_by_start_date
         """
         lines = CV_Line.cv_lines.get_lines_full_by_start_date()
+        self.assertTrue(lines, msg="CV_Line Queryset get_lines_full_by_start_date failed to return data")
 
         date_test = date.fromisoformat('2030-01-01')
         for i, line in enumerate(lines):
-            self.assertTrue(line.cv_sub_line_set.all())
+            self.assertTrue(line.cv_sub_line_set.all(), msg="CV_Line Queryset get_lines_full_by_start_date failed to retrieve cv_sub_lines")
             if i != (len(lines) - 1):
-                self.assertLessEqual(line.start_date, date_test)
+                self.assertLessEqual(line.start_date, date_test, msg="CV_Line Queryset get_lines_full_by_start_date returned cv_lines in the wrong order for start_date. Expect most recent first.")
                 date_test = line.start_date
 
-    def test_get_full_for_category(self):
+    def test_get_lines_full_for_category(self):
         """
             Test the queryset get_lines_full_for_category
         """
@@ -150,8 +155,9 @@ class CV_Line_Tests(TestCase):
 
         for category in categories:
             lines = CV_Line.cv_lines.get_lines_full_for_category(category.id)
+            self.assertTrue(lines, msg="CV_Line Queryset get_lines_full_for_category failed to return data")
             for line in lines:
-                self.assertEqual(line.category.id, category.id)
+                self.assertEqual(line.category.id, category.id, msg="CV_Line Queryset get_lines_full_for_category retrieved the wrong lines")
 
 class CV_Sub_Line_Tests(TestCase):
 
@@ -170,39 +176,80 @@ class CV_Sub_Line_Tests(TestCase):
 
         for line in lines:
             sub_lines = CV_Sub_Line.cv_sub_lines.get_sub_lines_for_line(line.id)
-            self.assertTrue(sub_lines)
+            self.assertTrue(sub_lines, msg="CV_Sub_Line Queryset get_sub_lines_for_line failed to return data")
             for sub_line in sub_lines:
-                self.assertEqual(sub_line.cv_line.id, line.id)
+                self.assertEqual(sub_line.cv_line.id, line.id, msg="CV_Sub_Line Queryset get_sub_lines_for_line retrieved the wrong lines")
 
 #********* View Tests **********
 
-class IndexViewTests(TestCase):
+class ViewNoDataTests(TestCase):
+
+    def setup(self):
+        self.client = Client()
 
     def test_index_no_data_response(self):
         """
             Test the index url for error free page return
         """
-        client = Client()
         response = self.client.get(reverse('resume:index'))
         self.assertEqual(response.status_code, 200)
-
-class ProjectsViewTests(TestCase):
+        self.assertTemplateUsed(response, 'resume/home.html')
+        self.assertContains(response, "Oops!")
 
     def test_projects_no_data_response(self):
         """
             Test the index url for error free page return
         """
-        client = Client()
         response = self.client.get(reverse('resume:projects'))
         self.assertEqual(response.status_code, 200)
-
-
-class ResumeViewTests(TestCase):
+        self.assertTemplateUsed(response, 'resume/projects.html')
+        self.assertContains(response, "Oops!")
 
     def test_resume_no_data_response(self):
         """
             Test the index url for error free page return
         """
-        client = Client()
         response = self.client.get(reverse('resume:resume'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'resume/resume.html')
+        self.assertContains(response, "Oops!")
+
+class ViewModelIntegrationTests(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+            Data generation for view testing
+        """
+        setup_data()
+
+    def setup(self):
+        self.client = Client()
+
+    def test_index_full_data_response(self):
+        """
+            Test the index url for error free page return with data
+        """
+        response = self.client.get(reverse('resume:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'resume/home.html')
+        self.assertTemplateUsed(response, 'resume/header_layout.html')
+        self.assertTemplateUsed(response, 'resume/card_layout.html')
+
+    def test_projects_full_data_response(self):
+        """
+            Test the index url for error free page return with data
+        """
+        response = self.client.get(reverse('resume:projects'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'resume/projects.html')
+        self.assertTemplateUsed(response, 'resume/header_layout.html')
+
+    def test_resume_full_data_response(self):
+        """
+            Test the index url for error free page return with data
+        """
+        response = self.client.get(reverse('resume:resume'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'resume/resume.html')
+        self.assertTemplateUsed(response, 'resume/header_layout.html')

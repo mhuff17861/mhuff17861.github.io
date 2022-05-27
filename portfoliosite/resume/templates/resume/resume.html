@@ -7,22 +7,17 @@
 <!-- **********************Main Container*********************** -->
 <div class="container">
 
-  <!-- ********************Overview ********************* -->
-  <div class="row mt-4 px-3 px-xl-5 py-3 bg-light">
-    <article class="col-xl-8 text-center text-xl-start">
-      <h1 class="mb-3">Overview</h1>
-      <img src="img\ultrawide-test.jpg" alt="" class="img-fluid d-xl-none mb-3">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget metus euismod, varius mi eget, hendrerit elit. Donec facilisis eu enim vel suscipit. Cras a imperdiet sapien, eu blandit eros. Nunc nec tortor vel neque pellentesque varius. Ut non pellentesque magna. Nullam sit amet malesuada orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget metus euismod, varius mi eget, hendrerit elit. Donec facilisis eu enim vel suscipit. Cras a imperdiet sapien, eu blandit eros.  </p>
-    </article>
-    <div class="col-xl-4 d-grid gap-2 gap-xl-1 pt-3 ps-3">
-      <img src="img\ultrawide-test.jpg" alt="" class="img-fluid d-none d-xl-block">
-      <button type="button" class="btn btn-primary btn-lg mx-lg-3 mx-xl-0">Download Resume</button>
-      <button type="button" class="btn btn-primary btn-lg mx-lg-3 mx-xl-0">Download CV</button>
-    </div>
-  </div>
+  {% if header %}
 
-  <!-- ********************End of Overview ********************* -->
+    {% include "resume/header_layout.html" %}
+
+  {% else %}
+    <div class="row mb-2 text-center">
+        <p>Oops! No header to show I guess</p>
+    </div>
+
+  {% endif %}
+
   <div class="row mt-4 px-5">
     <h1>Everything</h1>
     <hr>

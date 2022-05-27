@@ -6,20 +6,17 @@
 {% block main-content %}
 <!-- *************Start of Main Container********************** -->
 <div class="container">
-  <!-- ***************Projects Overview*************** -->
-  <article class="row justify-content-center">
-    <div class="col-9 text-center p-4">
-      <h1 class="">Projects</h1>
+
+  {% if header %}
+
+    {% include "resume/header_layout.html" %}
+
+  {% else %}
+    <div class="row mb-2 text-center">
+        <p>Oops! No header to show I guess</p>
     </div>
-    <div class="col-12">
-        <img src="img\ultrawide-test.jpg" alt="" class="img-fluid">
-    </div>
-    <div class="col-12 col-md-9 text-center p-4">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pretium, lorem sed tempus sodales, velit justo elementum justo, in rutrum metus tortor sit amet diam. Vestibulum vitae dapibus augue, ac imperdiet lectus. Proin tincidunt nisi metus, sit amet ornare orci gravida non. Curabitur porttitor molestie felis quis dictum. Integer quis pulvinar mi, in ullamcorper sapien. Nunc eros ipsum, ultricies sit amet tellus non, sodales ornare purus. Quisque venenatis gravida orci et ultrices. Nam dignissim metus fringilla turpis ornare, vel hendrerit neque auctor. Sed sit amet dignissim eros. </p>
-    </div>
-  </article>
-  <hr>
-  <!-- ***************End of Projects Overview*************** -->
+
+  {% endif %}
 
   <!-- ***************Projects List*************** -->
   <!-- NOTE: Hide and swap headers on different sizes? -->

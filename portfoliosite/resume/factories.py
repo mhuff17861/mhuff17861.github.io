@@ -32,6 +32,7 @@ class ProjectFactory(DjangoModelFactory):
     user_id = factory.SubFactory(UserFactory)
     priority = factory.Faker('random_number', digits=1)
     title = factory.Faker('sentence', nb_words=4)
+    image = factory.django.ImageField(color='blue')
     short_description = factory.Faker('sentence', nb_words=40)
     long_description = factory.Faker('sentence', nb_words=100)
     start_date = factory.Faker('date_between',
