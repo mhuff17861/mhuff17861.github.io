@@ -118,7 +118,7 @@ class CV_Line_QuerySet(models.QuerySet):
         return self.prefetch_related('cv_sub_line_set')
 
     # --- get_lines_full() - Retrieves CV lines and their sub lines
-    def get_lines_full_by_date(self):
+    def get_lines_full_by_start_date(self):
         return self.order_by('-start_date').prefetch_related('cv_sub_line_set')
 
     # --- get_lines_full_for_category() - Retrieves CV lines and their sub lines
@@ -157,7 +157,7 @@ class CV_Sub_Line(models.Model):
     class Meta:
         unique_together = (('cv_line_id', 'sub_entry'),)
 
-    cv_line_id = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
+    cv_line = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
     sub_entry = models.TextField(max_length=300)
 
     cv_sub_lines = CV_Sub_Line_QuerySet.as_manager()

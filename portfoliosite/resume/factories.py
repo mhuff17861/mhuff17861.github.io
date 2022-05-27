@@ -69,5 +69,5 @@ class CVSubLineFactory(DjangoModelFactory):
     class Meta:
         model = 'resume.CV_Sub_Line'
 
-    cv_line_id = factory.SubFactory(CVLineFactory)
+    cv_line = factory.SubFactory(CVLineFactory)
     sub_entry = factory.Faker('sentence', nb_words=25)
