@@ -1,7 +1,7 @@
 import factory
 from factory.django import DjangoModelFactory
 from .models import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class UserFactory(DjangoModelFactory):
     class Meta:
@@ -37,6 +37,9 @@ class ProjectFactory(DjangoModelFactory):
     start_date = factory.Faker('date_between',
         start_date=datetime.fromisoformat('2012-09-01'),
         end_date=datetime.fromisoformat('2022-04-01'))
+    end_date = factory.LazyAttribute(
+        lambda o: o.start_date + timedelta(days=30)
+        )
     url = factory.Faker('url')
     url_title = factory.Faker('sentence', nb_words=3)
 
@@ -57,6 +60,9 @@ class CVLineFactory(DjangoModelFactory):
     start_date = factory.Faker('date_between',
         start_date=datetime.fromisoformat('2012-09-01'),
         end_date=datetime.fromisoformat('2022-04-01'))
+    end_date = factory.LazyAttribute(
+        lambda o: o.start_date + timedelta(days=30)
+        )
     entry = factory.Faker('sentence', nb_words=25)
 
 class CVSubLineFactory(DjangoModelFactory):

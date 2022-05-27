@@ -112,7 +112,6 @@ class CV_Category(models.Model):
         return self.category_name
 
 # CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
-# NOTE: Prefetch not working!!!!!!!
 class CV_Line_QuerySet(models.QuerySet):
     # --- get_lines_full() - Retrieves CV lines and their sub lines
     def get_lines_full(self):
