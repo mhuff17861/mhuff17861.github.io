@@ -1,8 +1,8 @@
-# mhuff17861.github.io
+# Django Portfolio Website App(s)
 
 ## Description
 
-This is the repository I'm using to build my own portfolio website using Django and Bootstrap. Currently only a prototype while I learn Django and do some project planning.
+Building a portfolio website for myself using Django and Bootstrap. End goal is a django project that will allow a solid portfolio website to be built off of the data the user enters. Going to start of pretty limited, not looking to recreate squarespace or wix hear, but it should be good enough that the user can just enter the necessary data and have a website (with probably a little bit of jank, as a treat)
 
 ## Dependencies
 
