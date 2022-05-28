@@ -1,0 +1,33 @@
+{% if slides %}
+  {% load markdown_extras %}
+  {% for slide in slides %}
+    {% if forloop.counter|divisibleby:2 %}
+      <section class="row p-3 bg-light">
+        <div class="col-xl-5 col-xxl-4">
+          <img src="{{ slide.image.url }}" alt="{{ slide.image_alt_text }}" class="img-fluid">
+        </div>
+        <div class="col-xl-7 col-xxl-8 text-xl-end">
+          <h1 class="mt-2 mt-xl-0 mb-xxl-3">{{ slide.title }}</h1>
+          <p>{{ slide.body | markdown | safe }}</p>
+        </div>
+      </section>
+
+      <hr>
+    {% else %}
+
+      <section class="row p-3 bg-light">
+        <div class="order-first order-xl-last col-xl-5 col-xxl-4">
+          <img src="{{ slide.image.url }}" alt="{{ slide.image_alt_text }}" class="img-fluid">
+        </div>
+        <div class="col-xl-7 col-xxl-8">
+          <h1 class="mt-2 mt-xl-0 mb-xxl-3">{{ slide.title }}</h1>
+          <p>{{ slide.body | markdown | safe }}</p>
+        </div>
+      </section>
+
+      <hr>
+
+    {% endif %}
+  {% endfor %}
+
+{% endif %}

@@ -15,18 +15,21 @@ def get_header(name):
 
 # Views
 def index(request):
-    card_list = Project.projects.get_projects_by_priority(3).annotate(description=F('short_description'))
+    cards = Project.projects.get_projects_by_priority(3).annotate(body=F('short_description'))
 
     context = {
         'header': get_header("Home"),
-        'card_list': card_list,
+        'cards': cards,
     }
 
     return render(request, 'resume/home.html', context)
 
 def projects(request):
+    slides = Project.projects.get_projects_by_priority(3).annotate(body=F('long_description'))
+
     context = {
         'header': get_header("Projects"),
+        'slides': slides,
     }
 
     return render(request, 'resume/projects.html', context)
