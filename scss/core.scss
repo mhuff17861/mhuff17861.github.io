@@ -1,0 +1,11 @@
+
+@import "bootstrap_overrides.scss";
+
+// import Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Custom thingies
+hr {
+  height: 2px;
+  background-color: $light;
+}
