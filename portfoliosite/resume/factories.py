@@ -50,7 +50,7 @@ class CVCategoryFactory(DjangoModelFactory):
     class Meta:
         model = 'resume.CV_Category'
 
-    category_name = factory.Faker('sentence', nb_words=10)
+    name = factory.Faker('sentence', nb_words=10)
     user_id = factory.SubFactory(UserFactory)
     priority = factory.Faker('random_number', digits=1)
 
@@ -73,4 +73,4 @@ class CVSubLineFactory(DjangoModelFactory):
         model = 'resume.CV_Sub_Line'
 
     cv_line = factory.SubFactory(CVLineFactory)
-    sub_entry = factory.Faker('sentence', nb_words=25)
+    entry = factory.Faker('sentence', nb_words=25)

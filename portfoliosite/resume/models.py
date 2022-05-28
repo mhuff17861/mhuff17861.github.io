@@ -95,13 +95,25 @@ class CV_Category_QuerySet(models.QuerySet):
     def get_categories_by_priority(self):
         return self.order_by('priority')
 
+    # --- get_categories_by_priority_with_lines() - Retrieves CV categories
+    # in order of priority with associated cv_lines and sub_lines
+    def get_categories_by_priority_with_lines_full(self):
+        set = self.order_by('priority').prefetch_related('cv_line_set')
+        for category in set:
+            for line in category.cv_line_set.all():
+                print(line)
+                print(line.cv_sub_line_set.all())
+        return set
+
+
+
 # CV_Category Model. Defines broad categories, under which each line of a CV can be
 # displayed.
 class CV_Category(models.Model):
     class Meta:
-        unique_together = (('category_name', 'user_id'),)
+        unique_together = (('name', 'user_id'),)
 
-    category_name = models.TextField(max_length=100)
+    name = models.TextField(max_length=100)
     user_id = models.ForeignKey(
        settings.AUTH_USER_MODEL,
        on_delete=models.CASCADE
@@ -111,7 +123,7 @@ class CV_Category(models.Model):
     cv_categories = CV_Category_QuerySet.as_manager()
 
     def __str__(self):
-        return self.category_name
+        return self.name
 
 # CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
 class CV_Line_QuerySet(models.QuerySet):
@@ -157,12 +169,12 @@ class CV_Sub_Line_QuerySet(models.QuerySet):
 # of a list in display.
 class CV_Sub_Line(models.Model):
     class Meta:
-        unique_together = (('cv_line', 'sub_entry'),)
+        unique_together = (('cv_line', 'entry'),)
 
     cv_line = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
-    sub_entry = models.TextField(max_length=300)
+    entry = models.TextField(max_length=300)
 
     cv_sub_lines = CV_Sub_Line_QuerySet.as_manager()
 
     def __str__(self):
-        return self.sub_entry
+        return self.entry

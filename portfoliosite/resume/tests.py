@@ -253,3 +253,4 @@ class ViewModelIntegrationTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'resume/resume.html')
         self.assertTemplateUsed(response, 'resume/header_layout.html')
+        self.assertTemplateUsed(response, 'resume/accordion_layout.html')

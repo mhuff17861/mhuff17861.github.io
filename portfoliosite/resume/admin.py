@@ -16,11 +16,11 @@ class CV_Line_Inline(nested_admin.NestedTabularInline):
     inlines = [CV_Sub_Line_Inline]
 
 class CV_Admin(nested_admin.NestedModelAdmin):
-    list_display = ('category_name', 'priority')
+    list_display = ('name', 'priority')
 
     fieldsets = [
         ('User Info', {'fields': [ 'user_id' ]}),
-        ('Category Info', {'fields': ['category_name', 'priority']})
+        ('Category Info', {'fields': ['name', 'priority']})
     ]
 
     inlines = [CV_Line_Inline]

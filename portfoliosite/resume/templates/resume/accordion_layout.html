@@ -1,0 +1,39 @@
+{% if accordion_categories %}
+
+  <div class="row mb-3">
+    <!-- According Start -->
+    <div class="accordion" id="accordionGen">
+      {% for category in accordion_categories %}
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{ category.name }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ category.name }}" aria-expanded="false" aria-controls="collapse{{ category.name }}">
+              {{ category.name }}
+            </button>
+          </h2>
+          <div id="collapse{{ category.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ category.name }}" data-bs-parent="#accordionGen">
+            <div class="accordion-body">
+              <ul>
+                {% for item in category.items %}
+                  <li>{{ item.entry }}</li>
+                  {% for sub_item in category.items %}
+                    {% if forloop.first %}
+                      <ul>
+                    {% endif %}
+                      <li>{{ sub_item.entry }}</li>
+                    {% if forloop.last %}
+                      </ul>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+    </div>
+    <!-- Accordion End -->
+  </div>
+{% endif %}
