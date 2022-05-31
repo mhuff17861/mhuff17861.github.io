@@ -1,0 +1,18 @@
+// ### Bootstrap Overrides here ###
+
+// *********Theme Color Variables ************
+$primary:       #3a3153;
+$secondary:     #b1aebb;
+// $success:       $green;
+$info:          #5f43b2;
+// $warning:       $yellow;
+// $danger:        $red;
+$light:         #fefdfd;
+$dark:          #010101;
+
+// ************* Accordion Variables *************
+$accordion-border-color: $primary;
+$accordion-button-color: $light;
+$accordion-button-active-color: mix(black, $light, 10%);
+$accordion-button-focus-border-color: $accordion-border-color;
+$accordion-button-focus-box-shadow: $accordion-border-color;

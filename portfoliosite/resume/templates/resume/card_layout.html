@@ -1,12 +1,12 @@
 {% load markdown_extras %}
 {% if cards %}
-<div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+<div class="row row-cols-1 row-cols-lg-3 g-4 mb-3">
   {% for card in cards %}
 
       <div class="col">
 
-        <div class="card h-100">
-          <img src="{{ card.image.url }}" class="card-img-top p-3" alt="{{ card.image_alt_text }}">
+        <div class="card h-100 bg-info shadow" style="--bs-bg-opacity: .65;">
+          <img src="{{ card.image.url }}" class="card-img-top" alt="{{ card.image_alt_text }}">
           <div class="card-body">
             <h5 class="card-title h3">{{ card.title }}</h5>
             <p class="card-text">{{ card.body | markdown | safe }}</p>
@@ -20,6 +20,9 @@
 
   {% endfor %}
 </div>
+
+<hr class="my-4">
+
 {% else %}
   <div class="row mb-2 text-center">
       <p>Oops! No cards to show I guess</p>

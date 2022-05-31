@@ -3,7 +3,7 @@ const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 
 //Define pathnames
-const sassSrc = 'scss/bootstrap.scss'
+const sassSrc = 'scss/core.scss'
 const sassDest = 'portfoliosite/static/css'
 const sassInc = [ 'node_modules/bootstrap/scss' ]
 const jsSrc = [ 'node_modules/bootstrap/dist/js/bootstrap.min.js' ]
