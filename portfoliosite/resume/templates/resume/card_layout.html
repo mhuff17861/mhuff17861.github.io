@@ -5,7 +5,7 @@
 
       <div class="col">
 
-        <div class="card h-100 bg-info shadow-lg">
+        <div class="card h-100 bg-info shadow" style="--bs-bg-opacity: .65;">
           <img src="{{ card.image.url }}" class="card-img-top" alt="{{ card.image_alt_text }}">
           <div class="card-body">
             <h5 class="card-title h3">{{ card.title }}</h5>
@@ -20,6 +20,9 @@
 
   {% endfor %}
 </div>
+
+<hr class="my-4">
+
 {% else %}
   <div class="row mb-2 text-center">
       <p>Oops! No cards to show I guess</p>
