@@ -67,10 +67,3 @@ class CVLineFactory(DjangoModelFactory):
         lambda o: o.start_date + timedelta(days=30)
         )
     entry = factory.Faker('sentence', nb_words=25)
-
-class CVSubLineFactory(DjangoModelFactory):
-    class Meta:
-        model = 'resume.CV_Sub_Line'
-
-    cv_line = factory.SubFactory(CVLineFactory)
-    entry = factory.Faker('sentence', nb_words=25)

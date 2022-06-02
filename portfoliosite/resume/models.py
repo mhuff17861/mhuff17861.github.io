@@ -97,15 +97,8 @@ class CV_Category_QuerySet(models.QuerySet):
 
     # --- get_categories_by_priority_with_lines() - Retrieves CV categories
     # in order of priority with associated cv_lines and sub_lines
-    def get_categories_by_priority_with_lines_full(self):
-        set = self.order_by('priority').prefetch_related('cv_line_set')
-        for category in set:
-            for line in category.cv_line_set.all():
-                print(line)
-                print(line.cv_sub_line_set.all())
-        return set
-
-
+    def get_categories_by_priority_with_lines(self):
+        return self.order_by('priority').prefetch_related('cv_line_set')
 
 # CV_Category Model. Defines broad categories, under which each line of a CV can be
 # displayed.
@@ -128,17 +121,17 @@ class CV_Category(models.Model):
 # CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
 class CV_Line_QuerySet(models.QuerySet):
     # --- get_lines_full() - Retrieves CV lines and their sub lines
-    def get_lines_full(self):
-        return self.prefetch_related('cv_sub_line_set')
+    def get_lines(self):
+        return self
 
     # --- get_lines_full() - Retrieves CV lines and their sub lines
-    def get_lines_full_by_start_date(self):
-        return self.order_by('-start_date').prefetch_related('cv_sub_line_set')
+    def get_lines_by_start_date(self):
+        return self.order_by('-start_date')
 
     # --- get_lines_full_for_category() - Retrieves CV lines and their sub lines
     # for a specified category
-    def get_lines_full_for_category(self, category):
-        return self.filter(category__exact=category).prefetch_related('cv_sub_line_set')
+    def get_lines_for_category(self, category):
+        return self.filter(category__exact=category)
 
         #CV_Line.cv_lines.get_lines_full_for_category(4)[0].cv_sub_line_set.all()[0]
 
@@ -157,24 +150,3 @@ class CV_Line(models.Model):
 
     def __str__(self):
         return str(self.category) + "-" + str(self.entry)
-
-# CV_Sub_Line_QuerySet. Provides functions for common queries on the CV_Sub_Lines table.
-class CV_Sub_Line_QuerySet(models.QuerySet):
-    # --- get_sub_lines_for_line(line) - Retrieves CV lines and their sub lines
-    # for a specified category
-    def get_sub_lines_for_line(self, line):
-        return self.filter(cv_line__exact=line)
-
-# CV_Sub_Line Model. Meant to make lines under CV lines, think 2nd level
-# of a list in display.
-class CV_Sub_Line(models.Model):
-    class Meta:
-        unique_together = (('cv_line', 'entry'),)
-
-    cv_line = models.ForeignKey(CV_Line, on_delete=models.CASCADE)
-    entry = models.TextField(max_length=300)
-
-    cv_sub_lines = CV_Sub_Line_QuerySet.as_manager()
-
-    def __str__(self):
-        return self.entry

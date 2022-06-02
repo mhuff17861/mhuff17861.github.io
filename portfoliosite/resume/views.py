@@ -35,15 +35,13 @@ def projects(request):
     return render(request, 'resume/projects.html', context)
 
 def resume(request):
-    cv_categories = CV_Category.cv_categories.get_categories_by_priority()
+    cv_categories = CV_Category.cv_categories.get_categories_by_priority_with_lines()
+
+    # doing this because annotations (as far as I know) do not work on prefetched querysets
+    # and need to change for generalized accordion_layout
     for category in cv_categories:
         lines = []
-        for line in category.cv_line_set.all():
-            sub_lines = []
-            for sub_line in line.cv_sub_line_set.all():
-                sub_lines.append(sub_line)
-
-            line.items = sub_lines
+        for line in category.cv_line_set.order_by('-start_date'):
             lines.append(line)
 
         category.items = lines

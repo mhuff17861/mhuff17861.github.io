@@ -1,21 +1,13 @@
 from django.contrib import admin
-import nested_admin
 from .models import *
 
 # Setup for Admin Pages
 
-# ******CV Stuff**********
-class CV_Sub_Line_Inline(nested_admin.NestedStackedInline):
-    model = CV_Sub_Line
-    extra = 0
-
-
-class CV_Line_Inline(nested_admin.NestedTabularInline):
+class CV_Line_Inline(admin.StackedInline):
     model = CV_Line
     extra = 1
-    inlines = [CV_Sub_Line_Inline]
 
-class CV_Admin(nested_admin.NestedModelAdmin):
+class CV_Admin(admin.ModelAdmin):
     list_display = ('name', 'priority')
 
     fieldsets = [

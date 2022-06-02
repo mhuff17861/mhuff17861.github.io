@@ -16,17 +16,7 @@
               <ul>
                 {% for item in category.items %}
                   <li>{{ item.entry | markdown | safe }}</li>
-                  {% for sub_item in category.items %}
-                    {% if forloop.first %}
-                      <ul>
-                    {% endif %}
-                      <li>{{ sub_item.entry | markdown | safe }}</li>
-                    {% if forloop.last %}
-                      </ul>
-                    {% endif %}
-                  {% endfor %}
                 {% endfor %}
-
               </ul>
             </div>
           </div>
