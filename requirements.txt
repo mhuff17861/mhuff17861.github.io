@@ -1,6 +1,5 @@
 asgiref==3.5.2
 Django==4.0.4
-django-nested-admin==3.4.0
 factory-boy==3.2.1
 Faker==13.12.0
 Markdown==3.3.7
