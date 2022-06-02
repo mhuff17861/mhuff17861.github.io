@@ -8,7 +8,7 @@
         <h1 class="">{{ header.title }}</h1>
       </div>
       <div class="col-12">
-          <img src="{{ header.image.url }}" alt="{{ header.image_alt_text }}" class="img-fluid shadow rounded-3">
+          <img src="{{ header.image.url }}" alt="{{ header.image_alt_text }}" class="img-fluid rounded-3">
       </div>
       <div class="col-12 col-md-9 text-center p-2">
         <p>{{ header.body | markdown | safe }}</p>
@@ -18,7 +18,7 @@
 
   {% else %}
 
-    <article class="row my-3 mx-0 mx-sm-0 p-3 align-items-center bg-info shadow rounded-3" style="--bs-bg-opacity: .65;">
+    <article class="row my-3 mx-0 mx-sm-0 p-3 align-items-center bg-info shadow rounded-3 " style="--bs-bg-opacity: .65;">
       {# The decision on whether to go left/right is here! #}
       <div class="col-lg-6 col-xl-4 {% if header.alignment == "R" %} order-first order-lg-last {% endif %}">
         <img src="{{ header.image.url }}" alt="{{ header.image_alt_text }}" class="img-fluid mt-3 mt-lg-0">

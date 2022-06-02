@@ -3,10 +3,10 @@
   {% for slide in slides %}
     <section class="row p-3 rounded-3">
       <div class="{% if forloop.counter|divisibleby:2 %}order-first order-xl-last{% endif %} col-xl-5 col-xxl-4">
-        <img src="{{ slide.image.url }}" alt="{{ slide.image_alt_text }}" class="img-fluid rounded-3 shadow">
+        <img src="{{ slide.image.url }}" alt="{{ slide.image_alt_text }}" class="img-fluid rounded-3">
       </div>
       <div class="col-xl-7 col-xxl-8">
-        <h1 class="mt-4 mt-xl-0 mb-xxl-3">{{ slide.title }}</h1>
+        <h1 class="mt-4 mt-xl-0 mb-xxl-3 h2">{{ slide.title }}</h1>
         <p>{{ slide.body | markdown | safe }}</p>
       </div>
     </section>
