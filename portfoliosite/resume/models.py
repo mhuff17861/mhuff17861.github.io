@@ -4,16 +4,23 @@ from django.db.models import F
 
 # ******** Models *****************
 
-# Page_Header_QuerySet. Provides functions for common queries on the Page_Header table.
 class Page_Header_QuerySet(models.QuerySet):
-    # --- get_header_for_page(page_name) - Retrieves CV lines and their sub lines
-    # for a specified category
+    """
+    Page_Header_QuerySet. Provides functions for common queries on the Page_Header table.
+    """
+
     def get_header_for_page(self, page_name):
+        """
+        get_header_for_page(page_name) - Retrieves CV lines and their sub lines
+        for a specified category
+        """
         return self.filter(name__iexact=page_name)
 
-# Created for Page headers. Currently set to what portfolio app is for,
-# home, resume, and projects.
 class Page_Header(models.Model):
+    """
+    Created for Page headers. Currently only allows three page types:
+    home, resume, and projects.
+    """
     class Meta:
         unique_together = (('name', 'user_id'),)
 
@@ -46,29 +53,38 @@ class Page_Header(models.Model):
     def __str__(self):
         return str(self.user_id) + " - " + str(self.name)
 
-# Project_QuerySet. Provides functions for common queries on the Projects table.
+
 class Project_QuerySet(models.QuerySet):
-    # --- get_projects_by_priority(num_projects) - Retrieves up to the designated number of projects from the
-    # project model, with highest priority first.
+    """
+    Project_QuerySet. Provides functions for common queries on the Projects table.
+    """
+
     def get_projects_by_priority(self, num_projects):
+        """
+        get_projects_by_priority(num_projects) - Retrieves up to the designated number of projects from the
+        project model, with highest priority first.
+        """
         if self.count() <= num_projects:
             return self.order_by('priority')
 
         return self.order_by('priority')[:num_projects]
 
-    # --- get_projects_by_start_date(num_projects): - Retrieves up to the
-    # designated number of projects from the project model, with most recent start date first
     def get_projects_by_start_date(self, num_projects):
+        """
+        get_projects_by_start_date(num_projects): - Retrieves up to the
+        designated number of projects from the project model, with most recent start date first
+        """
         if self.count() <= num_projects:
             return self.order_by('-start_date')
 
         return self.order_by('-start_date')[:num_projects]
 
-
-# Project Model. Basic information and things that can be used for list displays
-# (like the image and short/long descriptions). Can be extended later with
-# related table allowing a "detail" construction.
 class Project(models.Model):
+    """
+    Project Model. Basic information and things that can be used for list displays
+    (like the image and short/long descriptions). Can be extended later with
+    related table allowing a "detail" construction.
+    """
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -89,20 +105,29 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
-# CV_Category_QuerySet. Provides functions for common queries on the CV_Cateogorys table.
 class CV_Category_QuerySet(models.QuerySet):
-    # --- get_categories_by_priority() - Retrieves CV categories in order of priority
+    """
+    CV_Category_QuerySet. Provides functions for common queries on the CV_Cateogorys table.
+    """
+
     def get_categories_by_priority(self):
+        """
+        get_categories_by_priority() - Retrieves CV categories in order of priority
+        """
         return self.order_by('priority')
 
-    # --- get_categories_by_priority_with_lines() - Retrieves CV categories
-    # in order of priority with associated cv_lines and sub_lines
     def get_categories_by_priority_with_lines(self):
+        """
+        get_categories_by_priority_with_lines() - Retrieves CV categories
+        in order of priority with associated cv_lines and sub_lines
+        """
         return self.order_by('priority').prefetch_related('cv_line_set')
 
-# CV_Category Model. Defines broad categories, under which each line of a CV can be
-# displayed.
 class CV_Category(models.Model):
+    """
+    CV_Category Model. Defines broad categories, under which each line of a CV can be
+    displayed.
+    """
     class Meta:
         unique_together = (('name', 'user_id'),)
 
@@ -118,25 +143,35 @@ class CV_Category(models.Model):
     def __str__(self):
         return self.name
 
-# CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
+
 class CV_Line_QuerySet(models.QuerySet):
-    # --- get_lines_full() - Retrieves CV lines and their sub lines
+    """
+    CV_Line_QuerySet. Provides functions for common queries on the CV_Lines table.
+    """
+
     def get_lines(self):
+        """
+        get_lines() - Retrieves CV lines
+        """
         return self
 
-    # --- get_lines_full() - Retrieves CV lines and their sub lines
     def get_lines_by_start_date(self):
+        """
+        get_lines_by_start_date() - Retrieves CV lines in order of start_date,
+        most recent first
+        """
         return self.order_by('-start_date')
 
-    # --- get_lines_full_for_category() - Retrieves CV lines and their sub lines
-    # for a specified category
     def get_lines_for_category(self, category):
+        """
+        get_lines_full_for_category(category) - Retrieves CV lines for a specified category
+        """
         return self.filter(category__exact=category)
 
-        #CV_Line.cv_lines.get_lines_full_for_category(4)[0].cv_sub_line_set.all()[0]
-
-# CV_Line Model. A single line entry meant to go under a CV category
 class CV_Line(models.Model):
+    """
+    CV_Line Model. A single line entry meant to go under a CV category
+    """
     user_id = models.ForeignKey(
        settings.AUTH_USER_MODEL,
        on_delete=models.CASCADE

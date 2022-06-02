@@ -1,3 +1,8 @@
+"""
+    This file holds data-generation factories used to create test data,
+    so testing can be as thorough as possible
+"""
+
 import factory
 from factory.django import DjangoModelFactory
 from .models import *

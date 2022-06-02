@@ -12,6 +12,10 @@ register = template.Library()
 DEFAULT_A_COLOR = "link-light"
 
 class LinkColorProcessor(Treeprocessor):
+    """
+        A processor which adds the appropriate link color to
+        every link in the processed markdown
+    """
     def run(self, root):
         def set_link_class(element):
             """
@@ -21,15 +25,23 @@ class LinkColorProcessor(Treeprocessor):
                 if child.tag == "a":
                     child.set("class", DEFAULT_A_COLOR) #set the class attribute
                 set_link_class(child) # run recursively on children
-                
+
         set_link_class(root)
 
 class LinkColorExtension(Extension):
+    """
+        An extension which uses LinkColorProcessor to add
+        the appropriate link color to every link in the processed markdown
+    """
     def extendMarkdown(self, md, key='link_color', index=0):
         md.registerExtension(self)
         md.treeprocessors.register(LinkColorProcessor(md.parser), key, index)
 
+
 @register.filter()
 @stringfilter
 def markdown(value):
+    """
+        Filter which includes basic python markdown and the LinkColorExtension
+    """
     return mdown.markdown(value, extensions=['markdown.extensions.fenced_code', LinkColorExtension()])

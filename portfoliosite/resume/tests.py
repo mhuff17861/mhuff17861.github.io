@@ -13,6 +13,9 @@ NUM_CV_LINES = 10
 
 # global functions for setUpTestData
 def setup_data():
+    """
+        Sets up data that can be used to test every model/view
+    """
     user = UserFactory.create()
     PageHeaderFactory.create_batch(len(Page_Header.PAGE_CHOICES), user_id=user)
     ProjectFactory.create_batch(NUM_PROJECTS, user_id=user)
