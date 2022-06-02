@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
+import logging
+
+logger = logging.getLogger(__name__)
 
 # ******** Models *****************
 
@@ -14,6 +17,7 @@ class Page_Header_QuerySet(models.QuerySet):
         get_header_for_page(page_name) - Retrieves CV lines and their sub lines
         for a specified category
         """
+        logger.debug(f"Getting header for page {page_name}.")
         return self.filter(name__iexact=page_name)
 
 class Page_Header(models.Model):
@@ -64,6 +68,7 @@ class Project_QuerySet(models.QuerySet):
         get_projects_by_priority(num_projects) - Retrieves up to the designated number of projects from the
         project model, with highest priority first.
         """
+        logger.debug(f"Getting {num_projects} projects by priority.")
         if self.count() <= num_projects:
             return self.order_by('priority')
 
@@ -74,6 +79,7 @@ class Project_QuerySet(models.QuerySet):
         get_projects_by_start_date(num_projects): - Retrieves up to the
         designated number of projects from the project model, with most recent start date first
         """
+        logger.debug(f"Getting {num_projects} projects by start_date.")
         if self.count() <= num_projects:
             return self.order_by('-start_date')
 
@@ -114,6 +120,7 @@ class CV_Category_QuerySet(models.QuerySet):
         """
         get_categories_by_priority() - Retrieves CV categories in order of priority
         """
+        logger.debug(f"Getting CV_Categories by priority.")
         return self.order_by('priority')
 
     def get_categories_by_priority_with_lines(self):
@@ -121,6 +128,7 @@ class CV_Category_QuerySet(models.QuerySet):
         get_categories_by_priority_with_lines() - Retrieves CV categories
         in order of priority with associated cv_lines and sub_lines
         """
+        logger.debug(f"Getting CV_Categories by priority with associated cv_lines.")
         return self.order_by('priority').prefetch_related('cv_line_set')
 
 class CV_Category(models.Model):
@@ -153,6 +161,7 @@ class CV_Line_QuerySet(models.QuerySet):
         """
         get_lines() - Retrieves CV lines
         """
+        logger.debug(f"Getting cv_lines")
         return self
 
     def get_lines_by_start_date(self):
@@ -160,12 +169,14 @@ class CV_Line_QuerySet(models.QuerySet):
         get_lines_by_start_date() - Retrieves CV lines in order of start_date,
         most recent first
         """
+        logger.debug(f"Getting cv_lines by start_date.")
         return self.order_by('-start_date')
 
     def get_lines_for_category(self, category):
         """
         get_lines_full_for_category(category) - Retrieves CV lines for a specified category
         """
+        logger.debug(f"Getting cv_lines for category {category}")
         return self.filter(category__exact=category)
 
 class CV_Line(models.Model):

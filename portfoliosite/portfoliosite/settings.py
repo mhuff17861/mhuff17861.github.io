@@ -29,6 +29,24 @@ SECRET_KEY = 'django-insecure-6dzo5ac&-t$jxgj5+q+*f9ronmxm^g9p7(@-yfgsd53w%^%jdj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Logging setup
+LOGGING = {
+    'version': 1,                       # the dictConfig format version
+    'disable_existing_loggers': False,  # retain the default loggers
+    'handlers': {
+        'general_file': {
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+            'handlers': ['general_file'],
+        },
+    },
+}
+
 ALLOWED_HOSTS = []
 
 
