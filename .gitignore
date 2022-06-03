@@ -19,3 +19,4 @@ portfolioVEnv/
 
 .pgpass
 general.log
+credentials.json
