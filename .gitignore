@@ -16,6 +16,7 @@ db.sqlite3
 
 node_modules/
 portfolioVEnv/
+portfoliosite/static/admin
 
 .pgpass
 general.log
