@@ -15,7 +15,7 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
 
 ### Development Environment (aiming to automate later, check full-automation branch)
 
-- Run `npm -i`
+- Run `npm install`
 - Run `gulp devSetup`
 - Setup Python virtual environment for development work
   - Run `python3.10 -m venv portfolioVEnv`
@@ -23,9 +23,11 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
   - Install Python requirements with `pip install -r requirements.txt`
 - Set environment variable DJANGO_SETTINGS_MODULE to portfoliosite.dev_settings
   - `export DJANGO_SETTINGS_MODULE=portfoliosite.dev_settings`
+  - May want to put in your respective .rc file to maintain between shell sessions
 - Set logging level
   - There is currently only one logger, which looks for the logging level in the environment variable
-  DJANGO_LOG_LEVEL. You can set this for your machine, or it will default to WARNING and higher.
+  DJANGO_LOG_LEVEL. You can set this for your machine, or it will default to DEBUG and higher.
+  - `export DJANGO_LOG_LEVEL=DEBUG`
 - Setup a postgre database
   - The setup_files directory has an sql template for database/user setup.
   - **NOTE: The following setup step does not work yet due to a django bug. See known weirdness section below**  Create a .pg_service.conf file
@@ -41,6 +43,10 @@ future automation.
   and then place it in /etc/
 - Set environment variable DJANGO_SETTINGS_MODULE to portfoliosite.dev_settings
   - `export DJANGO_SETTINGS_MODULE=portfoliosite.production_settings`
+- Set logging level
+  - There is currently only one logger, which looks for the logging level in the environment variable
+  DJANGO_LOG_LEVEL. You can set this for your machine, or it will default to WARNING and higher.
+  - `export DJANGO_LOG_LEVEL=WARNING`
 
 ## Known Weirdness
 
