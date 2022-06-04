@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import sys
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +49,8 @@ LOGGING = {
     },
 }
 
-ALLOWED_HOSTS = ['174.138.44.3', 'micah-huff.com', 'micahhuffdeveloper.com', localhost]
+ALLOWED_HOSTS = ['174.138.44.3', 'micah-huff.com', 'www.micah-huff.com', 'micahhuffdeveloper.com', 'micahhuffdeveloper.com', 'localhost']
+CSRF_TRUSTED_ORIGINS = ["https://micah-huff.com", "https://www.micah-huff.com", 'https://174.138.44.3']
 
 
 # Application definition
@@ -155,7 +157,7 @@ USE_TZ = True
 
 #STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    "/var/www/micah-huff.com/static/",
 ]
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')

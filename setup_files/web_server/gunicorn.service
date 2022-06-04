@@ -1,0 +1,13 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=portfolio
+Group=www-data
+WorkingDirectory=/home/portfolio/PortfolioWebsite/portfoliosite
+ExecStart=/home/portfolio/PortfolioWebsite/portfoliosite/portfolioVEnv/bin/gunicorn portfoliosite.asgi:application -k uvicorn.workers.UvicornWorker --workers 3 --bind unix:/run/gunicorn.sock
+
+[Install]
+WantedBy=multi-user.target
