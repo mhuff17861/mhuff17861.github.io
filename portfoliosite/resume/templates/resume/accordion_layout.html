@@ -6,12 +6,12 @@
       {% for category in accordion_categories %}
 
         <div class="accordion-item bg-dark">
-          <h2 class="accordion-header" id="heading{{ category.name }}">
-            <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ category.name }}" aria-expanded="false" aria-controls="collapse{{ category.name }}">
+          <h2 class="accordion-header" id="heading{{ category.name | cut:" " }}">
+            <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ category.name | cut:" " }}" aria-expanded="false" aria-controls="collapse{{ category.name | cut:" " }}">
               {{ category.name }}
             </button>
           </h2>
-          <div id="collapse{{ category.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ category.name }}" data-bs-parent="#accordionGen">
+          <div id="collapse{{ category.name | cut:" " }}" class="accordion-collapse collapse" aria-labelledby="heading{{ category.name | cut:" " }}" data-bs-parent="#accordionGen">
             <div class="accordion-body">
               <ul>
                 {% for item in category.items %}
