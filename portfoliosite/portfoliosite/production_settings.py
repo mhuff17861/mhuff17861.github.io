@@ -49,7 +49,7 @@ LOGGING = {
     },
 }
 
-ALLOWED_HOSTS = ['174.138.44.3', 'micah-huff.com', 'micahhuffdeveloper.com', 'localhost']
+ALLOWED_HOSTS = ['174.138.44.3', 'micah-huff.com', 'www.micah-huff.com', 'micahhuffdeveloper.com', 'micahhuffdeveloper.com', 'localhost']
 CSRF_TRUSTED_ORIGINS = ["https://micah-huff.com", "https://www.micah-huff.com", 'https://174.138.44.3']
 
 
