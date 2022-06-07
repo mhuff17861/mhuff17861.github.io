@@ -24,7 +24,7 @@ def index(request):
         Returns the home page, using the home template.
     """
     logger.debug(f'Retrieving index view.')
-    cards = Project.projects.get_projects_by_priority(3).annotate(body=F('short_description'))
+    cards = Project.projects.get_projects_by_priority(6).annotate(body=F('short_description'))
 
     if not cards:
         logger.warning(f'No projects retrieved for cards in index view')
@@ -41,7 +41,7 @@ def projects(request):
         Returns the projects page, using the projects template.
     """
     logger.debug(f'Retrieving projects view.')
-    slides = Project.projects.get_projects_by_priority(3).annotate(body=F('long_description'))
+    slides = Project.projects.get_projects_by_priority(6).annotate(body=F('long_description'))
 
     if not slides:
         logger.warning(f'No projects retrieved for cards in projects view')
