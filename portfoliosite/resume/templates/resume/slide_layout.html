@@ -1,7 +1,7 @@
 {% if slides %}
   {% load markdown_extras %}
   {% for slide in slides %}
-    <section class="row p-3 rounded-3">
+  <section id="{{ slide.title | cut:" " }}" class="row p-3 rounded-3">
       <div class="{% if forloop.counter|divisibleby:2 %}order-first order-xl-last{% endif %} col-xl-5 col-xxl-4">
         <img src="{{ slide.image.url }}" alt="{{ slide.image_alt_text }}" class="img-fluid rounded-3">
       </div>
