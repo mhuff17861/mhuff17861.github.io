@@ -5,15 +5,15 @@
 
       <div class="col">
 
-        <div class="card h-100 bg-info shadow" style="--bs-bg-opacity: .65;">
+        <div class="card h-100 bg-info shadow d-flex flex-column" style="--bs-bg-opacity: .65;">
           <img src="{{ card.image.url }}" class="card-img-top" alt="{{ card.image_alt_text }}">
           <div class="card-body">
             <h5 class="card-title h3">{{ card.title }}</h5>
             <p class="card-text">{{ card.body | markdown | safe }}</p>
-            {% if card.url and card.url_title %}
-              <a href="{{ card.url }}" class="btn btn-primary">{{ card.url_title }}</a>
-            {% endif %}
           </div>
+	    {% if card.url and card.url_title %}
+              <a href="{{ card.url }}" class="align-self-start mb-4 ms-3 btn btn-primary">{{ card.url_title }}</a>
+	    {% endif %}
         </div>
 
       </div>
