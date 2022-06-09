@@ -8,5 +8,6 @@ logger = logging.getLogger(__name__)
 
 # Views
 def player(request):
+    """Returns the music player with the music_player template."""
     logger.debug(f'Retrieving player view.')
     return render(request, 'portfolio_music_player/music_player.html')

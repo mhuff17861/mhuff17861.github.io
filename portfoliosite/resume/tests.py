@@ -27,6 +27,7 @@ def setup_data():
 #****************** Model Tests ****************
 
 class PageHeaderTests(TestCase):
+    """Sets up tests for PageHeader Model"""
 
     @classmethod
     def setUpTestData(cls):
@@ -45,6 +46,7 @@ class PageHeaderTests(TestCase):
             self.assertEqual(test[0].name, page)
 
 class ProjectTests(TestCase):
+    """Sets up tests for Project model"""
 
     @classmethod
     def setUpTestData(cls):
@@ -92,6 +94,7 @@ class ProjectTests(TestCase):
                 date_test = project.start_date
 
 class CVCategoryTests(TestCase):
+    """Sets up tests for CV_Category model"""
 
     @classmethod
     def setUpTestData(cls):
@@ -138,6 +141,7 @@ class CVCategoryTests(TestCase):
 
 
 class CV_Line_Tests(TestCase):
+    """Sets up tests for CV_Line model"""
 
     @classmethod
     def setUpTestData(cls):
@@ -181,6 +185,7 @@ class CV_Line_Tests(TestCase):
 #********* View Tests **********
 
 class ViewNoDataTests(TestCase):
+    """Sets up tests for Views, without feeding them model data."""
 
     def setup(self):
         self.client = Client()
@@ -213,6 +218,7 @@ class ViewNoDataTests(TestCase):
         self.assertContains(response, "Oops!")
 
 class ViewModelIntegrationTests(TestCase):
+    """Sets up tests for Views, feeding them model data."""
 
     @classmethod
     def setUpTestData(cls):

@@ -3,6 +3,7 @@ from django.urls import reverse
 
 # Create your tests here.
 class ViewNoDataTests(TestCase):
+    """Tests views in the portfolio_music_player app without feeding them model data"""
 
     def setup(self):
         self.client = Client()
