@@ -34,7 +34,7 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
   - `export DJANGO_LOG_LEVEL=DEBUG`
 - Setup a postgre database
   - Login to postgre as superuser, `sudo -u postgres psql`
-  - The setup_files directory has an sql template for database/user setup. Run each command in psql 
+  - The setup_files directory has an sql template for database/user setup. Run each command in psql
     - You cam sub in your own names if you want, but you'll have to change the appropriate settings in dev_settings.py
   - `\q` to quit psql
   - **NOTE: The following setup step does not work yet due to a django bug. See known weirdness section below**  Create a .pg_service.conf file and .pgpass file (templates in setup_files directory) and place them in your home directory. Then run `chmod 0600 .pgpass` to make postgre happy.
@@ -102,6 +102,12 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
   - Start service with `sudo systemctl restart nginx`
   - Give necessary permissions with `sudo ufw allow 'Nginx Full'`
 - Test by connecting to your servers ip address (or url if you have that setup with your nameserver)
+
+## Branch Layout
+- main
+  - testing
+    - development
+      - feature implementation branches
 
 ## Known Weirdness
 
