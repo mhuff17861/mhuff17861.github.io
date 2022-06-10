@@ -104,6 +104,7 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
 - Test by connecting to your servers ip address (or url if you have that setup with your nameserver)
 
 ## Branch Layout
+
 - main
   - testing
     - development
@@ -119,6 +120,10 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
 
 ## Further Documentation
 
-Not available yet. I have comments throughout the files, but haven't decided on a
-documentation generator yet (especially since, to my knowledge, I can't autogenerate
-Django template docs).
+### Django Docs
+
+#### Python files
+
+The documentation for the django apps' is under portfoliosite/docs, generated via pdoc3. Currently it only covers the python
+files. You can generate your own using the portfoliosite/doc_gen.py if you make edits to the docstrings in the files.
+The command is `CI_MAKING_DOCS=1 python doc_gen.py`

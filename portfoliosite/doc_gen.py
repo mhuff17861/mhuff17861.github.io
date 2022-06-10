@@ -1,7 +1,7 @@
 import pathlib
 import pdoc
 
-modules = ['resume']  # Public submodules are auto-imported
+modules = ['resume', 'portfolio_music_player']
 context = pdoc.Context()
 
 modules = [pdoc.Module(mod, context=context)
@@ -14,10 +14,10 @@ def recursive_htmls(mod):
         yield from recursive_htmls(submod)
 
 for mod in modules:
+    # Create an appropriate doc directory
     pathlib.Path(f'docs/{mod.name}').mkdir(parents=True, exist_ok=True)
     for module_name, html in recursive_htmls(mod):
         module_name_split = module_name.split('.')
-        print(module_name_split)
 
         # Checks length of the name to determine the appropriate directory to output the
         # html in so all the links will work.
