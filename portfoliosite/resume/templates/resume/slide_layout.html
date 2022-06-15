@@ -1,3 +1,13 @@
+{% comment "Overview" %}
+    This is a generalized slide layout. It expects a list of slides, with
+    each slide containing a value for title, body, image, and image_alt_text.
+    The image value must contain value for url (slide.image.url) linking to
+    the desired media to be displayed.
+
+    The slides alternate between the image being on the left or right side. 
+
+    This template accepts markdown via the markdown_extras template tag.
+{% endcomment %}
 {% if slides %}
   {% load markdown_extras %}
   {% for slide in slides %}

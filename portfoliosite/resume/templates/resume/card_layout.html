@@ -1,3 +1,14 @@
+{% comment "Overview" %}
+    This is a generalized card layout. It expects a list of card data
+    called "cards," with each card containing a value for title, body,
+    image, and image_alt_text. The image must contain a url (card.image.url)
+    which points to the media that will be loaded.
+
+    Optionally, a url and url_title can be provided which will be used to create
+    a button on the bottom of the card.
+
+    This template accepts markdown via the markdown_extras template tag.
+{% endcomment %}
 {% load markdown_extras %}
 {% if cards %}
 <div class="row row-cols-1 row-cols-lg-3 g-4 mb-3">
