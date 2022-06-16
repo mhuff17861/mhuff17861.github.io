@@ -9,7 +9,6 @@ docs/_build/
 docs/locale/
 tests/coverage_html/
 tests/.coverage
-build/
 tests/report/
 portfoliosite/media/
 db.sqlite3
