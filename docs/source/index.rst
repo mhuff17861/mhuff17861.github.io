@@ -6,7 +6,9 @@ Welcome to Portfolio Site's documentation!
    :caption: Contents:
    :glob:
 
-   django/*/*
+   django/portfoliosite/index.rst
+   django/resume/index.rst
+   django/portfolio_music_player/index.rst
 
 
 Indices and tables

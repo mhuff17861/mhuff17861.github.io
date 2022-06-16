@@ -12,6 +12,7 @@ docs_loc = '../docs/source/'
 # List of directory names to exclude from python module list
 py_exclude_dirs = ['migrations', '__pycache__']
 
+
 def doc_python_modules():
     """
         Generates an rst file for autodoc based
@@ -82,7 +83,7 @@ def doc_templates():
             doc_data['templates'].append([ file[(file.rindex("/")+1):len(file)], doc_string])
 
         # Setup the rst for output
-        rst = f'{doc_data["app_name"]}\n==========\n\n'
+        rst = f'{doc_data["app_name"]} templates\n==========\n\n'
         for template in doc_data['templates']:
             rst += f'{template[0]}\n------------\n{template[1]}\n\n'
 
