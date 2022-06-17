@@ -1,17 +1,38 @@
 import pathlib
-from os import listdir, walk
+from os import listdir, walk, chdir
 from os.path import isfile, join
 
 ####### Global Variables #############
+# Varible used to track the project name
+project_name = 'portfoliosite'
 # Variable used to tell doc_gen which modules to document
 django_modules = ['resume', 'portfolio_music_player']
 # Variable used to let doc_gen know where the global templates are stored
 global_templates = ['templates/']
 #Variable controlling where the docs folder is located
-docs_loc = '../docs/source/'
+docs_loc = '../docs/source/django/'
 # List of directory names to exclude from python module list
 py_exclude_dirs = ['migrations', '__pycache__']
 
+# Change the working directory for Django docs
+chdir('portfoliosite')
+
+def generate_index_rst_files():
+    base = """==========================================
+
+    .. toctree::
+       :maxdepth: 2
+       :caption: Contents:
+       :glob:
+    """
+    gen_list = django_modules.copy()
+    gen_list.append(project_name)
+
+    for module in gen_list:
+        pathlib.Path(f'{docs_loc}{module}').mkdir(parents=True, exist_ok=True)
+        with open(f'{docs_loc}{module}/index.rst', "w") as f:
+            mod_string = f'{module}\n{base}\n\n       {module}*\n       templates'
+            f.write(mod_string)
 
 def doc_python_modules():
     """
@@ -28,10 +49,10 @@ def doc_python_modules():
                         dir_path = dir_path.replace('/', '.')
                         files.append(f'{dir_path}.{file[:-3]}')
 
-        pathlib.Path(f'{docs_loc}django/{module}').mkdir(parents=True, exist_ok=True)
+        pathlib.Path(f'{docs_loc}{module}').mkdir(parents=True, exist_ok=True)
         for file in files:
             rst = f'{file}\n==========\n\n.. automodule:: {file}\n    :members:'
-            with open(f'{docs_loc}django/{module}/{file}.rst', "w") as f:
+            with open(f'{docs_loc}{module}/{file}.rst', "w") as f:
                 f.write(rst)
 
 
@@ -75,7 +96,7 @@ def doc_templates():
 
         doc_data['app_name'] = path[ 0:(path.index("/")) ]
         if doc_data['app_name'] == "templates":
-            doc_data['app_name'] = "portfoliosite"
+            doc_data['app_name'] = project_name
 
         # Retrieve overview string and create an html page
         for file in files:
@@ -87,10 +108,10 @@ def doc_templates():
         for template in doc_data['templates']:
             rst += f'{template[0]}\n------------\n{template[1]}\n\n'
 
-        pathlib.Path(f'{docs_loc}django/{doc_data["app_name"]}').mkdir(parents=True, exist_ok=True)
-        with open(f'{docs_loc}django/{doc_data["app_name"]}/templates.rst', "w") as f:
+        pathlib.Path(f'{docs_loc}{doc_data["app_name"]}').mkdir(parents=True, exist_ok=True)
+        with open(f'{docs_loc}{doc_data["app_name"]}/templates.rst', "w") as f:
             f.write(rst)
 
-
+generate_index_rst_files()
 doc_python_modules()
 doc_templates()

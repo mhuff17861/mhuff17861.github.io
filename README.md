@@ -124,6 +124,7 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
 
 #### Python files
 
-The documentation for the django apps' is under portfoliosite/docs, generated via pdoc3. Currently it only covers the python
-files. You can generate your own using the portfoliosite/doc_gen.py if you make edits to the docstrings in the files.
-The command is `CI_MAKING_DOCS=1 python doc_gen.py`
+The documentation is under docs/, generated via sphinx. Currently it only covers django python and template files. You can generate your own if you make edits to the docstrings in the files using the following commands
+
+- `python doc_gen.py`
+- `CI_MAKING_DOCS=1 sphinx-build docs/source docs/build/html`
