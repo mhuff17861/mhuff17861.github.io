@@ -13,6 +13,7 @@ tests/report/
 portfoliosite/media/
 db.sqlite3
 
+build/
 node_modules/
 portfolioVEnv/
 portfoliosite/static/admin
