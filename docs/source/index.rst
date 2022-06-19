@@ -17,6 +17,13 @@ Welcome to Portfolio Site's documentation!
    django/portfoliosite/index
    django/*/index
 
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: SCSS Docs:
+
+   scss/*
+
 Indices and tables
 ==================
 

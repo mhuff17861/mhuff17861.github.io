@@ -1,8 +1,8 @@
 portfoliosite templates
-==========
+=======================
 
 base.html
-------------
+---------
 
     This is a base html file that can be used by templates which connects
     to bootsrap and any other necessary site-wide css, while creating a navigation bar

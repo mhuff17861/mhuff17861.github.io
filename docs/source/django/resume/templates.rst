@@ -1,8 +1,8 @@
 resume templates
-==========
+================
 
 projects.html
-------------
+-------------
 
     This is template generates a projects page. It extends header_layout to
     provide a header and slide_layout to provide slides for recent projects. Check those
@@ -10,7 +10,7 @@ projects.html
 
 
 home.html
-------------
+---------
 
     This is template generates a home page. It extends header_layout to
     provide a header and card_layout to provide cards for recent projects. Check those
@@ -18,7 +18,7 @@ home.html
 
 
 resume.html
-------------
+-----------
 
     This is template generates a resume page. It extends header_layout to
     provide a header and accordion_layout to provide and accordion for cv lines.
@@ -26,7 +26,7 @@ resume.html
 
 
 card_layout.html
-------------
+----------------
 
     This is a generalized card layout. It expects a list of card data
     called "cards," with each card containing a value for title, body,
@@ -40,7 +40,7 @@ card_layout.html
 
 
 accordion_layout.html
-------------
+---------------------
 
     This is a generalized accordion layout. It expects a list of categories
     called "accordion_categories" in which each category contains a name
@@ -51,7 +51,7 @@ accordion_layout.html
 
 
 header_layout.html
-------------
+------------------
 
     This is a generalized header layout. It expects a header which contains
     values for title, alignment, body, image, and image_alt_text. The image must contain a
@@ -64,7 +64,7 @@ header_layout.html
 
 
 slide_layout.html
-------------
+-----------------
 
     This is a generalized slide layout. It expects a list of slides, with
     each slide containing a value for title, body, image, and image_alt_text.
