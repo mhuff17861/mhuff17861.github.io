@@ -71,7 +71,7 @@ make your own docs with the following commands:
 
 ## Further Documentation
 
-The documentation is under docs/, generated via sphinx. Currently it only covers django files and the setup process.
+The documentation is under docs/, and is generated via sphinx.
 You can generate your own files using the following commands:
 
 - `python doc_gen.py`
