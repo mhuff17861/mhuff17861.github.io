@@ -96,7 +96,7 @@ def doc_templates():
 
         doc_data['app_name'] = path[ 0:(path.index("/")) ]
         if doc_data['app_name'] == "templates":
-            doc_data['app_name'] = f'project_name'
+            doc_data['app_name'] = project_name
 
         # Retrieve overview string and create an html page
         for file in files:
