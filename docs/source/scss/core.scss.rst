@@ -2,7 +2,6 @@ core.scss
 =========
 
 
-
 This file is used to generate 'core.css,' which is applied globally across pages in
 the project.
 

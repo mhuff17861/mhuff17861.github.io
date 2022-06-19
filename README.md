@@ -48,8 +48,7 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
 
 ### Server Deployment
 
-Check the docs for server deployment. You can check docs/build/deployment.html or
-make your own docs with the following commands:
+Check the docs for server deployment. You can generate them with the following commands:
 
 - `python doc_gen.py`
 - `CI_MAKING_DOCS=1 sphinx-build docs/source docs/build/html`

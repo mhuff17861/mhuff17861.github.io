@@ -150,14 +150,10 @@ def doc_scss():
     for file in files:
         filename = file[(file.rindex("/")+1):len(file)]
         title_restruc = '='*len(filename)
-        rst = f'{filename}\n{title_restruc}\n\n\n{get_overview_comment(file, "/* @overview", "*/")}'
+        rst = f'{filename}\n{title_restruc}\n\n{get_overview_comment(file, "/* @overview", "*/")}'
         pathlib.Path(scss_docs).mkdir(parents=True, exist_ok=True)
         with open(f'{scss_docs}{filename}.rst', "w") as f:
             f.write(rst)
-
-
-def doc_gulp():
-    print('test')
 
 generate_django_index_rst_files()
 doc_python_modules()
