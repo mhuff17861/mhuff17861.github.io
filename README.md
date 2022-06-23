@@ -4,7 +4,7 @@
 
 **This project is still very much in development.**
 
-Building a portfolio website for myself using Django and Bootstrap. End goal is a django project that will allow a solid portfolio website to be built off of the data the user enters. Going to start of pretty limited, I'm not looking to recreate Squarespace or Wix here, but it should be good enough that the user can just enter the necessary data and have a website (with a only a little bit of jank, as a treat).
+The purpose of this project is to build a portfolio website for myself using Django and Bootstrap. The end goal is a django project that will allow a solid portfolio website to be built off of the data the user enters. It's going to start of pretty limited, I'm not looking to recreate Squarespace or Wix here, but it should be good enough that the user can just enter the necessary data and have a website (with a only a little bit of jank, as a treat).
 
 ## Dependencies
 
@@ -51,7 +51,6 @@ Building a portfolio website for myself using Django and Bootstrap. End goal is 
 Check the docs for server deployment. You can generate them with the following commands:
 
 - `python doc_gen.py`
-- `CI_MAKING_DOCS=1 sphinx-build docs/source docs/build/html`
 
 ## Branch Layout
 
