@@ -1,3 +1,6 @@
+"""
+This module holds the models for the resume app.
+"""
 from django.conf import settings
 from django.db import models
 from django.db.models import F
@@ -9,12 +12,12 @@ logger = logging.getLogger(__name__)
 
 class Page_Header_QuerySet(models.QuerySet):
     """
-    Page_Header_QuerySet. Provides functions for common queries on the Page_Header table.
+    Provides functions for common queries on the Page_Header table.
     """
 
     def get_header_for_page(self, page_name):
         """
-        get_header_for_page(page_name) - Retrieves CV lines and their sub lines
+        Retrieves CV lines and their sub lines
         for a specified category
         """
         logger.debug(f"Getting header for page {page_name}.")
@@ -32,27 +35,36 @@ class Page_Header(models.Model):
        settings.AUTH_USER_MODEL,
        on_delete=models.CASCADE
     )
+    """Stores user id as foreign key."""
 
     PAGE_CHOICES = (
         ('Home', 'Home page'),
         ('Projects', 'Projects page'),
         ('Resume', 'Resume page'),
     )
+    """Choices for which page header is being edited"""
     name = models.TextField(choices=PAGE_CHOICES)
+    """Stores the page name of the header. Limited to PAGE_CHOICES: Home, Projects, Resume."""
 
     ALIGNMENT_CHOICES = (
         ('L', 'Picture left aligned'),
         ('R', 'Picture right aligned'),
         ('C', 'Picture/text centered'),
     )
+    """Choices for the alignment of the header image"""
     alignment = models.TextField(choices=ALIGNMENT_CHOICES, default="L")
+    """Chooses where the image will be shown. Limited to ASSIGNMENT_CHOICES"""
 
     image = models.ImageField(upload_to="page_headers")
+    """Image that will be displayed with the header. Recommended aspect ratio is 7:5."""
     image_alt_text = models.TextField(max_length=50, default="picture description")
+    """Stores alt_text for the image, for accessibility purposes. Max length is 50."""
     title = models.TextField(max_length=25)
+    """The heading that shows to the user when the header is assembled in html. Max length is 25."""
     body = models.TextField(max_length=700)
-
+    """Body text that shows to the user when the header is assembled in html. Markdown enabled. Max length is 700."""
     page_headers = Page_Header_QuerySet.as_manager()
+    """The accessor for the Page_Header_QuerySet."""
 
     def __str__(self):
         return str(self.user_id) + " - " + str(self.name)
@@ -95,18 +107,33 @@ class Project(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+    """Stores user id as foreign key."""
     priority = models.PositiveSmallIntegerField()
+    """
+        Priority decides the order in which projects will be displayed.
+        Lower number means higher priority. Different projects can have the same priority.
+    """
     title = models.TextField(max_length=50)
+    """Title of the project. Max length is 50."""
     image = models.ImageField(upload_to="projects")
+    """Image that will be displayed with the project. Recommended aspect ratio is 7:5"""
     image_alt_text = models.TextField(max_length=50, default="picture description")
+    """Alt text for the image, used for accessibility purposes. Max length is 50."""
     short_description = models.TextField(max_length=120)
+    """Short description, used when view has less space (example: card_layout). Max length is 120."""
     long_description = models.TextField(max_length=600)
+    """Long description, used when view has more space (example: slide_layout). Max length is 600."""
     start_date = models.DateField()
+    """Date the project started"""
     end_date = models.DateField(blank=True, null=True)
+    """Date the project ended. Not required."""
     url = models.TextField(max_length=100, blank=True, null=True)
+    """Url that will direct to the project. Max length is 100. Not required."""
     url_title = models.TextField(max_length=20, blank=True, null=True)
+    """Title that will be shown instead of the full url. Max length is 20. Not required."""
 
     projects = Project_QuerySet.as_manager()
+    """Accessor variable for the Project_QuerySet"""
 
     def __str__(self):
         return self.title
@@ -140,13 +167,19 @@ class CV_Category(models.Model):
         unique_together = (('name', 'user_id'),)
 
     name = models.TextField(max_length=100)
+    """Name of the category, used to organize cv_lines. Max length is 100."""
     user_id = models.ForeignKey(
        settings.AUTH_USER_MODEL,
        on_delete=models.CASCADE
     )
+    """Stores user id as foreign key."""
     priority = models.PositiveSmallIntegerField()
-
+    """
+        Priority decides the order in which cv_categories will be displayed.
+        Lower number means higher priority. Different projects can have the same priority.
+    """
     cv_categories = CV_Category_QuerySet.as_manager()
+    """Accessor variable for the Project_QuerySet"""
 
     def __str__(self):
         return self.name
@@ -187,12 +220,18 @@ class CV_Line(models.Model):
        settings.AUTH_USER_MODEL,
        on_delete=models.CASCADE
     )
+    """Stores user id as foreign key."""
     category = models.ForeignKey(CV_Category, on_delete=models.CASCADE)
+    """Category that the CV_Line belongs to. Foreign key to CV_Cateogory.name"""
     start_date = models.DateField()
+    """Date the cv entry started"""
     end_date = models.DateField(blank=True, null=True)
+    """Date the cv entry ended"""
     entry = models.TextField(max_length=300)
+    """Entry of the cv_line displayed on the site. Max length is 300"""
 
     cv_lines = CV_Line_QuerySet.as_manager()
+    """Accessor variable for CV_Line_QuerySet."""
 
     def __str__(self):
         return str(self.category) + "-" + str(self.entry)

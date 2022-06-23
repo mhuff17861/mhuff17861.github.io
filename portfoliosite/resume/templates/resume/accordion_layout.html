@@ -1,3 +1,11 @@
+{% comment "Overview" %}
+    This is a generalized accordion layout. It expects a list of categories
+    called "accordion_categories" in which each category contains a name
+    and a list of items (category.items). Each item should have a value called
+    entry, which will be placed under each accordion category.
+
+    This template accepts markdown via the markdown_extras template tag.
+{% endcomment %}
 {% if accordion_categories %}
   {% load markdown_extras %}
   <div class="row mb-3">

@@ -12,6 +12,11 @@ const jsSrc = [ 'node_modules/bootstrap/dist/js/bootstrap.min.js' ]
 const jsDevDest = 'portfoliosite/static/js'
 const jsDest = '/var/www/micah-huff.com/static/js'
 
+function cleanDevBuild() {
+  return gulp.src([sassDevDest + "/*", jsDevDest + "/*"])
+          .pipe(clean())
+}
+
 function cleanBuild() {
   return gulp.src([sassDest + "/*", jsDest + "/*"])
           .pipe(clean())
@@ -45,13 +50,13 @@ function js() {
 
 
 function defaultTask(cb) {
-  // place code for your default task here
         devTranspileSass();
         devJS();
         cb();
 }
 
 exports.cleanBuild = cleanBuild
+exports.cleanDevBuild = cleanDevBuild
 exports.transpileSass = transpileSass
 exports.devTranspileSass = devTranspileSass
 exports.js = js

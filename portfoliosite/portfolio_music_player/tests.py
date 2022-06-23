@@ -1,8 +1,13 @@
+"""
+    This file contains the tests which are used to verify that the resume app's models, views, templates, and
+    their respective functions are all operating properly.
+"""
 from django.test import TestCase
 from django.urls import reverse
 
 # Create your tests here.
 class ViewNoDataTests(TestCase):
+    """Tests views in the portfolio_music_player app without feeding them model data"""
 
     def setup(self):
         self.client = Client()

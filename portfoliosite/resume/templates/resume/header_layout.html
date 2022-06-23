@@ -1,3 +1,13 @@
+{% comment "Overview" %}
+    This is a generalized header layout. It expects a header which contains
+    values for title, alignment, body, image, and image_alt_text. The image must contain a
+    url (header.image.url) that links to the media to be displayed. The alignment can
+    have the values of C, L, and R, which direct the position of the image to the
+    center, left, and right respectively. If not alignment is provided, the default
+    is to the left.
+
+    This template accepts markdown via the markdown_extras template tag.
+{% endcomment %}
 {% load markdown_extras %}
 {% if header %}
   <!-- ***************Start of Header************** -->

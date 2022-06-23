@@ -1,10 +1,20 @@
+/* @overview
+This file is used to generate 'core.css,' which is applied globally across pages in
+the project.
 
+Current imports include:
+
+-  bootstrap_overrides.scss - overrides bootstrap variables.
+-  bootstrap - imports the bootstrap toolkit
+*/
+
+// import overrides for boostrap variables
 @import "bootstrap_overrides.scss";
 
 // import Bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-// Custom thingies
+// Change the color and size of hr's so they are visible within the color scheme
 hr {
   height: 2px;
   background-color: $light;

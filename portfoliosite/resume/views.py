@@ -1,3 +1,6 @@
+"""
+    This file renders the proper template for each view in the resume app.
+"""
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import F
@@ -9,6 +12,7 @@ logger = logging.getLogger(__name__)
 #  Helper functions!
 
 def get_header(name):
+    """Returns a header based on the name that is given as an argument"""
     header = Page_Header.page_headers.get_header_for_page(name)
 
     if header:
@@ -63,11 +67,11 @@ def resume(request):
     if not cv_categories:
         logger.warning(f'No cv_categories retrieved for resume view.')
 
-    """
-    doing this because annotations (as far as I know) do not work on prefetched querysets
-    and need to change for generalized accordion_layout
-    """
     for category in cv_categories:
+        """
+        doing this because annotations (as far as I know) do not work on prefetched querysets
+        and need to change for generalized accordion_layout
+        """
         lines = []
         for line in category.cv_line_set.order_by('-start_date'):
             lines.append(line)

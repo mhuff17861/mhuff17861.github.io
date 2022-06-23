@@ -9,6 +9,10 @@ from .models import *
 from datetime import datetime, timedelta
 
 class UserFactory(DjangoModelFactory):
+    """
+    Generates User data. WARNING: Only 1 user setup, given
+    current expected usage of the app.
+    """
     class Meta:
         model = "users.User"
 
@@ -20,6 +24,9 @@ PAGE_CHOICES = [x[0] for x in Page_Header.PAGE_CHOICES]
 ALIGNMENT_CHOICES = [x[0] for x in Page_Header.ALIGNMENT_CHOICES]
 
 class PageHeaderFactory(DjangoModelFactory):
+    """
+        Generates PageHeader data.
+    """
     class Meta:
         model = 'resume.Page_Header'
 
@@ -32,6 +39,9 @@ class PageHeaderFactory(DjangoModelFactory):
     body = factory.Faker('sentence', nb_words=100)
 
 class ProjectFactory(DjangoModelFactory):
+    """
+        Generates Project Data.
+    """
     class Meta:
         model = 'resume.Project'
 
@@ -52,6 +62,9 @@ class ProjectFactory(DjangoModelFactory):
     url_title = factory.Faker('sentence', nb_words=3)
 
 class CVCategoryFactory(DjangoModelFactory):
+    """
+        Generates CV_Category Data.
+    """
     class Meta:
         model = 'resume.CV_Category'
 
@@ -60,6 +73,9 @@ class CVCategoryFactory(DjangoModelFactory):
     priority = factory.Faker('random_number', digits=1)
 
 class CVLineFactory(DjangoModelFactory):
+    """
+        Generates CV_Line Data
+    """
     class Meta:
         model = 'resume.CV_Line'
 
