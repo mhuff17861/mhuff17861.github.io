@@ -24,6 +24,14 @@ Welcome to Portfolio Site's documentation!
 
    scss/*
 
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Docs on Docs:
+
+   doc_tutorial
+   doc_gen
+
 Indices and tables
 ==================
 

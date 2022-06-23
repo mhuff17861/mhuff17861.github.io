@@ -1,21 +1,28 @@
+"""
+    This file is used to auto-generate documentation file for the project. It currently collects information dynamically
+    from all Django python modules, Django template files, and SCSS files. For more information on how to modify the documentation
+    in any of those files, see :doc:`doc_tutorial`.
+"""
 import pathlib
+import shutil
+import sphinx
 import os
 from os import listdir, walk, chdir
 from os.path import isfile, join
 
 ####### Global Variables #############
-# Varible used to track the project name
 project_name = 'portfoliosite'
-# Variable used to tell doc_gen which modules to document
+"""Variable used to track the project name"""
 django_modules = ['resume', 'portfolio_music_player']
-# Variable used to let doc_gen know where the global templates are stored
+"""Variable used to tell doc_gen which modules to document"""
 global_templates = ['templates/']
-# Global variable used to add scss paths from which documentation can be retrieved
+"""Variable used to let doc_gen know where the global templates are stored"""
 scss_paths = ['scss/']
-#Variable controlling where the docs folder is located
+"""Variable used to add scss paths from which documentation can be retrieved"""
 docs_loc = 'docs/source/'
-# List of directory names to exclude from python module list
+"""Variable controlling where the docs folder is located"""
 py_exclude_dirs = ['migrations', '__pycache__']
+"""List of directory names to exclude from python module list"""
 
 def get_overview_comment(file, comment_start, comment_end):
     """
@@ -50,7 +57,7 @@ def generate_django_index_rst_files():
 
     # Change the working directory for Django docs
     pwd = os.getcwd()
-    chdir('portfoliosite')
+    chdir(project_name)
 
     for module in gen_list:
         pathlib.Path(f'{django_docs}{module}').mkdir(parents=True, exist_ok=True)
@@ -71,7 +78,7 @@ def doc_python_modules():
 
     # Change the working directory for Django docs
     pwd = os.getcwd()
-    chdir('portfoliosite')
+    chdir(project_name)
 
     for module in django_modules:
         files = []
@@ -155,7 +162,26 @@ def doc_scss():
         with open(f'{scss_docs}{filename}.rst', "w") as f:
             f.write(rst)
 
+def run_sphinx():
+    """Runs sphinx to generate documentation from the source files"""
+    doc_env_var = 'CI_MAKING_DOCS'
+
+    # Prevent infinite loops!
+    if os.environ.get(doc_env_var) is not None:
+        return
+
+    # Set documentation environment variable
+    os.environ[doc_env_var] = "1"
+
+    # Run sphinx
+    os.system('sphinx-build docs/source docs/build/html')
+
+    # Delete environment variable
+    os.environ.pop(doc_env_var)
+
+# Generate the docs
 generate_django_index_rst_files()
 doc_python_modules()
 doc_django_templates()
 doc_scss()
+run_sphinx()
