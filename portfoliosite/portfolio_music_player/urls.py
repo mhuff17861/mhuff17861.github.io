@@ -1,3 +1,6 @@
+"""
+    This file is used to direct portfolio_music_player urls to their appropriate views.
+"""
 from django.urls import path
 from django.contrib.staticfiles.urls import static
 from django.conf import settings

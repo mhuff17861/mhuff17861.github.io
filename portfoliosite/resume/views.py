@@ -1,3 +1,6 @@
+"""
+    This file renders the proper template for each view in the resume app.
+"""
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import F

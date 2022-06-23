@@ -1,3 +1,6 @@
+"""
+    Auto-generated Django file for app configuration.
+"""
 from django.apps import AppConfig
 
 

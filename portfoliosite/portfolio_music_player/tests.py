@@ -1,3 +1,7 @@
+"""
+    This file contains the tests which are used to verify that the resume app's models, views, templates, and
+    their respective functions are all operating properly.
+"""
 from django.test import TestCase
 from django.urls import reverse
 
