@@ -74,4 +74,3 @@ The documentation is under docs/, and is generated via sphinx.
 You can generate your own files using the following commands:
 
 - `python doc_gen.py`
-- `CI_MAKING_DOCS=1 sphinx-build docs/source docs/build/html`
