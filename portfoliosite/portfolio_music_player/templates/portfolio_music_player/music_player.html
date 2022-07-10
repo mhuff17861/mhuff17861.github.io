@@ -7,28 +7,98 @@
 
 {% load static %}
 
-{% block title %} Welcome! {% endblock %}
+{% block title %} Music Player {% endblock %}
+
+{% block head-add %}
+<script src="{% static 'portfolio_music_player/js/music_layout.js' %}" defer></script>
+{% endblock %}
 
 {% block main-content %}
-<!-- ****************Start of Main Container**************** -->
+<!-- **************************Music Player***************** -->
 <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-9 text-center mt-3">
+      <h1 class="">Music Player</h1>
+    </div>
+  </div>
 
-    <div class="row mb-2 justify-content-center mt-5">
-      <div class="col-8 col-6-md">
-          <h1>Music Player</h1>
+  <div class="row mt-3 mb-4">
+    <!-- Play Controls -->
+    <div class="col-lg-6">
+      <div class="border p-3" id="mainPlayerColumn">
+        <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
+        <img src="{% static 'img/2021-02-20 13.29.58.jpg' %}" alt="Album Cover" class="img-fluid">
+        <p class="text-nowrap mt-4 h4">Track Name</p>
+
+        <!-- Slidy Bit -->
+        <input type="range" class="form-range" id="trackTime">
+
+        <!-- Buttons for days -->
+        <div class="btn-group btn-group-lg d-flex justify-content-center">
+          <a href="#" class="btn btn-primary">Prev</a>
+          <a href="#" class="btn btn-primary active">Play</a>
+          <a href="#" class="btn btn-primary">Next</a>
+        </div>
       </div>
     </div>
 
-    <div class="row mb-2 mt-3 justify-content-center">
-      <div class="col-8 col-6-md">
-          <p>
-            Hey There! This app is still under development. Just felt weird
-            to put up a website with a navigation bar link just not working.
-            If you wanted music, you can checkout <a href="https://lucahdecass.bandcamp.com/" class="link-light">my bandcamp site.</a>
-          </p>
+    <!-- Track Selection -->
+    <div class="col-lg-6 mt-3 mt-lg-0" id="trackSelectionColumn">
+      <div class="border p-3 h-100">
+
+          <div class="row align-items-center" id="albumSelection" style="height: 8%;">
+            <!-- Select Album Area -->
+            <div class="col-5">
+              <label for="albumSelect" class="form-label h4 d-none d-xl-block">Show tracks from:</label>
+              <label for="albumSelect" class="form-label h5 d-none d-sm-block d-xl-none">Show tracks from:</label>
+              <label for="albumSelect" class="form-label mt-1 h6 d-sm-none">Show tracks from:</label>
+            </div>
+
+            <div class="col-7">
+              <select id="albumSelect" class="form-select" aria-label="Default select example">
+                <option selected>Choose an album...</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+
+          <hr class="d-none d-sm-block">
+          <br class="d-sm-none">
+          <!-- Song List -->
+          <div class="row overflow-auto" id="trackSelectionScroll" style="height: 87%;">
+            <div class="col-12">
+
+              <ul class="list-group">
+                <li class="list-group-item">An item</li>
+                <li class="list-group-item">A second item</li>
+                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li>
+                <li class="list-group-item">An item</li>
+                <li class="list-group-item">A second item</li>
+                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li>
+                <li class="list-group-item">An item</li>
+                <li class="list-group-item">A second item</li>
+                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li>
+              </ul>
+
+            </div>
+          </div>
+
+          <!-- End of Song List -->
+
+
       </div>
     </div>
-
+    <!-- End of Track Selection -->
+  </div>
 </div>
-<!-- ****************End of Main Container**************** -->
+
+<!-- **************************End of Music Player***************** -->
 {% endblock %}
