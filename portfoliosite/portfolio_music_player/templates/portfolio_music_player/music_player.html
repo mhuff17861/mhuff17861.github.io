@@ -11,6 +11,9 @@
 
 {% block head-add %}
 <script src="{% static 'portfolio_music_player/js/music_layout.js' %}" defer></script>
+<!-- NOTE: Replace this with npm version once certain things are working ggenerally -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{% static 'portfolio_music_player/js/music_player.js' %}" defer></script>
 {% endblock %}
 
 {% block main-content %}
@@ -22,81 +25,88 @@
     </div>
   </div>
 
-  <div class="row mt-3 mb-4">
+  <div class="row mt-3 mb-4 justify-content-center">
     <!-- Play Controls -->
-    <div class="col-lg-6">
-      <div class="border p-3" id="mainPlayerColumn">
-        <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
-        <img src="{% static 'img/2021-02-20 13.29.58.jpg' %}" alt="Album Cover" class="img-fluid">
-        <p class="text-nowrap mt-4 h4">Track Name</p>
+    <div class="col-lg-8 border position-relative h-100" id="playerContainer">
 
-        <!-- Slidy Bit -->
-        <input type="range" class="form-range" id="trackTime">
+        <div class="row w-100 h-100 collapse" id="collapseTrackList">
+        <!-- Start in collapse -->
 
-        <!-- Buttons for days -->
-        <div class="btn-group btn-group-lg d-flex justify-content-center">
-          <a href="#" class="btn btn-primary">Prev</a>
-          <a href="#" class="btn btn-primary active">Play</a>
-          <a href="#" class="btn btn-primary">Next</a>
-        </div>
-      </div>
-    </div>
+          <!-- Top bar for closing the collapse -->
+          <p class="text-end mt-3">
+            <button id="trackCollapseCloseBtn" class="btn btn-info border" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
+              Close Track List
+            </button>
+          </p>
 
-    <!-- Track Selection -->
-    <div class="col-lg-6 mt-3 mt-lg-0" id="trackSelectionColumn">
-      <div class="border p-3 h-100">
+          <!-- Select Album Area -->
+          <div class="col-5" id="albumSelectionList">
+            <label for="albumSelect" class="form-label h4 d-none d-xl-block">Show tracks from:</label>
+            <label for="albumSelect" class="form-label h5 d-none d-sm-block d-xl-none">Show tracks from:</label>
+            <label for="albumSelect" class="form-label mt-1 h6 d-sm-none">Show tracks from:</label>
+          </div>
 
-          <div class="row align-items-center" id="albumSelection" style="height: 8%;">
-            <!-- Select Album Area -->
-            <div class="col-5">
-              <label for="albumSelect" class="form-label h4 d-none d-xl-block">Show tracks from:</label>
-              <label for="albumSelect" class="form-label h5 d-none d-sm-block d-xl-none">Show tracks from:</label>
-              <label for="albumSelect" class="form-label mt-1 h6 d-sm-none">Show tracks from:</label>
-            </div>
-
-            <div class="col-7">
-              <select id="albumSelect" class="form-select" aria-label="Default select example">
-                <option selected>Choose an album...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
+          <div class="col-7 mb-2">
+            <select id="albumSelect" class="form-select bg-info text-light" aria-label="Select an album">
+              <option selected>Select album...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
           </div>
 
           <hr class="d-none d-sm-block">
           <br class="d-sm-none">
           <!-- Song List -->
-          <div class="row overflow-auto" id="trackSelectionScroll" style="height: 87%;">
-            <div class="col-12">
+          <div class="col-12">
+            <ul class="list-group mb-3 overflow-scroll" id="trackSelectionScroll" aria-label="Select a track">
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
+            </ul>
 
-              <ul class="list-group">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-              </ul>
-
-            </div>
           </div>
 
-          <!-- End of Song List -->
+          <!-- End of Collapsable Song List -->
 
+        <!-- End of Collapse -->
+        </div>
+
+        <!-- Top bar for the collapse, if screen size shrinks -->
+        <p class="text-end mt-3">
+          <button id="trackCollapseOpenBtn" class="btn btn-info border" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
+            Open Track List
+          </button>
+        </p>
+
+        <div id="mainPlayer">
+          <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
+          <img src="{% static 'img/2021-02-20 13.29.58.jpg' %}" alt="Album Cover" class="img-fluid" id="albumCover">
+          <p class="text-nowrap mt-4 h4" id="trackName">Track Name</p>
+
+          <!-- Slidy Bit -->
+          <input type="range" class="form-range" id="trackTime">
+
+          <!-- Buttons for days -->
+          <div class="btn-group btn-group-lg d-flex justify-content-center mb-3">
+            <a href="#" class="btn btn-info border">Prev</a>
+            <a href="#" class="btn btn-info border">Play</a>
+            <a href="#" class="btn btn-info border">Next</a>
+          </div>
+        </div>
 
       </div>
-    </div>
-    <!-- End of Track Selection -->
+
   </div>
 </div>
 

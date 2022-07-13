@@ -6,6 +6,7 @@ Current imports include:
 
 -  bootstrap_overrides.scss - overrides bootstrap variables.
 -  bootstrap - imports the bootstrap toolkit
+-  music_player - makes minor modifications for the music player display
 */
 
 // import overrides for boostrap variables
@@ -13,6 +14,9 @@ Current imports include:
 
 // import Bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+// import music player changes
+@import "app_specific/portfolio_music_player/music_player.scss";
 
 // Change the color and size of hr's so they are visible within the color scheme
 hr {
