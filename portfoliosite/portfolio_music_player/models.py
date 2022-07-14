@@ -36,7 +36,7 @@ class Album(models.Model):
     """Choices for what kind of album is being posted"""
     type = models.TextField(choices=ALBUM_TYPE_CHOICES)
     """Stores the type of album release. Limited to ALBUM_TYPE_CHOICES"""
-    description = models.TextField(max_length=800)
+    description = models.TextField(max_length=800, blank=True, null=True)
     """Stores the album description"""
     price = models.DecimalField(max_digits=10, decimal_places=2)
     """Stores the album price"""
@@ -49,9 +49,7 @@ class Song(models.Model):
 
     title = models.TextField(max_length=400)
     """Stores the title of the song"""
-    cover_image = models.ImageField(upload_to="albums")
-    """Stores the cover image of the song"""
-    description = models.TextField(max_length=800)
+    description = models.TextField(max_length=800, blank=True, null=True)
     """Stores the song description"""
     price = models.DecimalField(max_digits=10, decimal_places=2)
     """Stores the album price"""

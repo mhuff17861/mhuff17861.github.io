@@ -7,6 +7,7 @@ import factory
 from factory.django import DjangoModelFactory
 from .models import *
 from datetime import datetime, timedelta
+import random
 
 ALBUM_TYPE_CHOICES = [x[0] for x in Album.ALBUM_TYPE_CHOICES]
 
@@ -17,7 +18,7 @@ class AlbumFactory(DjangoModelFactory):
     class Meta:
         model = "portfolio_music_player.Album"
 
-    title = factory.Faker('word')
+    title = factory.Faker('sentence', nb_words=4)
     cover_image = factory.django.ImageField(color='blue', width=700, height=500)
     release_date = factory.Faker('date_between',
         start_date=datetime.fromisoformat('2012-09-01'),
@@ -25,3 +26,51 @@ class AlbumFactory(DjangoModelFactory):
     type = factory.Iterator(ALBUM_TYPE_CHOICES)
     description = factory.Faker('sentence', nb_words=150)
     price = 1.99
+
+class SongFactory(DjangoModelFactory):
+    """
+    Generates song data.
+    """
+    class Meta:
+        model = "portfolio_music_player.Song"
+
+    title = factory.Faker('sentence', nb_words=4)
+    description = factory.Faker('sentence', nb_words=150)
+    price = 0.99
+
+class SongFileFactory(DjangoModelFactory):
+    """
+    Generates song_file data.
+    """
+
+    class Meta:
+        model = "portfolio_music_player.Song_File"
+
+    song_id = factory.SubFactory(SongFactory)
+    file = factory.django.FileField(
+        filename=factory.LazyAttribute(lambda file: f'{file.factory_parent.song_id.title}{[".mp3", ".webm", ".flac"][random.randrange(0,2)]}'))
+    # The lambda above allows the filename to be generated from the song title.
+
+class TrackNumberFactory(DjangoModelFactory):
+    """
+    Generates Track_Number data
+    """
+
+    class Meta:
+        model = "portfolio_music_player.Track_Number"
+
+    song_id = factory.SubFactory(SongFactory)
+    album_id = factory.SubFactory(AlbumFactory)
+    track_num = factory.Sequence(lambda n: n)
+
+class AlbumSalesLinkFactory(DjangoModelFactory):
+    """
+    Generates Album Sales Link data
+    """
+
+    class Meta:
+        model = "portfolio_music_player.Album_Sales_Link"
+
+    album_id = factory.SubFactory(AlbumFactory)
+    url = "https://google.com"
+    url_display = factory.Faker('sentence', nb_words=3)
