@@ -12,7 +12,8 @@ import logging
 #     def get_albums_with_track_info(self):
 #         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
 #         logger.debug("Retrieving albums with track info.")
-#         self.order_by('release_date').prefetch_related('track_number_set')
+#         ADDD A THING SO NO FUTURE RELEASES YET
+#           self.order_by('release_date').prefetch_related('track_number_set')
 
 class Album(models.Model):
     """
@@ -41,6 +42,9 @@ class Album(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     """Stores the album price"""
 
+    def __str__(self):
+        return f'Album: {self.title}, Release date: {self.release_date}'
+
 class Song(models.Model):
     """
         Song model. Sets up the basic information needed for a song to be stored and
@@ -54,6 +58,9 @@ class Song(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     """Stores the album price"""
 
+    def __str__(self):
+        return self.title
+
 class Song_File(models.Model):
     """
         Song_File model. Connects one song to many files, using the song_id as a
@@ -64,6 +71,9 @@ class Song_File(models.Model):
     """Stores song id as foreign key."""
     file = models.FileField(upload_to='songs')
     """Stores the actual track file. Type determined by extenstion"""
+
+    def __str__(self):
+        return self.file.path
 
 class Track_Number(models.Model):
     """
@@ -79,6 +89,9 @@ class Track_Number(models.Model):
     """Stores the album id as a foreign key"""
     track_num = models.PositiveSmallIntegerField()
 
+    def __str__(self):
+        return f'Album: {self.album_id}, Song: {self.song_id}, Track Number: {self.track_num}'
+
 class Album_Sales_Link(models.Model):
     """
         Links one album to many sales link, allowing many to be displayed
@@ -91,3 +104,6 @@ class Album_Sales_Link(models.Model):
     """Stores the url that acts as a sales link"""
     url_display = models.TextField(max_length=100, blank=True, null=True)
     """Stores the text that will be displayed for the shown link. Not required."""
+
+    def __str__(self):
+        return f'Album: {self.album_id}, URL: {self.url}'
