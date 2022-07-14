@@ -1,6 +1,9 @@
 """
     This file holds data-generation factories used to create test data for the portfolio_music_player
     app, so testing can be as thorough as possible
+
+    **NOTE:** The SongFileFactory currently does not generate functioning audio files. They are just for show.
+    Updates are planned to create functioning audio files.
 """
 
 import factory

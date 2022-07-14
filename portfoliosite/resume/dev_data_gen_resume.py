@@ -14,6 +14,8 @@ from resume.factories import *
 import os
 import logging
 
+logger = logging.getLogger(__name__)
+
 def setup_data():
     """
         Sets up data that can be used to test every model/view in a development environment.
@@ -35,5 +37,6 @@ def setup_data():
 
         for i, category in enumerate(categories):
             cv_lines = CVLineFactory.create_batch(NUM_CV_LINES, category=category, user_id=user)
-
+    else:
+        logger.debug("Making docs, not generating data.")
 setup_data()
