@@ -3,17 +3,39 @@ This module holds the models for the portfolio_music_player app.
 """
 from django.db import models
 import logging
+from datetime import date
+
+logger = logging.getLogger(__name__)
 
 # ********** Models ****************
-# class Album_QuerySet(models.QuerySet):
-#     """
-#     Album_QuerySet. Provides functions for common queries on the Albums table.
-#     """
-#     def get_albums_with_track_info(self):
-#         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
-#         logger.debug("Retrieving albums with track info.")
-#         ADDD A THING SO NO FUTURE RELEASES YET
-#           self.order_by('release_date').prefetch_related('track_number_set')
+class Album_QuerySet(models.QuerySet):
+    """
+    Album_QuerySet. Provides functions for common queries on the Albums table.
+    """
+    def get_released_albums(self):
+        """Retrieves all **released** albums ordered by release_date."""
+        logger.debug("Retrieving released albums with track info.")
+        return self.filter(release_date__lt=date.today()).order_by('release_date')
+
+    def get_albums_with_track_info(self):
+        """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
+        logger.debug("Retrieving albums with track info.")
+        return self.order_by('release_date').prefetch_related('track_number_set')
+
+    def get_released_albums_with_track_info(self):
+        """Retrieves all **released** albums with their associated Track_Number data, ordered by release_date."""
+        logger.debug("Retrieving released albums with track info.")
+        return self.filter(release_date__lt=date.today()).order_by('release_date').prefetch_related('track_number_set')
+
+    def get_albums_with_sales_links(self):
+        """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
+        logger.debug("Retrieving albums with sales link info.")
+        return self.order_by('release_date').prefetch_related('album_sales_link_set')
+
+    def get_released_albums_with_sales_links(self):
+        """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
+        logger.debug("Retrieving released albums with sales link info.")
+        return self.filter(release_date__lt=date.today()).order_by('release_date').prefetch_related('album_sales_link_set')
 
 class Album(models.Model):
     """
@@ -42,8 +64,25 @@ class Album(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     """Stores the album price"""
 
+    albums = Album_QuerySet.as_manager()
+    """The accessor for the Album_QuerySet."""
+
     def __str__(self):
-        return f'Album: {self.title}, Release date: {self.release_date}'
+        return self.title
+
+class Song_QuerySet(models.QuerySet):
+    """
+    Song_QuerySet. Provides functions for common queries on the Songs table.
+    """
+    def get_songs_with_track_info(self):
+        """Retrieves all songs with their associated Track_Number data."""
+        logger.debug("Retrieving songs with track info.")
+        return self.all().prefetch_related('track_number_set')
+
+    def get_songs_with_song_files(self):
+        """Retrieves all songs with their associated Song_File data"""
+        logger.debug("Retrieving songs with song file info.")
+        return self.all().prefetch_related('song_file_set')
 
 class Song(models.Model):
     """
@@ -57,6 +96,9 @@ class Song(models.Model):
     """Stores the song description"""
     price = models.DecimalField(max_digits=10, decimal_places=2)
     """Stores the album price"""
+
+    songs = Song_QuerySet.as_manager()
+    """The accessor for the Song_QuerySet."""
 
     def __str__(self):
         return self.title
@@ -75,6 +117,15 @@ class Song_File(models.Model):
     def __str__(self):
         return self.file.path
 
+class Track_Number_QuerySet(models.QuerySet):
+    """
+    Track_Number_QuerySet. Provides functions for common queries on the Track_Numbers table.
+    """
+
+    def get_track_numbers_for_album(self, album_id):
+        """Retrieves all songs for the given album"""
+        return self.filter(album_id__exact=album_id)
+
 class Track_Number(models.Model):
     """
         Track_Numbers model. Ties a song to an album and sets the track number for
@@ -88,6 +139,9 @@ class Track_Number(models.Model):
     album_id = models.ForeignKey(Album, on_delete=models.CASCADE)
     """Stores the album id as a foreign key"""
     track_num = models.PositiveSmallIntegerField()
+
+    track_numbers = Track_Number_QuerySet.as_manager()
+    """The accessor for the Track_Number_QuerySet."""
 
     def __str__(self):
         return f'Album: {self.album_id}, Song: {self.song_id}, Track Number: {self.track_num}'
