@@ -8,18 +8,19 @@
 {% endcomment %}
 {% if accordion_categories %}
   {% load markdown_extras %}
+  {% load string_formatting_extras %}
   <div class="row mb-3">
     <!-- According Start -->
     <div class="accordion" id="accordionGen">
       {% for category in accordion_categories %}
 
         <div class="accordion-item bg-dark">
-          <h2 class="accordion-header" id="heading{{ category.name | cut:" " }}">
-            <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ category.name | cut:" " }}" aria-expanded="false" aria-controls="collapse{{ category.name | cut:" " }}">
+          <h2 class="accordion-header" id="heading{{ category.name | cut_special_chars }}">
+            <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ category.name | cut_special_chars }}" aria-expanded="false" aria-controls="collapse{{ category.name | cut_special_chars }}">
               {{ category.name }}
             </button>
           </h2>
-          <div id="collapse{{ category.name | cut:" " }}" class="accordion-collapse collapse" aria-labelledby="heading{{ category.name | cut:" " }}" data-bs-parent="#accordionGen">
+          <div id="collapse{{ category.name | cut_special_chars }}" class="accordion-collapse collapse" aria-labelledby="heading{{ category.name | cut_special_chars }}" data-bs-parent="#accordionGen">
             <div class="accordion-body">
               <ul>
                 {% for item in category.items %}

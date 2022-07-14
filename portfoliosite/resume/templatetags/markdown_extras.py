@@ -1,4 +1,8 @@
-# blog/templatetags/markdown_extras.py
+"""
+    This file creates an extra template tag to get markdown to work
+    with Django templates. It also modifies the base settings of markdown
+    (i.e. link color) to better fit the format of the site.
+"""
 from django import template
 from django.template.defaultfilters import stringfilter
 

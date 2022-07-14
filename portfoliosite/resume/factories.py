@@ -1,5 +1,5 @@
 """
-    This file holds data-generation factories used to create test data,
+    This file holds data-generation factories used to create test data for the resume app,
     so testing can be as thorough as possible
 """
 
@@ -33,7 +33,7 @@ class PageHeaderFactory(DjangoModelFactory):
     user_id = factory.SubFactory(UserFactory)
     name = factory.Iterator(PAGE_CHOICES)
     alignment = factory.Iterator(ALIGNMENT_CHOICES)
-    image = factory.django.ImageField(color='blue')
+    image = factory.django.ImageField(color='blue', width=700, height=500)
     image_alt_text = "blue"
     title = factory.Faker('sentence', nb_words=3)
     body = factory.Faker('sentence', nb_words=100)
@@ -48,7 +48,7 @@ class ProjectFactory(DjangoModelFactory):
     user_id = factory.SubFactory(UserFactory)
     priority = factory.Faker('random_number', digits=1)
     title = factory.Faker('sentence', nb_words=4)
-    image = factory.django.ImageField(color='blue')
+    image = factory.django.ImageField(color='blue', width=700, height=500)
     image_alt_text = "blue"
     short_description = factory.Faker('sentence', nb_words=40)
     long_description = factory.Faker('sentence', nb_words=100)
@@ -68,7 +68,7 @@ class CVCategoryFactory(DjangoModelFactory):
     class Meta:
         model = 'resume.CV_Category'
 
-    name = factory.Faker('sentence', nb_words=10)
+    name = factory.Faker('sentence', nb_words=4)
     user_id = factory.SubFactory(UserFactory)
     priority = factory.Faker('random_number', digits=1)
 
