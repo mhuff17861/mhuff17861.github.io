@@ -14,8 +14,8 @@ class Album_QuerySet(models.QuerySet):
     """
     def get_released_albums(self):
         """Retrieves all **released** albums ordered by release_date."""
-        logger.debug("Retrieving released albums with track info.")
-        return self.filter(release_date__lt=date.today()).order_by('release_date')
+        logger.debug("Retrieving released albums.")
+        return self.filter(release_date__lte=date.today()).order_by('release_date')
 
     def get_albums_with_track_info(self):
         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
@@ -25,7 +25,7 @@ class Album_QuerySet(models.QuerySet):
     def get_released_albums_with_track_info(self):
         """Retrieves all **released** albums with their associated Track_Number data, ordered by release_date."""
         logger.debug("Retrieving released albums with track info.")
-        return self.filter(release_date__lt=date.today()).order_by('release_date').prefetch_related('track_number_set')
+        return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('track_number_set')
 
     def get_albums_with_sales_links(self):
         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
@@ -34,8 +34,8 @@ class Album_QuerySet(models.QuerySet):
 
     def get_released_albums_with_sales_links(self):
         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
-        logger.debug("Retrieving released albums with sales link info.")
-        return self.filter(release_date__lt=date.today()).order_by('release_date').prefetch_related('album_sales_link_set')
+        logger.debug("Retrieving **released** albums with sales link info.")
+        return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('album_sales_link_set')
 
 class Album(models.Model):
     """

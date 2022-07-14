@@ -14,6 +14,7 @@
 """
 
 from portfolio_music_player.factories import *
+import factory.random
 import os
 import logging
 
@@ -35,6 +36,8 @@ def setup_data():
     # Make sure generation doesn't run for documentation generation.
     if os.environ.get("CI_MAKING_DOCS") is None:
         logger.debug("Generating Music Player development data.")
+
+        factory.random.reseed_random('My portfolio website 8675309')
 
         albums = AlbumFactory.create_batch(NUM_ALBUMS)
 

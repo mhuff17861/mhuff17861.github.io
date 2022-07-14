@@ -8,6 +8,7 @@ from django.test.runner import DiscoverRunner
 from datetime import date
 from .models import Page_Header, Project, CV_Category, CV_Line
 from .factories import *
+import factory.random
 
 # ****************Helper Functions/Variables***********
 # Global settings for testing data creation.
@@ -20,6 +21,8 @@ def setup_data():
     """
         Sets up data that can be used to test every model/view
     """
+    factory.random.reseed_random('My portfolio website 8675309')
+
     user = UserFactory.create()
     PageHeaderFactory.create_batch(len(Page_Header.PAGE_CHOICES), user_id=user)
     ProjectFactory.create_batch(NUM_PROJECTS, user_id=user)

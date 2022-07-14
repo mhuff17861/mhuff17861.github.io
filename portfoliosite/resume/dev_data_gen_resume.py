@@ -11,6 +11,7 @@
 """
 
 from resume.factories import *
+import factory.random
 import os
 import logging
 
@@ -30,6 +31,8 @@ def setup_data():
     # Make sure generation doesn't run for documentation generation.
     if os.environ.get("CI_MAKING_DOCS") is None:
         logger.debug(f"Generating Resume development data.")
+
+        factory.random.reseed_random('My portfolio website 8675309')
         user = UserFactory.create()
         PageHeaderFactory.create_batch(len(Page_Header.PAGE_CHOICES), user_id=user)
         ProjectFactory.create_batch(NUM_PROJECTS, user_id=user)
