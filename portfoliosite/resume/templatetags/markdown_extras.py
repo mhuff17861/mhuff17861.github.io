@@ -6,9 +6,9 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 
+import markdown as mdown
 from markdown.treeprocessors import Treeprocessor
 from markdown.extensions import Extension
-import markdown as mdown
 
 register = template.Library()
 

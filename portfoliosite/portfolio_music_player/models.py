@@ -109,7 +109,7 @@ class Song_File(models.Model):
         foreign key which can be tied to many stored files.
     """
 
-    song_id = models.ForeignKey(Song, on_delete=models.CASCADE)
+    song_id = models.ForeignKey(Song, related_name='song_files', on_delete=models.CASCADE)
     """Stores song id as foreign key."""
     file = models.FileField(upload_to='songs')
     """Stores the actual track file. Type determined by extenstion"""
@@ -136,7 +136,7 @@ class Track_Number(models.Model):
 
     song_id = models.ForeignKey(Song, on_delete=models.CASCADE)
     """Stores song id as foreign key."""
-    album_id = models.ForeignKey(Album, on_delete=models.CASCADE)
+    album_id = models.ForeignKey(Album, related_name='tracks', on_delete=models.CASCADE)
     """Stores the album id as a foreign key"""
     track_num = models.PositiveSmallIntegerField()
 
@@ -161,7 +161,7 @@ class Album_Sales_Link(models.Model):
         if a user wants to download the file.
     """
 
-    album_id = models.ForeignKey(Album, on_delete=models.CASCADE)
+    album_id = models.ForeignKey(Album, related_name='sales_links', on_delete=models.CASCADE)
     """Stores the album id as a foreign key"""
     url = models.TextField(max_length=800)
     """Stores the url that acts as a sales link"""
