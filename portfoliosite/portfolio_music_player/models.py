@@ -146,6 +146,15 @@ class Track_Number(models.Model):
     def __str__(self):
         return f'Album: {self.album_id}, Song: {self.song_id}, Track Number: {self.track_num}'
 
+class Album_Sales_Link_QuerySet(models.QuerySet):
+    """
+    Track_Number_QuerySet. Provides functions for common queries on the Track_Numbers table.
+    """
+
+    def get_sales_links_for_album(self, album_id):
+        """Retrieves all songs for the given album"""
+        return self.filter(album_id__exact=album_id)
+
 class Album_Sales_Link(models.Model):
     """
         Links one album to many sales link, allowing many to be displayed
@@ -158,6 +167,8 @@ class Album_Sales_Link(models.Model):
     """Stores the url that acts as a sales link"""
     url_display = models.TextField(max_length=100, blank=True, null=True)
     """Stores the text that will be displayed for the shown link. Not required."""
+
+    album_sales_links = Album_Sales_Link_QuerySet.as_manager()
 
     def __str__(self):
         return f'Album: {self.album_id}, URL: {self.url}'

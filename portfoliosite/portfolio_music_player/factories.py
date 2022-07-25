@@ -12,6 +12,13 @@ from .models import *
 from datetime import datetime, timedelta
 import random
 
+def get_consistent_future_date():
+    """
+    Returns a date 3 years in the future from when the function is called, ensuring
+    date testing will always have a future date
+    """
+    return datetime.today() + timedelta(days=1096)
+
 ALBUM_TYPE_CHOICES = [x[0] for x in Album.ALBUM_TYPE_CHOICES]
 
 class AlbumFactory(DjangoModelFactory):
@@ -25,7 +32,7 @@ class AlbumFactory(DjangoModelFactory):
     cover_image = factory.django.ImageField(color='blue', width=700, height=500)
     release_date = factory.Faker('date_between',
         start_date=datetime.fromisoformat('2012-09-01'),
-        end_date=datetime.fromisoformat('2024-04-01'))
+        end_date=get_consistent_future_date())
     type = factory.Iterator(ALBUM_TYPE_CHOICES)
     description = factory.Faker('sentence', nb_words=150)
     price = 1.99
