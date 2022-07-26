@@ -17,11 +17,11 @@ def setup_data():
     """
         Sets up data that can be used to test every model/view in a development environment.
     """
-    NUM_ALBUMS = 20
+    NUM_ALBUMS = 15
     """Sets the number of albums to be generated"""
-    NUM_SONGS_PER_ALBUM = 15
+    NUM_SONGS_PER_ALBUM = 12
     """Sets the number of songs to be generated per album"""
-    NUM_SALES_LINKS_PER_ALBUM = 4
+    NUM_SALES_LINKS_PER_ALBUM = 3
     """Sets the number of sales links per album"""
     NUM_SONG_FILES_PER_SONG = 2
     """Sets the number of song files to be generated per song"""
@@ -36,6 +36,7 @@ def setup_data():
         for i, song in enumerate(songs):
             SongFileFactory.create_batch(NUM_SONG_FILES_PER_SONG, song_id=song)
             TrackNumberFactory.create(album_id=album, song_id=song, track_num=i+1)
+
 
 def tearDownModule():
     """Deletes temporary files made for testing"""
@@ -94,7 +95,7 @@ class AlbumTests(TestCase):
                 self.assertGreaterEqual(album.release_date, date_test,
                     msg="Album Queryset get_albums_with_track_info  returned albums in the wrong order for release_date. Expect oldest first.")
                 date_test = album.release_date
-            self.assertTrue(album.track_number_set, msg="get_albums_with_track_info failed to return track info.")
+            self.assertTrue(album.tracks, msg="get_albums_with_track_info failed to return track info.")
 
     def test_get_released_albums_with_track_info(self):
         """Test the queryset get_albums_with_track_info"""
@@ -107,7 +108,7 @@ class AlbumTests(TestCase):
                 self.assertGreaterEqual(album.release_date, date_test,
                     msg="Album Queryset get_released_albums_with_track_info returned albums in the wrong order for release_date. Expect oldest first.")
                 date_test = album.release_date
-            self.assertTrue(album.track_number_set, msg="get_released_albums_with_track_info failed to return track info.")
+            self.assertTrue(album.tracks, msg="get_released_albums_with_track_info failed to return track info.")
             self.assertLessEqual(album.release_date, date.today(), msg="Album that has not been released yet was returned by get_released_albums_with_track_info")
 
     def test_get_albums_with_sales_links(self):
@@ -121,7 +122,7 @@ class AlbumTests(TestCase):
                 self.assertGreaterEqual(album.release_date, date_test,
                     msg="get_albums_with_sales_links returned albums in the wrong order for release_date. Expect oldest first.")
                 date_test = album.release_date
-            self.assertTrue(album.album_sales_link_set, msg="get_albums_with_sales_links failed to return track info.")
+            self.assertTrue(album.sales_links, msg="get_albums_with_sales_links failed to return track info.")
 
     def test_get_released_albums_with_sales_links(self):
         """Test the queryset get_released_albums_with_sales_links"""
@@ -134,7 +135,7 @@ class AlbumTests(TestCase):
                 self.assertGreaterEqual(album.release_date, date_test,
                     msg="get_albums_with_sales_links returned albums in the wrong order for release_date. Expect oldest first.")
                 date_test = album.release_date
-            self.assertTrue(album.album_sales_link_set, msg="get_albums_with_sales_links failed to return track info.")
+            self.assertTrue(album.sales_links, msg="get_albums_with_sales_links failed to return track info.")
             self.assertLessEqual(album.release_date, date.today(), msg="Album that has not been released yet was returned by get_released_albums_with_sales_links")
 
 class SongTests(TestCase):
@@ -153,7 +154,7 @@ class SongTests(TestCase):
         self.assertTrue(songs, msg="get_songs_with_track_info returned nothing.")
 
         for i, song in enumerate(songs):
-            self.assertTrue(song.track_number_set, msg="get_songs_with_track_info failed to return track info.")
+            self.assertTrue(song.track_nums, msg="get_songs_with_track_info failed to return track info.")
 
     def test_get_songs_with_song_files(self):
         """test the queryset get_songs_with_song_files"""
@@ -161,7 +162,7 @@ class SongTests(TestCase):
         self.assertTrue(songs, msg="get_songs_with_song_files returned nothing.")
 
         for i, song in enumerate(songs):
-            self.assertTrue(song.song_file_set, msg="get_songs_with_song_files failed to return song files.")
+            self.assertTrue(song.song_files, msg="get_songs_with_song_files failed to return song files.")
 
 class TrackNumberTests(TestCase):
     """Sets up tests for Track_Number model"""
