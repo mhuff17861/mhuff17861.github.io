@@ -56,7 +56,11 @@ class AlbumSerializer(serializers.ModelSerializer):
     """
     tracks = TrackNumberSerializer(many=True, read_only=True)
     sales_links = SalesLinkSerializer(many=True, read_only=True)
+    cover_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Album
         fields = ['id', 'title', 'cover_image', 'type', 'release_date', 'description', 'price', 'tracks', 'sales_links']
+
+    def get_cover_image(self, record: Album):
+        return record.cover_image.url
