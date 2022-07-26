@@ -20,22 +20,22 @@ class Album_QuerySet(models.QuerySet):
     def get_albums_with_track_info(self):
         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
         logger.debug("Retrieving albums with track info.")
-        return self.order_by('release_date').prefetch_related('track_number_set')
+        return self.order_by('release_date').prefetch_related('tracks')
 
     def get_released_albums_with_track_info(self):
         """Retrieves all **released** albums with their associated Track_Number data, ordered by release_date."""
         logger.debug("Retrieving released albums with track info.")
-        return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('track_number_set')
+        return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('tracks')
 
     def get_albums_with_sales_links(self):
         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
         logger.debug("Retrieving albums with sales link info.")
-        return self.order_by('release_date').prefetch_related('album_sales_link_set')
+        return self.order_by('release_date').prefetch_related('sales_links')
 
     def get_released_albums_with_sales_links(self):
         """Retrieves all albums with their associated Track_Number data, ordered by release_date."""
         logger.debug("Retrieving **released** albums with sales link info.")
-        return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('album_sales_link_set')
+        return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('sales_links')
 
 class Album(models.Model):
     """
@@ -77,12 +77,12 @@ class Song_QuerySet(models.QuerySet):
     def get_songs_with_track_info(self):
         """Retrieves all songs with their associated Track_Number data."""
         logger.debug("Retrieving songs with track info.")
-        return self.all().prefetch_related('track_number_set')
+        return self.all().prefetch_related('track_nums')
 
     def get_songs_with_song_files(self):
         """Retrieves all songs with their associated Song_File data"""
         logger.debug("Retrieving songs with song file info.")
-        return self.all().prefetch_related('song_file_set')
+        return self.all().prefetch_related('song_files')
 
 class Song(models.Model):
     """
@@ -110,7 +110,7 @@ class Song_File(models.Model):
     """
 
     song_id = models.ForeignKey(Song, related_name='song_files', on_delete=models.CASCADE)
-    """Stores song id as foreign key."""
+    """Stores song id as foreign key. related_name is song_files"""
     file = models.FileField(upload_to='songs')
     """Stores the actual track file. Type determined by extenstion"""
 
@@ -134,10 +134,10 @@ class Track_Number(models.Model):
     class Meta:
         unique_together = (('song_id', 'album_id'),)
 
-    song_id = models.ForeignKey(Song, on_delete=models.CASCADE)
-    """Stores song id as foreign key."""
+    song_id = models.ForeignKey(Song, related_name='track_nums', on_delete=models.CASCADE)
+    """Stores song id as foreign key. related_name is track_nums"""
     album_id = models.ForeignKey(Album, related_name='tracks', on_delete=models.CASCADE)
-    """Stores the album id as a foreign key"""
+    """Stores the album id as a foreign key. related_name is tracks"""
     track_num = models.PositiveSmallIntegerField()
 
     track_numbers = Track_Number_QuerySet.as_manager()
@@ -162,7 +162,7 @@ class Album_Sales_Link(models.Model):
     """
 
     album_id = models.ForeignKey(Album, related_name='sales_links', on_delete=models.CASCADE)
-    """Stores the album id as a foreign key"""
+    """Stores the album id as a foreign key. related_name is sales_links"""
     url = models.TextField(max_length=800)
     """Stores the url that acts as a sales link"""
     url_display = models.TextField(max_length=100, blank=True, null=True)
