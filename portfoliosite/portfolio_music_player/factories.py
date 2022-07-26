@@ -58,7 +58,7 @@ class SongFileFactory(DjangoModelFactory):
 
     song_id = factory.SubFactory(SongFactory)
     file = factory.django.FileField(
-        filename=factory.LazyAttribute(lambda file: f'{file.factory_parent.song_id.title}{[".mp3", ".webm", ".flac"][random.randrange(0,2)]}'))
+        from_path=factory.LazyAttribute(lambda file: f'../test_files/river{[".mp3", ".webm"][random.randrange(0,2)]}'))
     # The lambda above allows the filename to be generated from the song title.
 
 class TrackNumberFactory(DjangoModelFactory):

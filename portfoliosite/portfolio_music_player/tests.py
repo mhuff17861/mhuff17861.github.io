@@ -2,13 +2,17 @@
     This file contains the tests which are used to verify that the resume app's models, views, templates, and
     their respective functions are all operating properly.
 """
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
+import shutil
 from datetime import date
 from .models import Album, Song, Song_File, Track_Number, Album_Sales_Link
 from .factories import *
 import factory.random
 
+TEST_DIR = 'test_data'
+
+@override_settings(MEDIA_ROOT=(TEST_DIR + '/media'))
 def setup_data():
     """
         Sets up data that can be used to test every model/view in a development environment.
@@ -19,7 +23,7 @@ def setup_data():
     """Sets the number of songs to be generated per album"""
     NUM_SALES_LINKS_PER_ALBUM = 4
     """Sets the number of sales links per album"""
-    NUM_SONG_FILES_PER_SONG = 3
+    NUM_SONG_FILES_PER_SONG = 2
     """Sets the number of song files to be generated per song"""
 
     factory.random.reseed_random('My portfolio website 8675309')
@@ -32,6 +36,14 @@ def setup_data():
         for i, song in enumerate(songs):
             SongFileFactory.create_batch(NUM_SONG_FILES_PER_SONG, song_id=song)
             TrackNumberFactory.create(album_id=album, song_id=song, track_num=i+1)
+
+def tearDownModule():
+    """Deletes temporary files made for testing"""
+    print("\nDeleting temporary files...\n")
+    try:
+        shutil.rmtree(TEST_DIR)
+    except OSError:
+        pass
 
 # Create your tests here.
 class ViewNoDataTests(TestCase):

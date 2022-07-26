@@ -2,8 +2,9 @@
     This file contains the tests which are used to verify that the resume app's models, views, templates, and
     their respective functions are all operating properly.
 """
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
+import shutil
 from django.test.runner import DiscoverRunner
 from datetime import date
 from .models import Page_Header, Project, CV_Category, CV_Line
@@ -16,7 +17,10 @@ NUM_PROJECTS = 5
 NUM_CV_CATEGORIES = 10
 NUM_CV_LINES = 10
 
+TEST_DIR = 'test_data'
+
 # global functions for setUpTestData
+@override_settings(MEDIA_ROOT=(TEST_DIR + '/media'))
 def setup_data():
     """
         Sets up data that can be used to test every model/view
@@ -30,6 +34,14 @@ def setup_data():
 
     for i, category in enumerate(categories):
         cv_lines = CVLineFactory.create_batch(NUM_CV_LINES, category=category, user_id=user)
+
+def tearDownModule():
+    """Deletes temporary files made for testing"""
+    print("\nDeleting temporary files...\n")
+    try:
+        shutil.rmtree(TEST_DIR)
+    except OSError:
+        pass
 
 #****************** Model Tests ****************
 
