@@ -7,9 +7,8 @@
 */
 /***** Player Data Variables **********/
 let albumData = false;
-let currentAlbum = false;
-let currentSongList = false;
-let currentSong = false;
+let currentAlbumIndex = 0;
+let currentSongIndex = 0;
 let howlerContainer = false;
 
 /*********** DOM Element Variables ************/
@@ -26,43 +25,82 @@ const prevBtn = document.querySelector("#prevBtn");
 const nextBtn = document.querySelector("#nextBtn");
 
 /*********************Helper Functions****************/
-function find_song_files_by_id(song_id) {
-  if (currentAlbum) {
-    return currentAlbum.tracks.filter(function(el){
-        return (el.song_info.id == song_id);
-    })[0].song_info.song_files;
-  } else {
-    for (album of albumData) {
-      for (track of album.tracks) {
-        if (track.song_info.id == song_id) {
-          return track.song_info.song_files;
-        }
-      }
-    }
+function find_song_index_by_id(song_id) {
+  // check if song is in current song list
+  for (const [index, song] of albumData[currentAlbumIndex].tracks.entries()) {
+    if (song.song_info.id == song_id) return index;
   }
+
+  return currentSongIndex;
 }
 
+function find_album_index_by_id(album_id) {
+  // check if song is in current song list
+  for (const [index, album] of albumData.entries()) {
+    if (album.id == album_id) return index;
+  }
+
+  return currentSongIndex;
+}
 
 /************************Music Player Controls***********/
-function select_song(song_id) {
-  song_files = find_song_files_by_id(song_id);
+function select_song(song_id = null) {
+  // If a song_id was given, means album change. So, do that and get song.
+  if (song_id != null) {
+    // Double check if album was changed in the view. If so, change album.
+    if (albumSelectionContainer.value != albumData[currentAlbumIndex].id) {
+      console.log("Mismatch for album from UI, changing currentAlbumIndex.");
+      currentAlbumIndex = find_album_index_by_id(albumSelectionContainer.value);
+      console.log("Index changed to: ", currentAlbumIndex);
+    }
+
+    currentSongIndex = find_song_index_by_id(song_id);
+  }
+  song = albumData[currentAlbumIndex].tracks[currentSongIndex].song_info;
+  console.log("Now playing: ", song.title);
+
+  // remove reference to old song and stop it from playing
+  if (howlerContainer){
+    if (howlerContainer.playing()) howlerContainer.stop();
+    delete howlerContainer;
+  }
 
   howlerContainer = new Howl({
-    src: song_files
+    src: song.song_files
   });
+
+  playPauseBtn.innerHTML = "Pause";
   howlerContainer.play();
 }
 
-function play_pause_music() {
-
+function play_pause() {
+  if (howlerContainer.playing()) {
+    howlerContainer.pause();
+    playPauseBtn.innerHTML = "Play";
+  } else {
+    howlerContainer.play();
+    playPauseBtn.innerHTML = "Pause";
+  }
 }
 
 function next_song() {
+  if ((currentSongIndex + 1) < albumData[currentAlbumIndex].tracks.length) {
+    currentSongIndex++;
+  } else {
+    currentSongIndex = 0;
+  }
 
- }
+  select_song();
+}
 
  function previous_song() {
+   if ((currentSongIndex) > 0) {
+     currentSongIndex--;
+   } else {
+     currentSongIndex = albumData[currentAlbumIndex].tracks.length - 1;
+   }
 
+   select_song();
  }
 
  function seek_to(timestamp) {
@@ -90,18 +128,17 @@ function setup_album_selection(albums) {
     // if it is the first album, set as selected
     if (index == 0) {
       albumSelectionContainer.value = option.value;
-      currentAlbum = album;
     }
   }
 
   // add click listener that will run updates when a click happens
   albumSelectionContainer.addEventListener("change", function() {
     let albumID = this.value;
-    selectedAlbum = albumData.filter(function(el){
-      return (el.id == albumID);
-    })[0];
-    setup_track_selection(selectedAlbum.tracks);
-    currentAlbum = selectedAlbum;
+    for (const [index, album] of albumData.entries()) {
+      if (album.id == albumID) {
+        setup_track_selection(album.tracks);
+      }
+    }
   });
 }
 
@@ -147,12 +184,10 @@ function setup_controls() {
   Currently, that is the play/pause, next, and previous buttons,
   as well as the slider used to seek on the song.
   */
-  // const trackSlider = document.querySelector("#trackSlider");
-  // const playPauseBtn = document.querySelector("#playPauseBtn");
-  // const prevBtn = document.querySelector("#prevBtn");
-  // const nextBtn = document.querySelector("#nextBtn");
 
-
+  playPauseBtn.addEventListener("click", play_pause);
+  prevBtn.addEventListener("click", previous_song);
+  nextBtn.addEventListener("click", next_song);
 }
 
 function setup_player() {
