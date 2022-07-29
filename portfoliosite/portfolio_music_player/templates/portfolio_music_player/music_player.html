@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% comment "Overview" %}
-    This is an html template that can be fed data to generate a working
-    music player. (Currently non-functional.)
+    This is an html template that creates the music player layout.
+    All data retrieval for music is done via JavaScript in communication
+    with the app's REST API.
 {% endcomment %}
 
 {% load static %}
@@ -22,6 +23,7 @@
   <div class="row justify-content-center">
     <div class="col-9 text-center mt-3">
       <h1 class="">Music Player</h1>
+      <p id="test"></p>
     </div>
   </div>
 
@@ -41,17 +43,14 @@
 
           <!-- Select Album Area -->
           <div class="col-5" id="albumSelectionList">
-            <label for="albumSelect" class="form-label h4 d-none d-xl-block">Show tracks from:</label>
-            <label for="albumSelect" class="form-label h5 d-none d-sm-block d-xl-none">Show tracks from:</label>
-            <label for="albumSelect" class="form-label mt-1 h6 d-sm-none">Show tracks from:</label>
+            <label for="albumSelection" class="form-label h4 d-none d-xl-block">Show tracks from:</label>
+            <label for="albumSelection" class="form-label h5 d-none d-sm-block d-xl-none">Show tracks from:</label>
+            <label for="albumSelection" class="form-label mt-1 h6 d-sm-none">Show tracks from:</label>
           </div>
 
           <div class="col-7 mb-2">
-            <select id="albumSelect" class="form-select bg-info text-light" aria-label="Select an album">
-              <option selected>Select album...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select id="albumSelection" name="albumSelection" class="form-select bg-info text-light" aria-label="Select an album">
+
             </select>
           </div>
 
@@ -99,17 +98,17 @@
 
         <div id="mainPlayer">
           <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
-          <img src="{% static 'img/2021-02-20 13.29.58.jpg' %}" alt="Album Cover" class="img-fluid" id="albumCover">
+          <img src="" alt="Album Cover" class="img-fluid" id="albumCover">
           <p class="text-nowrap mt-4 h4" id="trackName">Track Name</p>
 
           <!-- Slidy Bit -->
-          <input type="range" class="form-range" id="trackTime">
+          <input type="range" class="form-range" id="trackSlider">
 
           <!-- Buttons for days -->
           <div class="btn-group btn-group-lg d-flex justify-content-center mb-3">
-            <a href="#" class="btn btn-info border">Prev</a>
-            <a href="#" class="btn btn-info border">Play</a>
-            <a href="#" class="btn btn-info border">Next</a>
+            <a href="#" class="btn btn-info border" id="prevBtn">Prev</a>
+            <a href="#" class="btn btn-info border" id="playPauseBtn">Play</a>
+            <a href="#" class="btn btn-info border" id="nextBtn">Next</a>
           </div>
         </div>
 

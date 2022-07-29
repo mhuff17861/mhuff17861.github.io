@@ -8,6 +8,10 @@
 */
 
 function resizeTrackList() {
+  /* @function-doc
+  This function is used to resize the track list dynamically based on
+  the size of the contained it is in.
+  */
   const playerHeight = document.querySelector("#playerContainer");
   const trackList = document.querySelector("#trackSelectionScroll");
   const albumSelectionList = document.querySelector("#albumSelectionList");
