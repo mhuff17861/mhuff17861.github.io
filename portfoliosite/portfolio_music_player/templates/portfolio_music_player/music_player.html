@@ -98,17 +98,17 @@
 
         <div id="mainPlayer">
           <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
-          <img src="" alt="Album Cover" class="img-fluid" id="albumCover">
-          <p class="text-nowrap mt-4 h4" id="trackName">Track Name</p>
+          <img src="" alt="Album Cover" class="img-fluid mx-auto d-block" id="albumCover">
+          <p class="text-nowrap text-center mt-4 h4" id="trackName">Loading...</p>
 
           <!-- Slidy Bit -->
           <input type="range" class="form-range" id="trackSlider">
 
           <!-- Buttons for days -->
           <div class="btn-group btn-group-lg d-flex justify-content-center mb-3">
-            <a href="#" class="btn btn-info border" id="prevBtn">Prev</a>
-            <a href="#" class="btn btn-info border" id="playPauseBtn">Play</a>
-            <a href="#" class="btn btn-info border" id="nextBtn">Next</a>
+            <button class="btn btn-info border" id="prevBtn" name="prevBtn">Prev</button>
+            <button class="btn btn-info border" id="playPauseBtn" name="playPauseBtn">Play</button>
+            <button class="btn btn-info border" id="nextBtn" name="nextBtn">Next</button>
           </div>
         </div>
 

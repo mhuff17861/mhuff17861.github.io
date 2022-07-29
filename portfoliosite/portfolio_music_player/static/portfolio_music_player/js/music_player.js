@@ -10,6 +10,7 @@ let albumData = false;
 let currentAlbumIndex = 0;
 let currentSongIndex = 0;
 let howlerContainer = false;
+let durationInterval;
 
 /*********** DOM Element Variables ************/
 // Containers for selection
@@ -45,68 +46,130 @@ function find_album_index_by_id(album_id) {
 
 /************************Music Player Controls***********/
 function select_song(song_id = null) {
+  // Stop the interval from running
+  stop_slider_updates();
+
   // If a song_id was given, means album change. So, do that and get song.
   if (song_id != null) {
     // Double check if album was changed in the view. If so, change album.
     if (albumSelectionContainer.value != albumData[currentAlbumIndex].id) {
-      console.log("Mismatch for album from UI, changing currentAlbumIndex.");
       currentAlbumIndex = find_album_index_by_id(albumSelectionContainer.value);
       console.log("Index changed to: ", currentAlbumIndex);
     }
 
     currentSongIndex = find_song_index_by_id(song_id);
   }
+
+  //set track info
   song = albumData[currentAlbumIndex].tracks[currentSongIndex].song_info;
   console.log("Now playing: ", song.title);
 
   // remove reference to old song and stop it from playing
   if (howlerContainer){
-    if (howlerContainer.playing()) howlerContainer.stop();
+    if (howlerContainer.playing()) {
+      howlerContainer.stop();
+    }
     delete howlerContainer;
   }
 
   howlerContainer = new Howl({
-    src: song.song_files
+    src: song.song_files,
+    autoplay: true,
+    onload: on_howler_load,
+    onend: next_song
   });
 
   playPauseBtn.innerHTML = "Pause";
-  howlerContainer.play();
+}
+
+function on_howler_load() {
+  set_album_cover();
+  set_track_name();
+  reset_slider_values();
 }
 
 function play_pause() {
   if (howlerContainer.playing()) {
     howlerContainer.pause();
     playPauseBtn.innerHTML = "Play";
+    stop_slider_updates()
   } else {
     howlerContainer.play();
     playPauseBtn.innerHTML = "Pause";
+    start_slider_updates();
   }
 }
 
 function next_song() {
-  if ((currentSongIndex + 1) < albumData[currentAlbumIndex].tracks.length) {
-    currentSongIndex++;
-  } else {
-    currentSongIndex = 0;
-  }
+  if (howlerContainer.state() != "loading") {
+    if ((currentSongIndex + 1) < albumData[currentAlbumIndex].tracks.length) {
+      currentSongIndex++;
+    } else {
+      currentSongIndex = 0;
+    }
 
-  select_song();
+    select_song();
+  }
 }
 
- function previous_song() {
-   if ((currentSongIndex) > 0) {
+function previous_song() {
+  if (howlerContainer.state() != "loading") {
+    if ((currentSongIndex) > 0) {
      currentSongIndex--;
-   } else {
+    } else {
      currentSongIndex = albumData[currentAlbumIndex].tracks.length - 1;
-   }
+    }
 
-   select_song();
- }
+    select_song();
+  }
+}
 
- function seek_to(timestamp) {
+function seek_to(timestamp) {
+  if (howlerContainer && howlerContainer.state() == "loaded") {
+    console.log("Seeking to: ", timestamp);
+    howlerContainer.seek(timestamp);
+  }
+}
 
- }
-/***********************Setup Functions***************/
+function reset_slider_values() {
+  console.log("Resetting Slider Values.");
+  trackSlider.max = howlerContainer.duration();
+  trackSlider.min = 0;
+  trackSlider.value = 0;
+  trackSlider.step = 1;
+  start_slider_updates();
+}
+
+function update_slider_position() {
+  console.log("Updating slider position to: ", howlerContainer.seek());
+  trackSlider.value = howlerContainer.seek();
+}
+
+function start_slider_updates() {
+  if (!durationInterval) {
+    console.log("starting slider updates");
+    durationInterval = setInterval(update_slider_position, 1000);
+  }
+}
+
+function stop_slider_updates() {
+  if (durationInterval) {
+    console.log("stopping slider updates");
+    clearInterval(durationInterval);
+    durationInterval = null;
+  }
+}
+
+/*************** Music Player View setup*************/
+function set_album_cover() {
+  albumCover.setAttribute("src", albumData[currentAlbumIndex].cover_image);
+}
+
+function set_track_name() {
+  trackName.innerHTML = albumData[currentAlbumIndex].tracks[currentSongIndex].song_info.title;
+}
+
+/***********************Initial Setup Functions***************/
 function setup_album_selection(albums) {
   /* @function-doc
   This function is used to setup the album selection dropdown,
@@ -170,7 +233,7 @@ function setup_track_selection(song_list) {
     btn.setAttribute("value", song.song_info.id);
     btn.innerHTML = song.song_info.title;
     btn.addEventListener("click", function() {
-      select_song(this.value);
+      if (howlerContainer.state() != "loading") select_song(this.value);
     });
 
     li.appendChild(btn);
@@ -188,6 +251,11 @@ function setup_controls() {
   playPauseBtn.addEventListener("click", play_pause);
   prevBtn.addEventListener("click", previous_song);
   nextBtn.addEventListener("click", next_song);
+
+  trackSlider.addEventListener("change", (e) => { seek_to(e.target.value); });
+  trackSlider.addEventListener("mousedown", stop_slider_updates);
+  trackSlider.addEventListener("mouseup", start_slider_updates);
+
 }
 
 function setup_player() {
@@ -195,6 +263,8 @@ function setup_player() {
   setup_track_selection(albumData[0].tracks);
   // setup player and play
   setup_controls();
+  set_album_cover(albumData[0].cover_image);
+  select_song();
 }
 
 function retrieve_album_data() {
