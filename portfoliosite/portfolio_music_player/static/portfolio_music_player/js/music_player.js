@@ -4,7 +4,7 @@
   interface and retrieves album information with the REST API
   which delivers song data.
 
-  TODO: Min: Show Track Time. Add Album Name Display. Change Play/Next to images. DOCUMENT.
+  TODO: Min: Change Play/Next to images. Accessibility. DOCUMENT.
   Max: Allow Downloads. Add sales links.
 */
 /***** Player Data Variables **********/
@@ -28,7 +28,8 @@ const trackSlider = document.querySelector("#trackSlider");
 const playPauseBtn = document.querySelector("#playPauseBtn");
 const prevBtn = document.querySelector("#prevBtn");
 const nextBtn = document.querySelector("#nextBtn");
-
+// Other interactables
+const collapseTrackList = document.querySelector("#collapseTrackList");
 /*********************Helper Functions****************/
 function find_song_index_by_id(song_id) {
   // check if song is in current song list
@@ -254,7 +255,12 @@ function setup_track_selection(song_list) {
     btn.setAttribute("value", song.song_info.id);
     btn.innerHTML = song.song_info.title;
     btn.addEventListener("click", function() {
-      if (howlerContainer.state() != "loading") select_song(this.value);
+      if (howlerContainer.state() != "loading") {
+        select_song(this.value);
+        var bsCollapse = new bootstrap.Collapse(collapseTrackList, {
+          hide: true
+        });
+      }
     });
 
     li.appendChild(btn);
