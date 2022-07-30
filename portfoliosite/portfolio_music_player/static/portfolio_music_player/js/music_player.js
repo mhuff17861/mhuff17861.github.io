@@ -4,6 +4,8 @@
   interface and retrieves album information with the REST API
   which delivers song data.
 
+  TODO: Min: Show Track Time. Add Album Name Display. Change Play/Next to images. DOCUMENT.
+  Max: Allow Downloads. Add sales links.
 */
 /***** Player Data Variables **********/
 let albumData = false;
@@ -19,6 +21,8 @@ const trackSelectionContainer = document.querySelector("#trackSelectionScroll");
 // Current track info display
 const albumCover = document.querySelector("#albumCover");
 const trackName = document.querySelector("#trackName");
+const albumName = document.querySelector("#albumName");
+const trackTime = document.querySelector("#trackTime");
 // Track controls
 const trackSlider = document.querySelector("#trackSlider");
 const playPauseBtn = document.querySelector("#playPauseBtn");
@@ -44,10 +48,19 @@ function find_album_index_by_id(album_id) {
   return currentSongIndex;
 }
 
+function timestamp_formatting(seconds) {
+  let stamp = new Date(seconds * 1000).toISOString().slice(11, 19);
+
+  if (stamp.charAt(0) == '0' && stamp.charAt(1) == 0) {
+    stamp = stamp.slice(3, stamp.length);
+  }
+
+  return stamp;
+}
 /************************Music Player Controls***********/
 function select_song(song_id = null) {
   // Stop the interval from running
-  stop_slider_updates();
+  stop_seek_updates();
 
   // If a song_id was given, means album change. So, do that and get song.
   if (song_id != null) {
@@ -83,8 +96,9 @@ function select_song(song_id = null) {
 }
 
 function on_howler_load() {
-  set_album_cover();
+  set_album_info();
   set_track_name();
+  update_track_timestamp(0);
   reset_slider_values();
 }
 
@@ -92,11 +106,11 @@ function play_pause() {
   if (howlerContainer.playing()) {
     howlerContainer.pause();
     playPauseBtn.innerHTML = "Play";
-    stop_slider_updates()
+    stop_seek_updates()
   } else {
     howlerContainer.play();
     playPauseBtn.innerHTML = "Pause";
-    start_slider_updates();
+    start_seek_updates();
   }
 }
 
@@ -126,47 +140,54 @@ function previous_song() {
 
 function seek_to(timestamp) {
   if (howlerContainer && howlerContainer.state() == "loaded") {
-    console.log("Seeking to: ", timestamp);
+    // console.log("Seeking to: ", timestamp);
     howlerContainer.seek(timestamp);
   }
 }
 
 function reset_slider_values() {
-  console.log("Resetting Slider Values.");
+  // console.log("Resetting Slider Values.");
   trackSlider.max = howlerContainer.duration();
   trackSlider.min = 0;
   trackSlider.value = 0;
   trackSlider.step = 1;
-  start_slider_updates();
+  start_seek_updates();
 }
 
-function update_slider_position() {
-  console.log("Updating slider position to: ", howlerContainer.seek());
+function update_seek_tracking() {
+  // console.log("Updating slider position to: ", howlerContainer.seek());
   trackSlider.value = howlerContainer.seek();
+  update_track_timestamp(trackSlider.value);
 }
 
-function start_slider_updates() {
+function start_seek_updates() {
   if (!durationInterval) {
-    console.log("starting slider updates");
-    durationInterval = setInterval(update_slider_position, 1000);
+    // console.log("starting slider updates");
+    durationInterval = setInterval(update_seek_tracking, 1000);
   }
 }
 
-function stop_slider_updates() {
+function stop_seek_updates() {
   if (durationInterval) {
-    console.log("stopping slider updates");
+    // console.log("stopping slider updates");
     clearInterval(durationInterval);
     durationInterval = null;
   }
 }
 
 /*************** Music Player View setup*************/
-function set_album_cover() {
+function set_album_info() {
   albumCover.setAttribute("src", albumData[currentAlbumIndex].cover_image);
+  albumName.innerHTML = `Album: ${albumData[currentAlbumIndex].title}`;
 }
 
 function set_track_name() {
-  trackName.innerHTML = albumData[currentAlbumIndex].tracks[currentSongIndex].song_info.title;
+  trackName.innerHTML = `Track: ${albumData[currentAlbumIndex].tracks[currentSongIndex].song_info.title}`;
+}
+
+function update_track_timestamp(seconds) {
+  let timestamp = `${timestamp_formatting(seconds)}/${timestamp_formatting(howlerContainer.duration())}`;
+  trackTime.innerHTML = timestamp;
 }
 
 /***********************Initial Setup Functions***************/
@@ -253,8 +274,9 @@ function setup_controls() {
   nextBtn.addEventListener("click", next_song);
 
   trackSlider.addEventListener("change", (e) => { seek_to(e.target.value); });
-  trackSlider.addEventListener("mousedown", stop_slider_updates);
-  trackSlider.addEventListener("mouseup", start_slider_updates);
+  trackSlider.addEventListener("input", (e) => { update_track_timestamp(e.target.value); });
+  trackSlider.addEventListener("mousedown", stop_seek_updates);
+  trackSlider.addEventListener("mouseup", start_seek_updates);
 
 }
 
@@ -263,7 +285,7 @@ function setup_player() {
   setup_track_selection(albumData[0].tracks);
   // setup player and play
   setup_controls();
-  set_album_cover(albumData[0].cover_image);
+  set_album_info(albumData[0].cover_image);
   select_song();
 }
 

@@ -31,15 +31,16 @@
     <!-- Play Controls -->
     <div class="col-lg-8 border position-relative h-100" id="playerContainer">
 
-        <div class="row w-100 h-100 collapse" id="collapseTrackList">
+        <!-- SOMETHING SOMEWHERE CAUSES THIS TO MOVE 12 PX LEFT AND I CAN'T FIND IT SO ENJOY THE start-0 -->
+        <div class="flex-row w-100 h-100 px-3 start-0 collapse" id="collapseTrackList">
         <!-- Start in collapse -->
 
           <!-- Top bar for closing the collapse -->
-          <p class="text-end mt-3">
-            <button id="trackCollapseCloseBtn" class="btn btn-info border" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
+          <div class="d-flex flex-column mt-3">
+            <button id="trackCollapseCloseBtn" class="btn btn-info border align-self-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
               Close Track List
             </button>
-          </p>
+          </div>
 
           <!-- Select Album Area -->
           <div class="col-5" id="albumSelectionList">
@@ -59,29 +60,7 @@
           <!-- Song List -->
           <div class="col-12">
             <ul class="list-group mb-3 overflow-scroll" id="trackSelectionScroll" aria-label="Select a track">
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
-              <li class="list-group-item p-0"><button class="w-100 h-100 bg-info text-light text-start p-2" type="button" name="button">An item</button></li>
             </ul>
-
           </div>
 
           <!-- End of Collapsable Song List -->
@@ -90,19 +69,28 @@
         </div>
 
         <!-- Top bar for the collapse, if screen size shrinks -->
-        <p class="text-end mt-3">
-          <button id="trackCollapseOpenBtn" class="btn btn-info border" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
+        <div class="d-flex flex-column mt-3">
+          <button id="trackCollapseOpenBtn" class="btn btn-info border align-self-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
             Open Track List
           </button>
-        </p>
+        </div>
 
-        <div id="mainPlayer">
+        <div class="p-3" id="mainPlayer">
           <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
           <img src="" alt="Album Cover" class="img-fluid mx-auto d-block" id="albumCover">
-          <p class="text-nowrap text-center mt-4 h4" id="trackName">Loading...</p>
 
-          <!-- Slidy Bit -->
-          <input type="range" class="form-range" id="trackSlider">
+          <div class="d-flex flex-column mt-2 fs-5">
+            <p class="text-nowrap align-self-center" id="trackName">Loading...</p>
+            <p class="text-nowrap align-self-center" id="albumName">Loading...</p>
+          </div>
+
+          <!-- Time Info -->
+          <div class="d-flex flex-row">
+            <!-- Timestamps -->
+            <p class="me-3" id="trackTime">Loading...</p>
+            <!-- Slidy Bit -->
+            <input type="range" class="form-range" id="trackSlider">
+          </div>
 
           <!-- Buttons for days -->
           <div class="btn-group btn-group-lg d-flex justify-content-center mb-3">
