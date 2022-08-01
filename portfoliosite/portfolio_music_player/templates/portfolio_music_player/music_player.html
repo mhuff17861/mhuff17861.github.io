@@ -94,9 +94,15 @@
 
           <!-- Buttons for days -->
           <div class="btn-group btn-group-lg d-flex justify-content-center mb-3">
-            <button class="btn btn-info border" id="prevBtn" name="prevBtn">Prev</button>
-            <button class="btn btn-info border" id="playPauseBtn" name="playPauseBtn">Play</button>
-            <button class="btn btn-info border" id="nextBtn" name="nextBtn">Next</button>
+            <button class="btn btn-info border" id="prevBtn" name="prevBtn">
+              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/prev_icon.svg' %}" alt="previous button image">
+            </button>
+            <button class="btn btn-info border" id="playPauseBtn" name="playPauseBtn">
+              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/play_icon.svg' %}" id="playPauseImg" alt="play button image">
+            </button>
+            <button class="btn btn-info border" id="nextBtn" name="nextBtn">
+              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/next_icon.svg' %}" alt="next button image">
+            </button>
           </div>
         </div>
 
@@ -104,6 +110,11 @@
 
   </div>
 </div>
+
+<script type="text/javascript">
+  const pauseIconUrl = "{% static 'portfolio_music_player/img/pause_icon.svg' %}";
+  const playIconUrl = "{% static 'portfolio_music_player/img/play_icon.svg' %}";
+</script>
 
 <!-- **************************End of Music Player***************** -->
 {% endblock %}
