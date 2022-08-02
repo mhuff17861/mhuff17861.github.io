@@ -64,7 +64,7 @@ const nextBtn = document.querySelector("#nextBtn");
 
 // Other controls
 /* @var Contains the download button. */
-const downloadBtn = document.querySelector("#downloadBtn");
+const downloadPopupBtn = document.querySelector("#downloadPopupBtn");
 
 /*********************Helper Functions****************/
 
@@ -335,11 +335,11 @@ track list will be opened, false meaning it will be closed.
 function track_list_toggle(open) {
   if (open) {
     hide(trackCollapseOpenBtn);
-    hide(downloadBtn);
+    hide(downloadPopupBtn);
     trackCollapseCloseBtn.focus();
   } else {
     show(trackCollapseOpenBtn);
-    show(downloadBtn);
+    show(downloadPopupBtn);
     trackCollapseOpenBtn.focus();
   }
 }
@@ -503,7 +503,7 @@ function setup_controls() {
   trackCollapseOpenBtn.addEventListener("click", () => {track_list_toggle(true)});
   trackCollapseCloseBtn.addEventListener("click", () => {track_list_toggle(false)});
 
-  downloadBtn.addEventListener("click", download_popup);
+  downloadPopupBtn.addEventListener("click", download_popup);
 }
 
 /* @function
