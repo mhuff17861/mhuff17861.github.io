@@ -125,18 +125,25 @@
           <p>
             I'm so happy you decided to download some of my music! If you just want to download the song
             you are currently hearing, click the download button below. If you want to download a different
-            track (or a whole album), use the dropdown boxes below!
+            track (or a whole album), use the dropdown boxes below.
           </p>
           <form id="downloadForm" class="">
 
             <div class="form-check my-3">
-              <label class="form-check-label" for="singleSongCheck">
-                Single Song Download.
+              <label class="form-check-label" for="singleSongDownloadCheck">
+                Download full album.
               </label>
-              <input class="form-check-input" type="checkbox" value="" id="singleSongCheck">
+              <input class="form-check-input" type="checkbox" value="" id="singleSongDownloadCheck">
             </div>
 
-            <label for="albumDownloadSelection" class="form-label h4">Album to download:</label>
+            <label for="fileTypeSelection" class="form-label h4">File type (mp3 recommended):</label>
+            <select id="fileTypeSelection" name="fileTypeSelection" class="form-select bg-info text-light">
+              <option value="mp3">mp3</option>
+              <option value="flac">flac</option>
+              <option value="webm">webm</option>
+            </select>
+
+            <label for="albumDownloadSelection" class="form-label h4 mt-3">Album to download:</label>
             <select id="albumDownloadSelection" name="albumDownloadSelection" class="form-select bg-info text-light">
 
             </select>
@@ -146,10 +153,14 @@
 
             </select>
           </form>
+
+          <p class="mt-4">
+            Donations accepted via <a href="https://paypal.me/micahhuffmakes?country.x=US&locale.x=en_US">Paypal!</a>
+          </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button id="type="button" class="btn btn-primary" data-bs-dismiss="modal">Download</button>
+          <button id="downloadConfirmationBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Download</button>
         </div>
       </div>
     </div>

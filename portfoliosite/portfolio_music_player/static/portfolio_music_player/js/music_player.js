@@ -62,9 +62,20 @@ const prevBtn = document.querySelector("#prevBtn");
 /* @var Contains the next button. */
 const nextBtn = document.querySelector("#nextBtn");
 
-// Other controls
-/* @var Contains the download button. */
+// Download controls
+
+/* @var Contains the download popup button. */
 const downloadPopupBtn = document.querySelector("#downloadPopupBtn");
+/* @var Contains the file type dropdown selection. */
+const fileTypeSelection = document.querySelector("#fileTypeSelection");
+/* @var Contains the album download dropdown selection. */
+const albumDownloadSelection = document.querySelector("#albumDownloadSelection");
+/* @var Contains the song download dropdown selection. */
+const songDownloadSelection = document.querySelector("#songDownloadSelection");
+/* @var Contains the checkbox to determine whether a single song is being downloaded. */
+const singleSongDownloadCheck = document.querySelector("#singleSongDownloadCheck");
+/* @var Contains the download confirmation button. */
+const downloadConfirmationBtn = document.querySelector("#downloadConfirmationBtn");
 
 /*********************Helper Functions****************/
 
@@ -407,6 +418,9 @@ function stop_seek_updates() {
 }
 
 function download_popup() {
+  albumDownloadSelection.value = albumData[currentAlbumIndex].id;
+  setup_track_download_selection(albumData[currentAlbumIndex].tracks);
+  songDownloadSelection.value = albumData[currentAlbumIndex].tracks[currentSongIndex].song_info.id;
 
 }
 
@@ -427,6 +441,7 @@ function setup_album_selection(albums) {
     option.setAttribute("value", album.id);
     option.innerHTML = album.title;
     albumSelectionContainer.appendChild(option);
+    albumDownloadSelection.appendChild(option.cloneNode(true));
 
     // if it is the first album, set as selected
     if (index == 0) {
@@ -434,7 +449,7 @@ function setup_album_selection(albums) {
     }
   }
 
-  // add click listener that will run updates when a click happens
+  // add change listener that will run updates when a click happens
   albumSelectionContainer.addEventListener("change", function() {
     let albumID = this.value;
     for (const [index, album] of albumData.entries()) {
@@ -443,7 +458,18 @@ function setup_album_selection(albums) {
       }
     }
   });
+
+  // add a change listener to setup the track download selection
+  albumDownloadSelection.addEventListener("change", function() {
+    let albumID = this.value;
+    for (const [index, album] of albumData.entries()) {
+      if (album.id == albumID) {
+        setup_track_download_selection(album.tracks);
+      }
+    }
+  });
 }
+
 /* @function
 This function is used to setup the song selection dropdown,
 stored in trackSelectionContainer.
@@ -486,6 +512,31 @@ function setup_track_selection(song_list) {
 }
 
 /* @function
+This function is used to setup the song selection dropdown for
+song downloads.
+
+Args:
+------------
+
+- song_list: A list of songs with at least a .song_info.id and
+a .song_info.title attribute.
+*/
+function setup_track_download_selection(song_list) {
+  // Delete previous elements
+  while (songDownloadSelection.firstChild) {
+    songDownloadSelection.removeChild(songDownloadSelection.lastChild);
+  }
+
+  // Setup new download tracks
+  for (const [index, song] of song_list.entries()) {
+    let option = document.createElement("option");
+    option.setAttribute("value", song.song_info.id);
+    option.innerHTML = song.song_info.title;
+    songDownloadSelection.appendChild(option);
+  }
+}
+
+/* @function
 This function is used to setup the music player controls.
 Currently, that is the play/pause, next, and previous buttons,
 as well as the slider used to seek on the song.
@@ -514,6 +565,7 @@ music player.
 function setup_player() {
   setup_album_selection(albumData);
   setup_track_selection(albumData[0].tracks);
+  setup_track_download_selection(albumData[0].tracks);
   // setup player and play
   setup_controls();
   update_album_info();
