@@ -4,7 +4,7 @@
   interface and retrieves album information with the REST API
   which delivers song data. It runs retrieve_album_data on load.
 
-  TODO: Min: Accessibility.
+  TODO:
   Max: Allow Downloads. Add sales links.
 */
 
@@ -32,6 +32,12 @@ const trackSelectionContainer = document.querySelector("#trackSelectionScroll");
 /* @var Contains the tag which holds the initiall hidden track and album lists.*/
 const collapseTrackList = document.querySelector("#collapseTrackList");
 
+// Container Controls
+
+/* @var Contains the button used to open track selection.*/
+const trackCollapseOpenBtn = document.querySelector("#trackCollapseOpenBtn");
+/* @var Contains the button used to close track selection.*/
+const trackCollapseCloseBtn = document.querySelector("#trackCollapseCloseBtn");
 // Current track info display
 
 /* @var Contains the img tag that displays currently playing album covers. */
@@ -55,6 +61,10 @@ const playPauseImg = document.querySelector("#playPauseImg");
 const prevBtn = document.querySelector("#prevBtn");
 /* @var Contains the next button. */
 const nextBtn = document.querySelector("#nextBtn");
+
+// Other controls
+/* @var Contains the download button. */
+const downloadBtn = document.querySelector("#downloadBtn");
 
 /*********************Helper Functions****************/
 
@@ -115,6 +125,31 @@ function timestamp_formatting(seconds) {
   }
 
   return stamp;
+}
+
+/* @function
+This function takes an element and hides it
+
+Args
+-------------
+
+- element: the element to hide.
+*/
+function hide(element) {
+  element.classList.add("d-none");
+}
+
+/* @function
+**assuming it was hidden by the hide function**, this function
+takes an element and shows it.
+
+Args
+-------------
+
+- element: the element to hide.
+*/
+function show(element) {
+  element.classList.remove("d-none");
 }
 
 /************************Music Player Controls***********/
@@ -244,8 +279,13 @@ function seek_to(timestamp) {
 }
 
 /*************** Music Player View setup*************/
+
 /* @function
 This function updates whether the song is playing on the UI.
+
+**NOTE**: pauseIconUrl and playIconUrl, both used in this function,
+are defined in the music_player.html template due to django's ability
+to dynamically update urls via the templating system.
 
 Args
 -----------
@@ -257,9 +297,11 @@ function set_play_pause_ui(play) {
   if (play) {
     playPauseImg.src = pauseIconUrl;
     playPauseImg.alt = "pause button image";
+    playPauseBtn.setAttribute("aria-label", "Pause Song Button");
   } else {
     playPauseImg.src = playIconUrl;
     playPauseImg.alt = "play button image";
+    playPauseBtn.setAttribute("aria-label", "Play Song Button");
   }
 }
 
@@ -280,6 +322,27 @@ function update_track_name() {
   trackName.innerHTML = `Track: ${albumData[currentAlbumIndex].tracks[currentSongIndex].song_info.title}`;
 }
 
+/* @function
+This function shows, hides, and focuses appropriate elements when
+the track list is opened or closed for accessibility purposes.
+
+Args
+-----------
+
+- open (default=true): A boolean argument, true meaning that the
+track list will be opened, false meaning it will be closed.
+*/
+function track_list_toggle(open) {
+  if (open) {
+    hide(trackCollapseOpenBtn);
+    hide(downloadBtn);
+    trackCollapseCloseBtn.focus();
+  } else {
+    show(trackCollapseOpenBtn);
+    show(downloadBtn);
+    trackCollapseOpenBtn.focus();
+  }
+}
 /* @function
 This function takes an argument, seconds, and uses that to update
 the timestamp shown on the UI, in the format hh:mm:ss.
@@ -341,6 +404,10 @@ function stop_seek_updates() {
     clearInterval(durationInterval);
     durationInterval = null;
   }
+}
+
+function download_popup() {
+
 }
 
 /***********************Initial Setup Functions***************/
@@ -409,6 +476,7 @@ function setup_track_selection(song_list) {
         var bsCollapse = new bootstrap.Collapse(collapseTrackList, {
           hide: true
         });
+        track_list_toggle(false);
       }
     });
 
@@ -432,6 +500,10 @@ function setup_controls() {
   trackSlider.addEventListener("mousedown", stop_seek_updates);
   trackSlider.addEventListener("mouseup", start_seek_updates);
 
+  trackCollapseOpenBtn.addEventListener("click", () => {track_list_toggle(true)});
+  trackCollapseCloseBtn.addEventListener("click", () => {track_list_toggle(false)});
+
+  downloadBtn.addEventListener("click", download_popup);
 }
 
 /* @function
