@@ -122,14 +122,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="downloadModalLabel">Download Menu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close dl-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>
-            I'm so happy you decided to download some of my music! If you just want to download the song
-            you are currently hearing, click the download button below. If you want to download a different
-            track (or a whole album), use the dropdown boxes below.
+            I'm so happy you decided to download some of my music! Use the form below
+            to pick your song/album.
           </p>
+          <p id="currentlyPlaying"></p>
           <form id="downloadForm" class="">
 
             <div class="form-check my-3">
@@ -151,7 +151,7 @@
 
             </select>
 
-            <label for="songDownloadSelection" class="form-label h4 mt-3">Song to download:</label>
+            <label id="songDownloadSelectionLabel" for="songDownloadSelection" class="form-label h4 mt-3">Song to download:</label>
             <select id="songDownloadSelection" name="songDownloadSelection" class="form-select bg-info text-light">
 
             </select>
@@ -162,7 +162,7 @@
           </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary dl-close" data-bs-dismiss="modal">Close</button>
           <button id="downloadConfirmationBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Download</button>
         </div>
       </div>

@@ -1,5 +1,8 @@
 // Download controls
+let downloadPlayingDuration = null;
 
+/* @var Contains the file type dropdown selection. */
+const downloadModal = document.querySelector("#downloadModal");
 /* @var Contains the download popup button. */
 const downloadPopupBtn = document.querySelector("#downloadPopupBtn");
 /* @var Contains the file type dropdown selection. */
@@ -8,10 +11,16 @@ const fileTypeSelection = document.querySelector("#fileTypeSelection");
 const albumDownloadSelection = document.querySelector("#albumDownloadSelection");
 /* @var Contains the song download dropdown selection. */
 const songDownloadSelection = document.querySelector("#songDownloadSelection");
+/* @var Contains the song download label. */
+const songDownloadSelectionLabel = document.querySelector("#songDownloadSelectionLabel");
 /* @var Contains the checkbox to determine whether a single song is being downloaded. */
-const singleSongDownloadCheck = document.querySelector("#singleSongDownloadCheck");
+const albumDownloadCheck = document.querySelector("#singleSongDownloadCheck");
 /* @var Contains the download confirmation button. */
 const downloadConfirmationBtn = document.querySelector("#downloadConfirmationBtn");
+/* @var Contains the download close buttons. */
+const downloadCloseBtns = document.querySelectorAll(".dl-close");
+/* @var Contains the download confirmation button. */
+const downloadCurrentlyPlayingLabel = document.querySelector("#currentlyPlaying");
 
 /*************** Helper Functions *****************/
 
@@ -25,6 +34,31 @@ Args
 */
 function get_file_extension(file_path) {
   return file_path.slice(file_path.lastIndexOf('.') + 1, file_path.length);
+}
+
+/* @function
+This function takes an element and hides it
+
+Args
+-------------
+
+- element: the element to hide.
+*/
+function hide(element) {
+  element.classList.add("d-none");
+}
+
+/* @function
+**assuming it was hidden by the hide function**, this function
+takes an element and shows it.
+
+Args
+-------------
+
+- element: the element to hide.
+*/
+function show(element) {
+  element.classList.remove("d-none");
 }
 
 /***************Download View ***************/
@@ -42,6 +76,7 @@ function download() {
   } else {
 
   }
+  download_close();
 }
 
 /* @function
@@ -52,6 +87,76 @@ function download_popup() {
   albumDownloadSelection.value = musicPlayer.get_current_album().id;
   setup_track_download_selection(musicPlayer.get_track_list());
   songDownloadSelection.value = musicPlayer.get_current_track().id;
+  start_playing_updates();
+}
+
+/* @function
+This function stops downloadPlayingDuration when the download popup
+closes.
+*/
+function download_close() {
+  stop_playing_updates();
+}
+
+/* @function
+This function updates the "currently playing" display in the download popup
+so that the user can always know what is currently playing when they go to download.
+*/
+function update_currently_playing() {
+  downloadCurrentlyPlayingLabel.innerHTML = `Currently playing: ${musicPlayer.get_current_track().title}<br/> From the Album: ${musicPlayer.get_current_album().title}`;
+  // console.log("update dl playing");
+}
+
+/* @function
+This function starts downloadPlayingDuration, which sends updates
+to the download section's "currently playing."
+*/
+function start_playing_updates() {
+  if (!downloadPlayingDuration) {
+    // console.log("starting dl playing updates");
+    downloadPlayingDuration = setInterval(update_currently_playing, 1000);
+  }
+}
+
+/* @function
+This function stops updates from being sent to the download section's
+"currently playing." via downloadPlayingDuration.
+*/
+function stop_playing_updates() {
+  if (downloadPlayingDuration) {
+    // console.log("stopping dl playing updates");
+    clearInterval(downloadPlayingDuration);
+    downloadPlayingDuration = null;
+  }
+}
+
+/* @function
+This function shows/hides the song selection dropdown when the
+albumDownloadCheck is changed with.
+*/
+function album_download_update() {
+  if (albumDownloadCheck.checked) {
+    songDownloadSelection.disabled = true;
+    hide(songDownloadSelection);
+    hide(songDownloadSelectionLabel);
+  } else {
+    songDownloadSelection.disabled = false;
+    show(songDownloadSelection);
+    show(songDownloadSelectionLabel);
+  }
+}
+
+/* @function
+This function updates the UI accordingly when the selected album
+is changed
+*/
+function album_selection_update(selection) {
+  let albumID = selection.value;
+  for (const [index, album] of musicPlayer.all_data().entries()) {
+    if (album.id == albumID) {
+      setup_track_download_selection(album.tracks);
+    }
+  }
 }
 
 /************ Download Setup****************/
@@ -80,14 +185,16 @@ function setup_album_download_selection(albums) {
   }
 
   // add a change listener to setup the track download selection
-  albumDownloadSelection.addEventListener("change", function() {
-    let albumID = this.value;
-    for (const [index, album] of musicPlayer.all_data().entries()) {
-      if (album.id == albumID) {
-        setup_track_download_selection(album.tracks);
-      }
-    }
-  });
+  albumDownloadSelection.addEventListener("change", (e) => { album_selection_update(e.target) });
+
+  albumDownloadCheck.addEventListener("change", album_download_update);
+
+  for (const btn of downloadCloseBtns) {
+    btn.addEventListener("click", download_close);
+  }
+
+  //setup the download_close function when user clicks outside modal
+  downloadModal.addEventListener('hidden.bs.modal', download_close);
 
   downloadPopupBtn.addEventListener("click", download_popup);
 }
