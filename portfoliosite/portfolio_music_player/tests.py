@@ -138,6 +138,15 @@ class AlbumTests(TestCase):
             self.assertTrue(album.sales_links, msg="get_albums_with_sales_links failed to return track info.")
             self.assertLessEqual(album.release_date, date.today(), msg="Album that has not been released yet was returned by get_released_albums_with_sales_links")
 
+    def test_get_album_by_id(self):
+        """test the queryset get_album_by_id"""
+        albums = Album.albums.all()
+
+        for album in albums:
+            id_test = Album.albums.get_album_by_id(album.id)
+            self.assertEqual(album.id, id_test.id, msg="get_albums_with_song_files returned the wrong album.")
+
+
 class SongTests(TestCase):
     """Sets up tests for Song model"""
 
@@ -170,7 +179,7 @@ class SongTests(TestCase):
 
         for song in songs:
             id_test = Song.songs.get_song_by_id(song.id)
-            self.assertEqual(song.id, id_test.id, msg="get_songs_with_song_files returned nothing.")
+            self.assertEqual(song.id, id_test.id, msg="get_songs_with_song_files returned the wrong song.")
 
 class TrackNumberTests(TestCase):
     """Sets up tests for Track_Number model"""

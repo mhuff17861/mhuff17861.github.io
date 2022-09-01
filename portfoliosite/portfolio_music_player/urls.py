@@ -14,6 +14,7 @@ urlpatterns = [
     path('albums/', views.AlbumListView.as_view(), name='albums'),
     path('songs/', views.SongListView.as_view(), name='songs'),
     path('songs/download/<int:id>/<str:file_type>', views.download_song, name='download_song'),
+    path('albums/download/<int:id>/<str:file_type>', views.download_album, name='download_album'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

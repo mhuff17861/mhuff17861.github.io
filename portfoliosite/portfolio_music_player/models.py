@@ -37,6 +37,11 @@ class Album_QuerySet(models.QuerySet):
         logger.debug("Retrieving **released** albums with sales link info.")
         return self.filter(release_date__lte=date.today()).order_by('release_date').prefetch_related('sales_links')
 
+    def get_album_by_id(self, id):
+        """Retrieves the album mathing the id parameter"""
+        logger.debug(f"Retrieving album with id: {id}")
+        return self.filter(id=id)[0]
+
 class Album(models.Model):
     """
         Album model. Basic information needed for an album

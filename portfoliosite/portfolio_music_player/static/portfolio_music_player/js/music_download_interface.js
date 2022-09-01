@@ -63,12 +63,21 @@ function show(element) {
 
 /***************Download View ***************/
 
-function download() {
-  if (albumDownloadCheck.checked) {
-    console.log("album download");
+/* @function
+This function downloads either an album or a song when
+downloadConfirmationBtn is clicked, based on the value of
+albumDownloadCheck.checked. It then closes the download window.
 
+*/
+function download() {
+  // Check if it should download album or song.
+  if (albumDownloadCheck.checked) {
+    // console.log("album download");
+    let album = musicPlayer.get_album_by_id(albumDownloadSelection.value);
+    let url = `albums/download/${albumDownloadSelection.value}/${fileTypeSelection.value}`;
+    window.open(url);
   } else {
-    console.log("single song download");
+    // console.log("single song download");
     let track = musicPlayer.get_track_by_id(songDownloadSelection.value, albumDownloadSelection.value);
 
     for (file of track.files) {
