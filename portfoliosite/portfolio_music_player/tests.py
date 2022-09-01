@@ -164,6 +164,14 @@ class SongTests(TestCase):
         for i, song in enumerate(songs):
             self.assertTrue(song.song_files, msg="get_songs_with_song_files failed to return song files.")
 
+    def test_get_song_by_id(self):
+        """test the queryset get_song_by_id"""
+        songs = Song.songs.all()
+
+        for song in songs:
+            id_test = Song.songs.get_song_by_id(song.id)
+            self.assertEqual(song.id, id_test.id, msg="get_songs_with_song_files returned nothing.")
+
 class TrackNumberTests(TestCase):
     """Sets up tests for Track_Number model"""
 

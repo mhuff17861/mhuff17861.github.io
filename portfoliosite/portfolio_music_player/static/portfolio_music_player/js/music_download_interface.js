@@ -64,17 +64,22 @@ function show(element) {
 /***************Download View ***************/
 
 function download() {
-  if (singleSongDownloadCheck.checked) {
-    let tracks = albumData[find_album_index_by_id(albumDownloadSelection.value)].tracks;
-    let track = tracks[find_song_index_by_id(songDownloadSelection.value, albumDownloadSelection.value)];
+  if (albumDownloadCheck.checked) {
+    console.log("album download");
+
+  } else {
+    console.log("single song download");
+    let track = musicPlayer.get_track_by_id(songDownloadSelection.value, albumDownloadSelection.value);
 
     for (file of track.files) {
+      // console.log(get_file_extension(file));
       if (get_file_extension(file) == fileTypeSelection.value) {
-        //download
+        // console.log(`downloading file: file`);
+        let url = `songs/download/${songDownloadSelection.value}/${fileTypeSelection.value}`;
+        window.open(url);
+        break;
       }
     }
-  } else {
-
   }
   download_close();
 }
@@ -197,6 +202,8 @@ function setup_album_download_selection(albums) {
   downloadModal.addEventListener('hidden.bs.modal', download_close);
 
   downloadPopupBtn.addEventListener("click", download_popup);
+
+  downloadConfirmationBtn.addEventListener("click", download);
 }
 
 /* @function
@@ -247,4 +254,5 @@ function setup_track_download_selection(track_list) {
     option.innerHTML = type;
     fileTypeSelection.appendChild(option);
   }
+
 }

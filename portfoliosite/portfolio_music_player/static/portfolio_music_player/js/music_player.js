@@ -51,6 +51,10 @@ class MusicPlayer {
     return this.albumList[this.currentAlbumIndex].tracks[this.currentTrackIndex];
   }
 
+  get_track_by_id(songID, albumID) {
+    return this.albumList[this.find_album_index_by_id(albumID)].tracks[this.find_track_index_by_id(songID)]
+  }
+
   duration() {
     if (this.howlerContainer && this.howlerContainer.state() == "loaded") {
       return this.howlerContainer.duration();

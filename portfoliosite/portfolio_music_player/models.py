@@ -84,6 +84,11 @@ class Song_QuerySet(models.QuerySet):
         logger.debug("Retrieving songs with song file info.")
         return self.all().prefetch_related('song_files')
 
+    def get_song_by_id(self, id):
+        """Retrieves the song mathing the id parameter"""
+        logger.debug(f"Retrieving song with id: {id}")
+        return self.filter(id=id)[0]
+
 class Song(models.Model):
     """
         Song model. Sets up the basic information needed for a song to be stored and
