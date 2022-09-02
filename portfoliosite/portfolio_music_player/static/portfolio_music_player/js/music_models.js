@@ -28,7 +28,20 @@ class Song {
     this.title = song_json.title;
     this.description = song_json.description;
     this.price = song_json.price;
-    this.files = song_json.song_files;
+    this.files = Song.format_files(song_json.song_files);
+  }
+
+  static format_files(files_array) {
+    //preferred web order for files to be played in
+    const sortingArr = ['oga', 'ogg', 'webm', 'aac', 'mp3', 'flac', 'wav'];
+
+    return files_array.slice().sort(function(a, b){
+      return sortingArr.indexOf(Song.get_file_extension(a)) - sortingArr.indexOf(Song.get_file_extension(b));
+    });
+  }
+
+  static get_file_extension(file_path) {
+    return file_path.slice(file_path.lastIndexOf('.') + 1, file_path.length);
   }
 }
 

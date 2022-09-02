@@ -129,6 +129,8 @@ class MusicPlayer {
     // do this because "this" in javascript refers to caller not original obj
     let that = this;
 
+    // Check if track array was sorted
+    // console.log(`Track File List: ${track.files}`);
 
     this.howlerContainer = new Howl({
       src: track.files,
