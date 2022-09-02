@@ -205,8 +205,9 @@ based on the value returned by howlerContainer.seek().
 */
 function update_seek_tracking() {
   // console.log("Updating slider position to: ", howlerContainer.seek());
-  trackSlider.value = musicPlayer.seek();
-  set_track_timestamp(musicPlayer.seek())
+  let time = musicPlayer.seek()
+  set_track_timestamp(time)
+  trackSlider.value = time;
 }
 
 /* @function
@@ -239,8 +240,15 @@ a new track.
 function on_track_load() {
   update_album_info();
   update_track_name();
-  set_play_pause_ui(true);
   reset_slider_values();
+}
+
+/* @function
+This function runs all necessary UI updates once howlerContainer loads
+a new track.
+*/
+function on_track_play() {
+  set_play_pause_ui(true);
   start_seek_updates();
 }
 
@@ -341,7 +349,7 @@ function setup_track_selection(track_list) {
     btn.setAttribute("value", track.id);
     btn.innerHTML = track.title;
     btn.addEventListener("click", function() {
-      musicPlayer.select_track(this.value, albumSelectionContainer.value);
+      musicPlayer.select_track(true, this.value, albumSelectionContainer.value);
       var bsCollapse = new bootstrap.Collapse(collapseTrackList, {
         hide: true
       });

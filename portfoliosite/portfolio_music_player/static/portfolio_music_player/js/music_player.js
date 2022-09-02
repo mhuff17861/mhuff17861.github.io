@@ -13,16 +13,18 @@
 class MusicPlayer {
   howlerContainer;
   onload;
+  onplay;
   albumList;
   currentAlbumIndex = 0;
   currentTrackIndex = 0;
 
-  constructor(albums_json, onload) {
+  constructor(albums_json, onload, onplay) {
     this.albumList = [];
     for (const album of albums_json) {
       this.albumList.push(new Album(album));
     }
     this.onload = onload;
+    this.onplay = onplay;
   }
 
   /**************** Getters ***************/
@@ -100,10 +102,14 @@ class MusicPlayer {
   Args
   ----------------
 
+  - autoplay (*optional*, default=false): boolean deciding whether the
+  track will autoplay after selection.
   - track_id (*optional*): if given, the function will play the track with
   the given id.
+  - album_id (*optional*): if given, the function will play the track with
+  the given id from the given album id.
   */
-  select_track(track_id = null, album_id = null) {
+  select_track(autoplay=false, track_id = null, album_id = null) {
     // If a track_id was given, means album change. So, do that and get track.
     if (track_id != null) {
       // Double check if album was changed in the view. If so, change album.
@@ -134,8 +140,10 @@ class MusicPlayer {
 
     this.howlerContainer = new Howl({
       src: track.files,
-      autoplay: true,
+      html5: true, //enable streaming
+      autoplay: autoplay,
       onload: this.onload,
+      onplay: this.onplay,
       onend: () => { return that.next_track() }
     });
 
@@ -172,7 +180,7 @@ class MusicPlayer {
         this.currentTrackIndex = 0;
       }
 
-      return this.select_track();
+      return this.select_track(true);
     }
   }
 
@@ -187,7 +195,7 @@ class MusicPlayer {
        this.currentTrackIndex = this.albumList[this.currentAlbumIndex].tracks.length - 1;
       }
 
-      return this.select_track();
+      return this.select_track(true);
     }
   }
 

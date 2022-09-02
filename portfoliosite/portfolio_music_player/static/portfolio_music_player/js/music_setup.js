@@ -11,7 +11,7 @@ is retrieved. It runs all other necessary setup functions for the
 music player.
 */
 function setup_player(albumData) {
-  musicPlayer = new MusicPlayer(albumData, on_track_load);
+  musicPlayer = new MusicPlayer(albumData, on_track_load, on_track_play);
   setup_album_selection(musicPlayer.all_data());
   setup_track_selection(musicPlayer.get_track_list());
   setup_album_download_selection(musicPlayer.all_data())
