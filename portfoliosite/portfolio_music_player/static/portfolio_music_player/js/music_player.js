@@ -245,4 +245,28 @@ class MusicPlayer {
 
     return this.currentAlbumIndex;
   }
+
+  download(window_inst, file_type, album_id, song_id=null) {
+      if (song_id == null) {
+        // console.log("album download");
+        let album = this.get_album_by_id(album_id);
+        let url = `albums/download/${album_id}/${file_type}`;
+        window_inst.open(url)
+      } else {
+        // console.log("single song download");
+        let track = this.get_track_by_id(songDownloadSelection.value, albumDownloadSelection.value);
+
+        for (const file of track.files) {
+          // console.log(Song.get_file_extension(file));
+          if (Song.get_file_extension(file) == file_type) {
+            // console.log(`downloading file: file`);
+            let url = `songs/download/${song_id}/${file_type}`;
+            window_inst.open(url);
+            break;
+          }
+        }
+      }
+  }
+
+
 }

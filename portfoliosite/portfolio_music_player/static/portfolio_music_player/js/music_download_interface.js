@@ -25,18 +25,6 @@ const downloadCurrentlyPlayingLabel = document.querySelector("#currentlyPlaying"
 /*************** Helper Functions *****************/
 
 /* @function
-This function takes a file path and returns the file extension.
-
-Args
--------------
-
-- file_path: File path from which the extension will be found.
-*/
-function get_file_extension(file_path) {
-  return file_path.slice(file_path.lastIndexOf('.') + 1, file_path.length);
-}
-
-/* @function
 This function takes an element and hides it
 
 Args
@@ -69,26 +57,12 @@ downloadConfirmationBtn is clicked, based on the value of
 albumDownloadCheck.checked. It then closes the download window.
 
 */
-function download() {
+function download_click() {
   // Check if it should download album or song.
   if (albumDownloadCheck.checked) {
-    // console.log("album download");
-    let album = musicPlayer.get_album_by_id(albumDownloadSelection.value);
-    let url = `albums/download/${albumDownloadSelection.value}/${fileTypeSelection.value}`;
-    window.open(url);
+    musicPlayer.download(window, fileTypeSelection.value, albumDownloadSelection.value);
   } else {
-    // console.log("single song download");
-    let track = musicPlayer.get_track_by_id(songDownloadSelection.value, albumDownloadSelection.value);
-
-    for (file of track.files) {
-      // console.log(get_file_extension(file));
-      if (get_file_extension(file) == fileTypeSelection.value) {
-        // console.log(`downloading file: file`);
-        let url = `songs/download/${songDownloadSelection.value}/${fileTypeSelection.value}`;
-        window.open(url);
-        break;
-      }
-    }
+    musicPlayer.download(window, fileTypeSelection.value, albumDownloadSelection.value, songDownloadSelection.value);
   }
   download_close();
 }
@@ -212,7 +186,7 @@ function setup_album_download_selection(albums) {
 
   downloadPopupBtn.addEventListener("click", download_popup);
 
-  downloadConfirmationBtn.addEventListener("click", download);
+  downloadConfirmationBtn.addEventListener("click", download_click);
 }
 
 /* @function
@@ -248,7 +222,7 @@ function setup_track_download_selection(track_list) {
   // get file types
   for (const file of track_list[0].files) {
     // console.log("File found: ", file)
-    type = get_file_extension(file);
+    type = Song.get_file_extension(file);
     // console.log("Type found: ", type)
 
     if (!typeList.includes(type)) {

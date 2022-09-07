@@ -40,6 +40,14 @@ class Song {
     });
   }
 
+  /* @function
+  This function takes a file path and returns the file extension.
+
+  Args
+  -------------
+
+  - file_path: File path from which the extension will be found.
+  */
   static get_file_extension(file_path) {
     return file_path.slice(file_path.lastIndexOf('.') + 1, file_path.length);
   }
