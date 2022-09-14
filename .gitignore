@@ -22,3 +22,5 @@ portfoliosite/static/admin
 general.log
 credentials.json
 \\
+
+portfoliosite/geckodriver.log

@@ -65,6 +65,10 @@ class MusicPlayer {
     return 0;
   }
 
+  playing() {
+    return this.howlerContainer.playing();
+  }
+
   /*************** Setters *********/
 
   /* @function

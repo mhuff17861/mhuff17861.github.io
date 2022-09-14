@@ -3,12 +3,22 @@
     their respective functions are all operating properly.
 """
 from django.test import TestCase, override_settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.urls import reverse
 import shutil
 from datetime import date
+import time
 from .models import Album, Song, Song_File, Track_Number, Album_Sales_Link
 from .factories import *
 import factory.random
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By #Me too, selenium, me too.
+from selenium.webdriver.common.keys import Keys
 
 TEST_DIR = 'test_data'
 
@@ -218,3 +228,162 @@ class AlbumSalesLinkTests(TestCase):
             self.assertTrue(links, msg="get_sales_links_for_album failed to return data")
             for link in links:
                 self.assertEqual(link.album_id.id, album.id, msg="get_sales_links_for_album retrieved links for the wrong album")
+
+@override_settings(MEDIA_ROOT=(TEST_DIR + '/media'))
+class ChromeMusicPlayerTest(StaticLiveServerTestCase):
+    """
+    Sets up tests for the music player in the Chrome browser.
+    Requires a settings override for dynamic media request to work, given
+    that the test storage directory is different.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+            Data generation for model testing
+        """
+        setup_data()
+
+    @classmethod
+    def setUpClass(cls):
+        """Sets up the selenium web driver"""
+        super().setUpClass()
+        print('Setting up Chrome web driver...\n')
+        cls.selenium = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        cls.setUpTestData()
+
+    @classmethod
+    def tearDownClass(cls):
+        """Tears down the selenium web driver"""
+        cls.selenium.quit()
+        super().tearDownClass()
+
+    def player_initialized(self, driver):
+        """Returns True if player is initialized, false if not"""
+        return self.selenium.find_element(by=By.ID, value='trackName').text != 'Loading...'
+
+    def get_track_title(self, qs, index):
+        return qs[0].tracks.all()[index].song_id.title
+
+    def test_base_controls(self):
+        """Test the play, pause, next, previous, and scan controls"""
+        self.selenium.get(f'{self.live_server_url}/music/')
+
+        initialized = WebDriverWait(self.selenium, timeout=10).until(self.player_initialized)
+
+        if initialized:
+            play_btn = self.selenium.find_element(by=By.ID, value='playPauseBtn')
+            next_btn = self.selenium.find_element(by=By.ID, value='nextBtn')
+            prev_btn = self.selenium.find_element(by=By.ID, value='prevBtn')
+            track_slider = self.selenium.find_element(by=By.ID, value='trackSlider')
+            track_name = self.selenium.find_element(by=By.ID, value='trackName')
+            album_name = self.selenium.find_element(by=By.ID, value='albumName')
+            albums = Album.albums.get_released_albums_with_track_info()
+
+            # Used to decide slice index for testing album and track titles
+            # View currently adds Album: and Track: to the front of titles
+            album_slice = 7
+            track_slice = 7
+
+            # Wait times between interactions
+            wait = 2
+
+            # Initial setup check
+            self.assertEqual(album_name.text[album_slice:], albums[0].title, msg='Wrong album name displayed')
+            self.assertEqual(track_name.text[track_slice:], self.get_track_title(albums, 0), msg='Wrong track name displayed')
+
+            # It won't press buttons not in view so enjoy the bad scroll hack :)
+            self.selenium.execute_script('window.scrollBy(0,250)')
+
+            #initial play check
+            time.sleep(wait)
+            play_btn.click()
+            time.sleep(wait)
+            self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing')
+
+            # Next Check
+            next_btn.click()
+            time.sleep(wait)
+            self.assertEqual(album_name.text[album_slice:], albums[0].title, msg='Wrong album name displayed after next button pressed')
+            self.assertEqual(track_name.text[track_slice:], self.get_track_title(albums, 1), msg='Wrong track name displayed after next button pressed')
+            self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after next button pressed')
+
+            # Previous Check
+            prev_btn.click()
+            time.sleep(wait)
+            self.assertEqual(album_name.text[album_slice:], albums[0].title, msg='Wrong album name displayed after previous button pressed')
+            self.assertEqual(track_name.text[track_slice:], self.get_track_title(albums, 0), msg='Wrong track name displayed after previous button pressed')
+            self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after previous button pressed')
+
+            # Previous first to last track check
+            prev_btn.click()
+            time.sleep(wait)
+            self.assertEqual(album_name.text[album_slice:], albums[0].title, msg='Wrong album name displayed after previous button pressed while playing first track')
+            self.assertEqual(track_name.text[track_slice:], self.get_track_title(albums, len(albums[0].tracks.all())-1), msg='Wrong track name displayed after previous button pressed while playing first track')
+            self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after previous button pressed while playing first track')
+
+            # Next last to first track check
+            next_btn.click()
+            time.sleep(wait)
+            self.assertEqual(album_name.text[album_slice:], albums[0].title, msg='Wrong album name displayed after next button pressed while playing last track')
+            self.assertEqual(track_name.text[track_slice:], self.get_track_title(albums, 0), msg='Wrong track name displayed after next button pressed while playing last track')
+            self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after next button pressed  while playing last track')
+
+            # Seek Check
+            seek_check = float(track_slider.get_attribute('value'))
+            for i in range(10):
+                track_slider.send_keys(Keys.RIGHT)
+
+            time.sleep(wait)
+            self.assertGreater(float(track_slider.get_attribute('value')), seek_check, msg='Track slider did not react to input')
+            self.assertGreater(self.selenium.execute_script('return musicPlayer.seek()'), seek_check, msg='Music player did not seek when track slider was interacted with')
+
+            # Auto next check
+            for i in range(self.selenium.execute_script('return musicPlayer.duration()') - 10):
+                track_slider.send_keys(Keys.RIGHT)
+
+            time.sleep(wait)
+
+            self.assertEqual(album_name.text[album_slice:], albums[0].title, msg='Album changed when the next song was automatically played')
+            self.assertEqual(track_name.text[track_slice:], self.get_track_title(albums, 1), msg='Wrong track name displayed after a song was completed and the next song was autoplayed')
+            self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after the previous song was completed')
+
+        else:
+            self.assertTrue(False, msg='Music player never initialized')
+
+
+    def test_track_list(self):
+        """Test the track list display and interaction"""
+        pass
+
+    def test_download(self):
+        """Test the download UI and functionality"""
+        pass
+
+@override_settings(MEDIA_ROOT=(TEST_DIR + '/media'))
+class FirefoxMusicPlayerTest(StaticLiveServerTestCase):
+    """
+    Sets up tests for the music player in the Firefox browser.
+    Requires a settings override for dynamic media request to work, given
+    that the test storage directory is different.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Sets up the selenium web driver"""
+        super().setUpClass()
+        cls.selenium = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+
+
+    @classmethod
+    def tearDownClass(cls):
+        """Tears down the selenium web driver"""
+        cls.selenium.quit()
+        super().tearDownClass()
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+            Data generation for model testing
+        """
+        setup_data()
