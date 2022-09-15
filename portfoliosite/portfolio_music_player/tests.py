@@ -6,8 +6,11 @@ from django.test import TestCase, override_settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.urls import reverse
 import shutil
-from datetime import date
+import os
 import time
+import fnmatch
+from pathlib import Path
+from datetime import date
 from .models import Album, Song, Song_File, Track_Number, Album_Sales_Link
 from .factories import *
 import factory.random
@@ -51,7 +54,6 @@ def setup_data():
 
 def tearDownModule():
     """Deletes temporary files made for testing"""
-    print("\nDeleting temporary files...\n")
     try:
         shutil.rmtree(TEST_DIR)
     except OSError:
@@ -266,7 +268,6 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
     def setUp(self):
         setup_data()
         # Setup web driver
-        print('Setting up Chrome web driver...\n')
         self.selenium = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
     def tearDown(self):
@@ -284,6 +285,13 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
     def get_track_id(self, qs, album_index, song_index):
         """Gets a track id based on the specified album and song index."""
         return qs[album_index].tracks.all()[song_index].song_id.id
+
+    def get_track_files(self, qs, album_index, song_index):
+        """Gets a track's file types based on the specified album and song index."""
+        return qs[album_index].tracks.all()[song_index].song_id.song_files.all()
+
+    def get_file_extension(self, file_path):
+        return file_path[file_path.rfind('.') + 1:]
 
     def open_test_page(self):
         """Opens the music player page for testing, if not already opened"""
@@ -477,20 +485,62 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
             time.sleep(self.wait + 2)
             album_selection_object = Select(album_selection)
             track_selection_object = Select(track_selection)
+            file_type_selection_object = Select(file_type_selection)
 
             for i, album in enumerate(album_selection_object.options):
                 album_selection_object.select_by_value(str(albums[i].id))
                 self.assertEqual(album_selection_object.first_selected_option.text, albums[i].title, msg="Album option does not match associated title")
+
+                # Check File Types
+                file_list = self.get_track_files(albums, i, 0)
+                for j, file_type in enumerate(file_list):
+                    extension = self.get_file_extension(file_type.file.name)
+                    file_type_selection_object.select_by_value(extension)
+                    self.assertEqual(file_type_selection_object.first_selected_option.text, extension, msg="File type option does not match available files")
+
+                # Check Songs
                 for j, track in enumerate(track_selection_object.options):
                     track_selection_object.select_by_value(str(self.get_track_id(albums, i, j)))
                     self.assertEqual(track_selection_object.first_selected_option.text, str(self.get_track_title(albums, i, j)), msg="Track option does not match associated title")
 
-            # Test UI Responses
-
+            # Test checkbox
+            album_download_check.click()
+            self.assertFalse(track_selection.is_displayed(), msg='Track selection still displayed after selecting album download')
+            self.assertTrue(album_download_check.get_attribute('checked'), msg='album download checkbox did not respond to being checked')
+            album_download_check.click()
+            self.assertFalse(album_download_check.get_attribute('checked'), msg='album download checkbox did not respond to being unchecked')
+            self.assertTrue(track_selection.is_displayed(), msg='Track selection not displayed after unselecting album download')
 
             # Test song download
+            fname = track_selection_object.first_selected_option.text
+            download_path = str(Path.home() / "Downloads")
+            download_btn.click()
+            time.sleep(self.wait + 2)
+
+            found = False
+            for filename in os.listdir(download_path):
+                if fnmatch.fnmatch(filename, f'river*'):
+                    found = True
+                    os.remove(f'{download_path}/{filename}')
+                    break
+
+            self.assertTrue(found, msg='Song download failed')
 
             # Test album download
+            download_open_btn.click()
+            time.sleep(self.wait + 2)
+            album_download_check.click()
+            fname = album_selection_object.first_selected_option.text
+            download_btn.click()
+            time.sleep(self.wait + 2)
+            found = False
+            for filename in os.listdir(download_path):
+                if fnmatch.fnmatch(filename, f'{fname}*'):
+                    found = True
+                    os.remove(f'{download_path}/{filename}')
+                    break
+
+            self.assertTrue(found, msg='Album download failed')
 
         else:
             self.assertTrue(False, msg='Music player never initialized')
