@@ -122,7 +122,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="downloadModalLabel">Download Menu</h5>
-          <button type="button" class="btn-close dl-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button id="topCloseBtn" type="button" class="btn-close dl-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>
@@ -133,10 +133,10 @@
           <form id="downloadForm" class="">
 
             <div class="form-check my-3">
-              <label class="form-check-label" for="singleSongDownloadCheck">
+              <label class="form-check-label" for="albumDownloadCheck">
                 Download full album.
               </label>
-              <input class="form-check-input" type="checkbox" value="" id="singleSongDownloadCheck">
+              <input class="form-check-input" type="checkbox" value="" id="albumDownloadCheck">
             </div>
 
             <label for="fileTypeSelection" class="form-label h4">File type (mp3 recommended):</label>
@@ -162,7 +162,7 @@
           </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary dl-close" data-bs-dismiss="modal">Close</button>
+          <button id="bottomCloseBtn" type="button" class="btn btn-secondary dl-close" data-bs-dismiss="modal">Close</button>
           <button id="downloadConfirmationBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Download</button>
         </div>
       </div>

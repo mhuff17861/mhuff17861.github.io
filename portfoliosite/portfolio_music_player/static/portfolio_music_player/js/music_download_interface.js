@@ -14,7 +14,7 @@ const songDownloadSelection = document.querySelector("#songDownloadSelection");
 /* @var Contains the song download label. */
 const songDownloadSelectionLabel = document.querySelector("#songDownloadSelectionLabel");
 /* @var Contains the checkbox to determine whether a single song is being downloaded. */
-const albumDownloadCheck = document.querySelector("#singleSongDownloadCheck");
+const albumDownloadCheck = document.querySelector("#albumDownloadCheck");
 /* @var Contains the download confirmation button. */
 const downloadConfirmationBtn = document.querySelector("#downloadConfirmationBtn");
 /* @var Contains the download close buttons. */

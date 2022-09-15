@@ -11,6 +11,7 @@ The purpose of this project is to build a portfolio website for myself using Dja
 - Node Package Manager 8.12^
 - Python 3.10 (Go higher at your own risk, newest at time of original development)
 - Postgre Database 14.0^
+- Chrome and Firefox for automated selenium testing
 
 ## Setup (aiming to automate later, check full-automation branch)
 
