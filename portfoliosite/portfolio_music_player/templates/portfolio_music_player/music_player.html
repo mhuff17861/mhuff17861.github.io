@@ -7,17 +7,18 @@
 {% endcomment %}
 
 {% load static %}
+{% load version %}
 
 {% block title %} Music Player {% endblock %}
 
 {% block head-add %}
-<!-- NOTE: Replace this with npm version once certain things are working ggenerally -->
-<script src="{% static 'portfolio_music_player/js/howler.min.js' %}" ></script>
-<script src="{% static 'portfolio_music_player/js/music_models.js' %}" defer></script>
-<script src="{% static 'portfolio_music_player/js/music_player.js' %}" defer></script>
-<script src="{% static 'portfolio_music_player/js/music_player_interface.js' %}" defer></script>
-<script src="{% static 'portfolio_music_player/js/music_download_interface.js' %}" defer></script>
-<script src="{% static 'portfolio_music_player/js/music_setup.js' %}" defer></script>
+
+<script src="{% static 'portfolio_music_player/js/howler.min.js' %}?v={% version %}" ></script>
+<script src="{% static 'portfolio_music_player/js/music_models.js' %}?v={% version %}" defer></script>
+<script src="{% static 'portfolio_music_player/js/music_player.js' %}?v={% version %}" defer></script>
+<script src="{% static 'portfolio_music_player/js/music_player_interface.js' %}?v={% version %}" defer></script>
+<script src="{% static 'portfolio_music_player/js/music_download_interface.js' %}?v={% version %}" defer></script>
+<script src="{% static 'portfolio_music_player/js/music_setup.js' %}?v={% version %}" defer></script>
 {% endblock %}
 
 {% block main-content %}
@@ -83,7 +84,7 @@
 
         <div class="p-3" id="mainPlayer">
           <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
-          <img src="{% static 'portfolio_music_player/img/loader.gif' %}" alt="Album Cover" class="img-fluid mx-auto d-block" id="albumCover">
+          <img src="{% static 'portfolio_music_player/img/loader.gif' %}?v={% version %}" alt="Album Cover" class="img-fluid mx-auto d-block" id="albumCover">
 
           <div class="d-flex flex-column mt-2 fs-5">
             <p class="align-self-center text-center" id="trackName">Loading...</p>
@@ -101,13 +102,13 @@
           <!-- Buttons for days -->
           <div class="btn-group btn-group-lg d-flex justify-content-center mb-3">
             <button class="btn btn-info border" id="prevBtn" name="prevBtn" aria-label="Previous Song Button">
-              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/prev_icon.svg' %}" alt="previous button image">
+              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/prev_icon.svg' %}?v={% version %}" alt="previous button image">
             </button>
             <button class="btn btn-info border" id="playPauseBtn" name="playPauseBtn" aria-label="Play Song Button">
-              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/play_icon.svg' %}" id="playPauseImg" alt="playbutton image">
+              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/play_icon.svg' %}?v={% version %}" id="playPauseImg" alt="playbutton image">
             </button>
             <button class="btn btn-info border" id="nextBtn" name="nextBtn" aria-label="Next Song Button">
-              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/next_icon.svg' %}" alt="next button image">
+              <img class="img-fluid" width="40em" height="40em" src="{% static 'portfolio_music_player/img/next_icon.svg' %}?v={% version %}" alt="next button image">
             </button>
           </div>
         </div>

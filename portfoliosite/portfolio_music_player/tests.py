@@ -1,6 +1,6 @@
 """
-    This file contains the tests which are used to verify that the resume app's models, views, templates, and
-    their respective functions are all operating properly.
+    This file contains the tests which are used to verify that the portfolio_music_player app and
+    it's respective functions are all operating properly.
 """
 from django.test import TestCase, override_settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
