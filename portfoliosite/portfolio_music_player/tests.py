@@ -551,7 +551,7 @@ class MusicPlayerUIGenericTest(StaticLiveServerTestCase):
 
 class ChromeMusicPlayerTest(MusicPlayerUIGenericTest):
     """
-    Sets up tests for the music player in the Firefox browser, inheriting
+    Sets up tests for the music player in the Chrome browser, inheriting
     from MusicPlayerUIGenericTest.
     """
 
