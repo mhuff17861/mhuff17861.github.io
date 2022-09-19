@@ -233,11 +233,13 @@ class AlbumSalesLinkTests(TestCase):
                 self.assertEqual(link.album_id.id, album.id, msg="get_sales_links_for_album retrieved links for the wrong album")
 
 @override_settings(MEDIA_ROOT=(TEST_DIR + '/media'))
-class ChromeMusicPlayerTest(StaticLiveServerTestCase):
+class MusicPlayerUIGenericTest(StaticLiveServerTestCase):
     """
-    Sets up tests for the music player in the Chrome browser.
-    Requires a settings override for dynamic media request to work, given
-    that the test storage directory is different.
+    Generic class for UI testing across browsers. Meant to be inherited from.
+
+    Must be given a selenium driver via an overriden setUp function. Additionally,
+    the override should call super().setUp() unless the user wants to customize the
+    data generation for testing.
     """
 
     album_slice = 7
@@ -257,6 +259,9 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
     test_url = ''
     """Url used for testing"""
 
+    selenium = None
+    """The variable used to store the selenium driver when inherited"""
+
     @classmethod
     def setUpClass(cls):
         """Sets up the selenium web driver"""
@@ -267,8 +272,6 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
 
     def setUp(self):
         setup_data()
-        # Setup web driver
-        self.selenium = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
     def tearDown(self):
         self.selenium.quit()
@@ -298,7 +301,7 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
         if self.selenium.current_url != self.test_url:
             self.selenium.get(self.test_url)
 
-    def test_base_controls(self):
+    def player_controls_test(self):
         """Test the play, pause, next, previous, and scan controls"""
         self.open_test_page()
 
@@ -379,7 +382,7 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
             self.assertTrue(False, msg='Music player never initialized')
 
 
-    def test_track_list(self):
+    def track_list_test(self):
         """Test the track list display and interaction"""
         self.open_test_page()
 
@@ -443,7 +446,7 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
         else:
             self.assertTrue(False, msg='Music player never initialized')
 
-    def test_download(self):
+    def download_test(self):
         """Test the download UI and functionality"""
         self.open_test_page()
 
@@ -545,30 +548,51 @@ class ChromeMusicPlayerTest(StaticLiveServerTestCase):
         else:
             self.assertTrue(False, msg='Music player never initialized')
 
-@override_settings(MEDIA_ROOT=(TEST_DIR + '/media'))
-class FirefoxMusicPlayerTest(StaticLiveServerTestCase):
+
+class ChromeMusicPlayerTest(MusicPlayerUIGenericTest):
     """
-    Sets up tests for the music player in the Firefox browser.
-    Requires a settings override for dynamic media request to work, given
-    that the test storage directory is different.
+    Sets up tests for the music player in the Firefox browser, inheriting
+    from MusicPlayerUIGenericTest.
     """
 
-    @classmethod
-    def setUpClass(cls):
-        """Sets up the selenium web driver"""
-        super().setUpClass()
-        cls.selenium = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
-
-
-    @classmethod
-    def tearDownClass(cls):
-        """Tears down the selenium web driver"""
-        cls.selenium.quit()
-        super().tearDownClass()
-
-    @classmethod
-    def setUpTestData(cls):
+    def setUp(self):
         """
             Data generation for model testing
         """
-        setup_data()
+        super().setUp()
+
+        # Setup web driver
+        self.selenium = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+
+    def test_player_controls(self):
+        self.player_controls_test()
+
+    def test_track_list(self):
+        self.track_list_test()
+
+    def test_download(self):
+        self.download_test()
+
+# class FirefoxMusicPlayerTest(MusicPlayerUIGenericTest):
+#     """
+#     Sets up tests for the music player in the Firefox browser, inheriting
+#     from MusicPlayerUIGenericTest.
+#     """
+#
+#     def setUp(self):
+#         """
+#             Data generation for model testing
+#         """
+#         super().setUp()
+#
+#         # Setup web driver
+#         self.selenium = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+#
+#     def test_player_controls(self):
+#         self.player_controls_test()
+#
+#     def test_track_list(self):
+#         self.track_list_test()
+#
+#     def test_download(self):
+#         self.download_test()
