@@ -9,6 +9,7 @@
     "gulp-clean": "^0.4.0",
     "gulp-cli": "^2.3.0",
     "gulp-sass": "^5.1.0",
+    "howler": "^2.2.3",
     "sass": "^1.51.0"
   },
   "scripts": {
