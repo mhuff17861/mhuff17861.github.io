@@ -31,12 +31,12 @@
     </div>
   </div>
 
-  <div class="row mt-3 mb-4 justify-content-center">
+  <main class="row mt-3 mb-4 justify-content-center">
     <!-- Play Controls -->
-    <div class="col-lg-8 border position-relative h-100" id="playerContainer">
+    <div class="col-lg-8 border position-relative h-100" id="playerContainer" aria-label="Music player container">
 
         <!-- SOMETHING SOMEWHERE CAUSES THIS TO MOVE 12 PX LEFT AND I CAN'T FIND IT SO ENJOY THE start-0 -->
-        <div class="flex-row w-100 h-100 px-3 start-0 collapse" id="collapseTrackList">
+        <div class="flex-row w-100 h-100 px-3 start-0 collapse" id="collapseTrackList" aria-label="Track list">
         <!-- Start in collapse -->
 
           <!-- Top bar for closing the collapse -->
@@ -63,7 +63,7 @@
           <br class="d-sm-none">
           <!-- Song List -->
           <div class="col-12">
-            <ul class="list-group mb-3 overflow-scroll" id="trackSelectionScroll" aria-label="track selection list">
+            <ul class="list-group mb-3 overflow-scroll" id="trackSelectionScroll" aria-label="track selection">
             </ul>
           </div>
 
@@ -77,24 +77,24 @@
           <button id="downloadPopupBtn" class="btn btn-info border align-self-start" type="button" data-bs-toggle="modal" data-bs-target="#downloadModal">
             Download
           </button>
-          <button id="trackCollapseOpenBtn" class="btn btn-info border align-self-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList">
+          <button id="trackCollapseOpenBtn" class="btn btn-info border align-self-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrackList" aria-expanded="false" aria-controls="collapseTrackList" aria-label="Show track list">
             Track List
           </button>
         </div>
 
-        <div class="p-3" id="mainPlayer">
+        <div class="p-3" id="mainPlayer" aria-label="Player Controls">
           <!-- Album Cover/Title.... gonna have to find a way to auto-crop I guess -->
           <img src="{% static 'portfolio_music_player/img/loader.gif' %}?v={% version %}" alt="Album Cover" class="img-fluid mx-auto d-block" id="albumCover">
 
           <div class="d-flex flex-column mt-2 fs-5">
-            <p class="align-self-center text-center" id="trackName">Loading...</p>
-            <p class="align-self-center text-center" id="albumName">Loading...</p>
+            <p class="align-self-center text-center" id="trackName" aria-label="Track Name" >Loading...</p>
+            <p class="align-self-center text-center" id="albumName" aria-label="Album Name" >Loading...</p>
           </div>
 
           <!-- Time Info -->
           <div class="d-flex flex-row">
             <!-- Timestamps -->
-            <p class="me-3" id="trackTime">Loading...</p>
+            <p class="me-3" id="trackTime" aria-label="Elapsed playtime" >Loading...</p>
             <!-- Slidy Bit -->
             <input type="range" class="form-range" id="trackSlider" aria-label="Track Progress Bar">
           </div>
@@ -115,10 +115,10 @@
 
       </div>
 
-  </div>
+  </main>
 
   <!-- Modal -->
-  <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+  <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel">
     <div class="modal-dialog text-dark">
       <div class="modal-content">
         <div class="modal-header">
