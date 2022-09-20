@@ -11,11 +11,17 @@
 */
 
 class MusicPlayer {
+  /* @var container which holds the Howler object for playing tracks */
   howlerContainer;
+    /* @var stores a given onload function */
   onload;
+    /* @var stores a given onload function */
   onplay;
+    /* @var stores an array of Album objects */
   albumList;
+    /* @var stores the currently selected album index */
   currentAlbumIndex = 0;
+    /* @var stores the currently selected song index */
   currentTrackIndex = 0;
 
   constructor(albums_json, onload, onplay) {
@@ -29,34 +35,75 @@ class MusicPlayer {
 
   /**************** Getters ***************/
 
+  /* @function
+  Returns the full album list
+  */
   all_data() {
     return this.albumList;
   }
 
+  /* @function
+  This function takes an an album ID as and returns the data for the associated
+  album
+
+  Args
+  -------------
+
+  - albumID - the id of the album you want to find
+  */
   get_album_by_id(albumID){
     return this.albumList[this.find_album_index_by_id(albumID)];
   }
 
+  /* @function
+  Returns the current album data
+  */
   get_current_album() {
     return this.albumList[this.currentAlbumIndex];
   }
 
+  /* @function
+  Returns the current track list
+  */
   get_track_list() {
     return this.albumList[this.currentAlbumIndex].tracks;
   }
 
+  /* @function
+  Returns the track list for a given album ID.
+
+  Args
+  -------------
+
+  - albumID - the id of the album whose track list you want
+  */
   get_track_list_by_id(albumID){
     return this.albumList[this.find_album_index_by_id(albumID)].tracks;
   }
 
+  /* @function
+  Returns the current track
+  */
   get_current_track() {
     return this.albumList[this.currentAlbumIndex].tracks[this.currentTrackIndex];
   }
 
+  /* @function
+  Returns the track for a given track ID and album ID
+
+  Args
+  -------------
+
+  - songID - the id of the track you want
+  - albumID - the id of the album the track belongs to
+  */
   get_track_by_id(songID, albumID) {
     return this.albumList[this.find_album_index_by_id(albumID)].tracks[this.find_track_index_by_id(songID)]
   }
 
+  /* @function
+  Returns the length of the current track
+  */
   duration() {
     if (this.howlerContainer && this.howlerContainer.state() == "loaded") {
       return this.howlerContainer.duration();
@@ -65,6 +112,9 @@ class MusicPlayer {
     return 0;
   }
 
+  /* @function
+  Returns true if the a track is currently playing, otherwise returns false
+  */
   playing() {
     return this.howlerContainer.playing();
   }
@@ -250,6 +300,20 @@ class MusicPlayer {
     return this.currentAlbumIndex;
   }
 
+  /* @function
+  This function starts a download of a given song or album. If a song_id
+  is provided, then only a single track will be downloaded. Otherwise, a whole album
+  will be downloaded.
+
+  Args
+  -------------
+
+  - window_inst - a window instance to allow navigation to a download link
+  - file_type - the desired file type for the download
+  - album_id - an integer representing the desired album's id
+  - song_id (optional) - an integer representing the desired song's id. If given,
+    only the given song will be downloaded.
+  */
   download(window_inst, file_type, album_id, song_id=null) {
       if (song_id == null) {
         // console.log("album download");

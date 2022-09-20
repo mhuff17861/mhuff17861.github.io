@@ -9,9 +9,14 @@
 This function is the top-level setup the runs once data
 is retrieved. It runs all other necessary setup functions for the
 music player.
+
+Args
+---------
+
+- album_data - Album data retrieved from the websites API.
 */
-function setup_player(albumData) {
-  musicPlayer = new MusicPlayer(albumData, on_track_load, on_track_play);
+function setup_player(album_data) {
+  musicPlayer = new MusicPlayer(album_data, on_track_load, on_track_play);
   setup_album_selection(musicPlayer.all_data());
   setup_track_selection(musicPlayer.get_track_list());
   setup_album_download_selection(musicPlayer.all_data())

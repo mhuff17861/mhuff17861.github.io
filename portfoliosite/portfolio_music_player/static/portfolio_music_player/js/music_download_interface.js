@@ -1,4 +1,11 @@
+/* @overview
+This file controls the download interface and connects it to the music_player.js
+interface when necessary.
+*/
+
 // Download controls
+
+/* @var Contains the duration interval used to show the user the currently playing track. */
 let downloadPlayingDuration = null;
 
 /* @var Contains the file type dropdown selection. */

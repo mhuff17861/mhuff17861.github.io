@@ -167,6 +167,7 @@ function track_list_toggle(open) {
     trackCollapseOpenBtn.focus();
   }
 }
+
 /* @function
 This function takes an argument, seconds, and uses that to update
 the timestamp shown on the UI, in the format hh:mm:ss.
@@ -293,6 +294,7 @@ function seek_to(timestamp=null) {
 
 
 /***********************Initial Setup Functions***************/
+
 /* @function
 This function is used to setup the album selection dropdown,
 stored in albumSelectionContainer.
