@@ -13,7 +13,7 @@ const bootstrapJSDevDest = 'portfoliosite/static/js'
 const bootstrapJSDest = '/var/www/micah-huff.com/static/js'
 const howlerJSSrc = [ 'node_modules/howler/dist/howler.min.js' ]
 const howlerJSDevDest = 'portfoliosite/portfolio_music_player/static/portfolio_music_player/js'
-const howlerJSDest = '/var/www/micah-huff.com/portfolio_music_player/static/portfolio_music_player/js'
+const howlerJSDest = '/var/www/micah-huff.com/static/portfolio_music_player/js'
 
 function cleanDevBuild() {
   return gulp.src([sassDevDest + "/*", bootstrapJSDevDest + "/*"])
@@ -66,9 +66,10 @@ function howlerJS() {
     .pipe(gulp.dest(howlerJSDest));
 }
 
-function prodJS() {
-  bugootstrapJS();
+function prodJS(cb) {
+  bootstrapJS();
   howlerJS();
+  return cb();
 }
 
 function defaultTask(cb) {
