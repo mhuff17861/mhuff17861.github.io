@@ -82,6 +82,7 @@ function download_popup() {
   albumDownloadSelection.value = musicPlayer.get_current_album().id;
   setup_track_download_selection(musicPlayer.get_track_list());
   songDownloadSelection.value = musicPlayer.get_current_track().id;
+  album_download_update();
   start_playing_updates();
 }
 

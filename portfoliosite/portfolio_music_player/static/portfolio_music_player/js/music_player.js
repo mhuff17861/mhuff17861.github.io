@@ -26,9 +26,33 @@ class MusicPlayer {
 
   constructor(albums_json, onload, onplay) {
     this.albumList = [];
+
+    // Get the albums and puth them in order by date
     for (const album of albums_json) {
-      this.albumList.push(new Album(album));
+      if (this.albumList.length > 0) {
+        let insertAlbum = new Album(album);
+        let currentDate = new Date(insertAlbum.releaseDate).getTime();
+
+        for (let i = 0;  i < this.albumList.length; i++) {
+          let existingDate = new Date(this.albumList[i].releaseDate).getTime();
+
+          if (currentDate > existingDate) {
+            this.albumList.splice(i, 0, insertAlbum);
+            break;
+          }
+
+          // Just in case we've reached the last element, avoids dropping an album
+          if (i == this.albumList.length - 1) {
+            this.albumList.splice(i, 0, insertAlbum);
+            break;
+          }
+        }
+
+      } else {
+        this.albumList.push(new Album(album));
+      }
     }
+
     this.onload = onload;
     this.onplay = onplay;
   }
