@@ -12,6 +12,7 @@ tests/.coverage
 tests/report/
 portfoliosite/media/
 db.sqlite3
+*.code-workspace
 
 build/
 node_modules/
