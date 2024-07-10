@@ -1,0 +1,33 @@
+{% comment "Overview" %}
+    This is a base html file for visual poems. Built to use the passed template and CSS 
+    to display the poem. Has a default footer layout to show title, author, inspirations, and date. 
+{% endcomment %}
+
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/core.css' %}" rel="stylesheet" >
+    <link href="{% static poem_css_file %}" rel="stylesheet" >
+
+
+
+    <title>{{ poem.title }}</title>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    {% include poem_template %}
+
+    <!-- ******************Footer******************** -->
+    <footer class="footer mt-auto py-2 bg-dark text-white">
+            Test
+    </footer>
+    <!-- ******************End Footer******************** -->
+
+  </body>
+</html>

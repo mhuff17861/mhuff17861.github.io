@@ -11,6 +11,7 @@ app_name = 'writing'
 
 urlpatterns = [
     path('', views.writing, name='writing'),
+    path('poem/<int:poem_id>', views.visual_poetry, name='visual_poetry')
 ]
 """
     Variable used to direct various urls to their appropriate views. 
