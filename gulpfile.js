@@ -45,7 +45,7 @@ function devHowlerJS() {
 
 function devJS() {
   devBootstrapJS();
-  devHowlerJS();
+  return devHowlerJS();
 }
 
 function transpileSass() {
@@ -68,14 +68,12 @@ function howlerJS() {
 
 function prodJS(cb) {
   bootstrapJS();
-  howlerJS();
-  return cb();
+  return howlerJS();
 }
 
 function defaultTask(cb) {
   devTranspileSass();
-  devJS();
-  cb();
+  return devJS();
 }
 
 exports.cleanBuild = cleanBuild
