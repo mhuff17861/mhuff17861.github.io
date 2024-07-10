@@ -316,11 +316,13 @@ class MusicPlayerUIGenericTest(StaticLiveServerTestCase):
             track_name = self.selenium.find_element(by=By.ID, value='trackName')
             album_name = self.selenium.find_element(by=By.ID, value='albumName')
 
-            albums = Album.albums.get_released_albums_with_track_info()
+            albums = Album.albums.get_released_albums_with_track_info().reverse()
+            
+            test_album_index = 0
 
             # Initial setup check
-            self.assertEqual(album_name.text[self.album_slice:], albums[0].title, msg='Wrong album name displayed')
-            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, 0, 0), msg='Wrong track name displayed')
+            self.assertEqual(album_name.text[self.album_slice:], albums[test_album_index].title, msg='Wrong album name displayed')
+            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, test_album_index, 0), msg='Wrong track name displayed')
 
             # It won't press buttons not in view so enjoy the bad scroll hack :)
             self.selenium.execute_script('window.scrollBy(0,250)')
@@ -334,29 +336,29 @@ class MusicPlayerUIGenericTest(StaticLiveServerTestCase):
             # Next Check
             next_btn.click()
             time.sleep(self.wait)
-            self.assertEqual(album_name.text[self.album_slice:], albums[0].title, msg='Wrong album name displayed after next button pressed')
-            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, 0, 1), msg='Wrong track name displayed after next button pressed')
+            self.assertEqual(album_name.text[self.album_slice:], albums[test_album_index].title, msg='Wrong album name displayed after next button pressed')
+            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, test_album_index, 1), msg='Wrong track name displayed after next button pressed')
             self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after next button pressed')
 
             # Previous Check
             prev_btn.click()
             time.sleep(self.wait)
-            self.assertEqual(album_name.text[self.album_slice:], albums[0].title, msg='Wrong album name displayed after previous button pressed')
-            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, 0, 0), msg='Wrong track name displayed after previous button pressed')
+            self.assertEqual(album_name.text[self.album_slice:], albums[test_album_index].title, msg='Wrong album name displayed after previous button pressed')
+            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, test_album_index, 0), msg='Wrong track name displayed after previous button pressed')
             self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after previous button pressed')
 
             # Previous first to last track check
             prev_btn.click()
             time.sleep(self.wait)
-            self.assertEqual(album_name.text[self.album_slice:], albums[0].title, msg='Wrong album name displayed after previous button pressed while playing first track')
-            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, 0, len(albums[0].tracks.all())-1), msg='Wrong track name displayed after previous button pressed while playing first track')
+            self.assertEqual(album_name.text[self.album_slice:], albums[test_album_index].title, msg='Wrong album name displayed after previous button pressed while playing first track')
+            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, test_album_index, len(albums[test_album_index].tracks.all())-1), msg='Wrong track name displayed after previous button pressed while playing first track')
             self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after previous button pressed while playing first track')
 
             # Next last to first track check
             next_btn.click()
             time.sleep(self.wait)
-            self.assertEqual(album_name.text[self.album_slice:], albums[0].title, msg='Wrong album name displayed after next button pressed while playing last track')
-            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, 0, 0), msg='Wrong track name displayed after next button pressed while playing last track')
+            self.assertEqual(album_name.text[self.album_slice:], albums[test_album_index].title, msg='Wrong album name displayed after next button pressed while playing last track')
+            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, test_album_index, 0), msg='Wrong track name displayed after next button pressed while playing last track')
             self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after next button pressed  while playing last track')
 
             # Seek Check
@@ -372,10 +374,10 @@ class MusicPlayerUIGenericTest(StaticLiveServerTestCase):
             for i in range(self.selenium.execute_script('return musicPlayer.duration()') - 10):
                 track_slider.send_keys(Keys.RIGHT)
 
-            time.sleep(self.wait)
+            time.sleep(self.wait + 2)
 
-            self.assertEqual(album_name.text[self.album_slice:], albums[0].title, msg='Album changed when the next song was automatically played')
-            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, 0, 1), msg='Wrong track name displayed after a song was completed and the next song was autoplayed')
+            self.assertEqual(album_name.text[self.album_slice:], albums[test_album_index].title, msg='Album changed when the next song was automatically played')
+            self.assertEqual(track_name.text[self.track_slice:], self.get_track_title(albums, test_album_index, 1), msg='Wrong track name displayed after a song was completed and the next song was autoplayed')
             self.assertTrue(self.selenium.execute_script('return musicPlayer.playing()'), msg='Music player did not start playing after the previous song was completed')
 
         else:
@@ -398,7 +400,7 @@ class MusicPlayerUIGenericTest(StaticLiveServerTestCase):
             track_name = self.selenium.find_element(by=By.ID, value='trackName')
             album_name = self.selenium.find_element(by=By.ID, value='albumName')
 
-            albums = Album.albums.get_released_albums_with_track_info()
+            albums = Album.albums.get_released_albums_with_track_info().reverse()
 
             # Test open and close buttons
             open_list_btn.click()

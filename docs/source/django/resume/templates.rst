@@ -1,28 +1,12 @@
 resume templates
 ================
 
-projects.html
--------------
-
-    This is template generates a projects page. It extends header_layout to
-    provide a header and slide_layout to provide slides for recent projects. Check those
-    layouts to determine what data the template should be given.
-
-
 home.html
 ---------
 
     This is template generates a home page. It extends header_layout to
     provide a header and card_layout to provide cards for recent projects. Check those
     layouts to determine what data the template should be given.
-
-
-resume.html
------------
-
-    This is template generates a resume page. It extends header_layout to
-    provide a header and accordion_layout to provide and accordion for cv lines.
-    Check those layouts to determine what data the template should be given.
 
 
 card_layout.html
@@ -39,15 +23,20 @@ card_layout.html
     This template accepts markdown via the markdown_extras template tag.
 
 
-accordion_layout.html
----------------------
+projects.html
+-------------
 
-    This is a generalized accordion layout. It expects a list of categories
-    called "accordion_categories" in which each category contains a name
-    and a list of items (category.items). Each item should have a value called
-    entry, which will be placed under each accordion category.
+    This is template generates a projects page. It extends header_layout to
+    provide a header and slide_layout to provide slides for recent projects. Check those
+    layouts to determine what data the template should be given.
 
-    This template accepts markdown via the markdown_extras template tag.
+
+resume.html
+-----------
+
+    This is template generates a resume page. It extends header_layout to
+    provide a header and accordion_layout to provide and accordion for cv lines.
+    Check those layouts to determine what data the template should be given.
 
 
 header_layout.html
@@ -72,6 +61,17 @@ slide_layout.html
     the desired media to be displayed.
 
     The slides alternate between the image being on the left or right side. 
+
+    This template accepts markdown via the markdown_extras template tag.
+
+
+accordion_layout.html
+---------------------
+
+    This is a generalized accordion layout. It expects a list of categories
+    called "accordion_categories" in which each category contains a name
+    and a list of items (category.items). Each item should have a value called
+    entry, which will be placed under each accordion category.
 
     This template accepts markdown via the markdown_extras template tag.
 

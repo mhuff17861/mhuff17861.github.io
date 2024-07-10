@@ -39,6 +39,7 @@ The purpose of this project is to build a portfolio website for myself using Dja
     - You cam sub in your own names if you want, but you'll have to change the appropriate settings in dev_settings.py
   - `\q` to quit psql
   - **NOTE: The following setup step does not work yet due to a django bug. See known weirdness section below**  Create a .pg_service.conf file and .pgpass file (templates in setup_files directory) and place them in your home directory. Then run `chmod 0600 .pgpass` to make postgre happy.
+    - If you run into issues with permissions, try `GRANT postgres TO <user>;`. Can't guarentee it's safe, but dev side it works.
 - Go into the Django project folder (portfoliosite), and run the following two commands
   - `python manage.py makemigrations`
   - `python manage.py migrate`

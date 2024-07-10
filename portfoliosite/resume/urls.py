@@ -10,7 +10,7 @@ app_name = 'resume'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('projects', views.projects, name='projects'),
+    path('projects', views.projects, name='projects'), 
     path('resume', views.resume, name='resume'),
 ]
 """
