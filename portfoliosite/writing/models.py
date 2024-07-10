@@ -45,6 +45,27 @@ class Writing_Author(models.Model):
     #authors = Visual_Poetry_Author_QuerySet.as_manager()
     """The accessor for the Visual_Poetry_Author_QuerySet."""
 
+class Article_Category(models.Model):
+    """
+        Article Categories to place articles into.
+    """
+
+    category = models.TextField(max_length=100)
+    """Name of the category, used to organize cv_lines. Max length is 100."""
+
+    def __str__(self):
+        return self.name
+
+class Article(Writing):
+    """
+        Article model, used to create various writings in various categories.
+    """
+    article_category = models.ForeignKey(Article_Category, on_delete=models.CASCADE)
+    """Category that the Article belongs to. Foreign key to CV_Cateogory.name"""
+
+    def __str__(self):
+        return str(self.category) + "-" + str(self.entry)
+
 class Visual_Poetry_QuerySet(models.QuerySet):
     """
     Poem_QuerySet. Provides functions for common queries on the VisualPoetry table.
