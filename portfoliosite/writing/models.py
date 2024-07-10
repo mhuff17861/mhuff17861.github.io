@@ -4,6 +4,7 @@ This module holds the models for the writing app.
 from django.conf import settings
 from django.db import models
 from django.db.models import F
+from markdownx.models import MarkdownxField
 import logging
 
 class Author(models.Model):
@@ -13,8 +14,36 @@ class Author(models.Model):
 
     name = models.TextField()
     """Stores name."""
-    bio = models.TextField()
+    bio = MarkdownxField(null=True, blank=True)
     """Stores author bio."""
+
+class Writing(models.Model):
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    """Stores user id as foreign key."""
+    title = models.TextField(max_length=200)
+    """Title of the poem. Max length is 200."""
+    body = MarkdownxField(null=True, blank=True)
+    """The text body. Max length is based on underlying DB."""
+    inspirations = models.TextField(null=True, blank=True)
+    """Inspirations for the poem. Max length is based on underlying DB."""
+    date_created = models.DateField()
+    """Date the writing was created."""
+
+class Writing_Author(models.Model):
+    """
+        Writing_Author model. Ties an author to a poem.
+    """
+
+    writing_id = models.ForeignKey(Writing, related_name='writings', on_delete=models.CASCADE)
+    """Stores writing id as FK. related_name is writings""" 
+    author_id = models.ForeignKey(Author, related_name='authors', on_delete=models.CASCADE)
+    """Stores author id as FK. related_name is authors""" 
+
+    #authors = Visual_Poetry_Author_QuerySet.as_manager()
+    """The accessor for the Visual_Poetry_Author_QuerySet."""
 
 class Visual_Poetry_QuerySet(models.QuerySet):
     """
@@ -23,55 +52,18 @@ class Visual_Poetry_QuerySet(models.QuerySet):
 
     pass
 
-class Visual_Poetry(models.Model):
+class Visual_Poetry(Writing):
     """
     Visual_Poetry Model. Builds a model that allows the user to enter poetry with title,
     authorship, inspirations, and CSS for visual modifications.
     """
-    user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    """Stores user id as foreign key."""
-    title = models.TextField(max_length=100)
-    """Title of the poem. Max length is 100."""
-    image = models.ImageField(upload_to="visualpoetry")
-    """Image that will be displayed with the poetry on the list page. Recommended aspect ratio is 7:5"""
-    image_alt_text = models.TextField(max_length=50, default="picture description")
-    """Alt text for the image, used for accessibility purposes. Max length is 50."""
-    poem = models.TextField()
-    """The poem in plain text. Max length is based on underlying DB."""
-    # poem_template = models.TextField()
-    """The template to call for building the visual poem. Max length is based on underlying DB."""
-    # poem_css_file = models.TextField()
-    """The css file to include. Max length is based on underlying DB."""
-    inspirations = models.TextField()
-    """Inspirations for the poem. Max length is based on underlying DB."""
-    date_created = models.DateField()
-    """Date the project ended."""
+    
+    poem_css_file = models.FileField(upload_to='visual_poetry/poem_css', null=True)
+    """The css file to include. WARNING: Unsafe without filtering, only doing because I'm the only user. Max length is based on underlying DB."""
 
     #poems = Visual_Poetry_QuerySet.as_manager()
     """Accessor variable for the Visual_Poetry_QuerySet"""
 
-class Visual_Poetry_Author_QuerySet(models.QuerySet):
-    """
-    Track_Number_QuerySet. Provides functions for common queries on the Track_Numbers table.
-    """
-
-    pass
-
-class Visual_Poetry_Author(models.Model):
-    """
-        Visual_Poetry_Author model. Ties an author to a poem.
-    """
-
-    visual_poetry_id = models.ForeignKey(Visual_Poetry, related_name='authors', on_delete=models.CASCADE)
-    """Stores song id as foreign key. related_name is track_nums""" 
-    author_id = models.ForeignKey(Author, related_name='authors', on_delete=models.CASCADE)
-    """Stores song id as foreign key. related_name is track_nums""" 
-
-    authors = Visual_Poetry_Author_QuerySet.as_manager()
-    """The accessor for the Visual_Poetry_Author_QuerySet."""
 
 def __str__(self):
     return self.title

@@ -22,9 +22,6 @@ def writing(request):
 
 def visual_poetry(request, poem_id):
     logger.debug(f'Retrieving visual poetry view')
-    
-    template_string = 'writing/poetry/%s/%s.html'
-    css_string = 'writing/poetry/%s/css/%s.css'
 
     try:
         poem = Visual_Poetry.objects.get(pk=poem_id)
@@ -35,8 +32,6 @@ def visual_poetry(request, poem_id):
 
     context = {
         'poem': poem,
-        'poem_css_file': css_string % (title_file_formatted, title_file_formatted),
-        'poem_template': template_string % (title_file_formatted, title_file_formatted),
     }
 
     return render(request, 'writing/visual_poetry.html', context)

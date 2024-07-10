@@ -8,6 +8,8 @@ charset-normalizer==3.3.2
 click==8.1.7
 Django==5.0.7
 django-cleanup==8.1.0
+django-markdownx==4.0.7
+django-tinymce==4.1.0
 djangorestframework==3.15.2
 docutils==0.20.1
 factory-boy==3.3.0

@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_cleanup.apps.CleanupConfig',
+    'markdownx',
 ]
 
 MIDDLEWARE = [
@@ -156,6 +157,7 @@ USE_TZ = True
 #STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
+    BASE_DIR / '../portfolioVEnv/lib/python3.12/site-packages/markdownx/static/markdownx',
 ]
 STATIC_URL = '/static/'
 

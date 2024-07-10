@@ -4,6 +4,7 @@
 {% endcomment %}
 
 {% load static %}
+{% load markdown_extras %}
 
 <!doctype html>
 <html lang="en">
@@ -14,14 +15,14 @@
 
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/core.css' %}" rel="stylesheet" >
-    <link href="{% static poem_css_file %}" rel="stylesheet" >
+    <link href="{{ poem.poem_css_file.url }}" rel="stylesheet" >
 
 
 
     <title>{{ poem.title }}</title>
   </head>
   <body class="d-flex flex-column min-vh-100">
-    {% include poem_template %}
+    {{ poem.body | markdown | safe }}
 
     <!-- ******************Footer******************** -->
     <footer class="footer mt-auto py-2 bg-dark text-white">
