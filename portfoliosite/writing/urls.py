@@ -1,17 +1,16 @@
 """
-    This file is used to direct resume urls to their appropriate views.
+    This file is used to direct writing urls to their appropriate views.
 """
+from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import static
 from django.conf import settings
 from . import views
 
-app_name = 'resume'
+app_name = 'writing'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    # path('projects', views.projects, name='projects'), # 2024-07-10 MH Remove Projects section, to replace with writing.
-    path('resume', views.resume, name='resume'),
+    path('', views.writing, name='writing'),
 ]
 """
     Variable used to direct various urls to their appropriate views. 

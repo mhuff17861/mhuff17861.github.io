@@ -59,8 +59,8 @@
               <a class="nav-link" href="{% url 'music_player:player' %}">Music</a>
             </li>
             <li class="nav-item h4 pe-4 ps-4">
-              {% url 'resume:projects' as projects %}
-              <a class="nav-link {% if request.path == projects %}active{% endif %}" href="{{ projects }}">Projects</a>
+              {% url 'writing:writing' as writing %}
+              <a class="nav-link {% if request.path == writing %}active{% endif %}" href="{{ writing }}">Writing</a>
             </li>
           </ul>
         </div>
