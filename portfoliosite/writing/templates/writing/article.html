@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% comment "Overview" %}
+    This is template generates an article, extending base.html.
+{% endcomment %}
+
+{% load static %}
+{% load version %}
+
+{% block head-add %} 
+<link href="{% static 'writing/css/article.css' %}?v={% version %}" rel="stylesheet" >
+{% endblock %}
+
+{% block title %} {{ article.title }} {% endblock %}
+
+{% block main-content %}
+
+<div class="container article">
+    <h1 class="article__title">{{ article.title }}</h1>
+    <p class="article__date-created">{{ article.date_created }}</p>
+
+    <div class="article__body">
+        {{ article.body | safe }}
+    </div>
+
+    {% include "writing/credits_footer.html" %}
+</div>
+
+{% endblock %}

@@ -22,6 +22,26 @@
 
 
   <!-- ***************Writing Lists*************** -->
+   <div class="writing-categories">
+    {% for category in writing_categories %}
+      <h2>{{ category.title }}</h2>
+  
+      {% if category.items %}
+        <ul class="writing-categories__list">
+          {% for list_item in category.items %}
+            <li class="writing-categories__list-item">
+              <a class="text-white" href="{{ category.slug }}{{ list_item.id }}">
+                {{ list_item.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No {{ category.title }} Found.</p>
+      {% endif %}
+      
+    {% endfor %}
+   </div>
 
   
 

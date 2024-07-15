@@ -1,0 +1,15 @@
+<div class="{{ writing_type }}__footer">
+    <div class="{{ writing_type }}__authors authors">
+        {% if authors %}
+            {% for author in authors %}
+                <ul class="authors__list">
+                    <li>{{ author.name }}</li>
+                </ul>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+    <div class="inspirations">
+        {{ inspirations }}
+    </div>
+</div>

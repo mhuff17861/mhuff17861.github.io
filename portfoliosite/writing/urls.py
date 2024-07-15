@@ -1,5 +1,5 @@
 """
-    This file is used to direct writing urls to their appropriate views.
+    This file is used to direct writing urls to their appropriate views for writing app.
 """
 from django.contrib import admin
 from django.urls import path
@@ -11,7 +11,8 @@ app_name = 'writing'
 
 urlpatterns = [
     path('', views.writing, name='writing'),
-    path('poem/<int:poem_id>', views.visual_poetry, name='visual_poetry')
+    path('article/<int:article_id>', views.article, name='article'),
+    path('poem/<int:poem_id>', views.visual_poetry, name='visual_poetry'),
 ]
 """
     Variable used to direct various urls to their appropriate views. 

@@ -25,25 +25,16 @@ class Writing(models.Model):
     """Stores user id as foreign key."""
     title = models.TextField(max_length=200)
     """Title of the poem. Max length is 200."""
+    authors = models.ManyToManyField(Author)
+    """The author(s) of the writing"""
     body = MarkdownxField(null=True, blank=True)
     """The text body. Max length is based on underlying DB."""
     inspirations = models.TextField(null=True, blank=True)
     """Inspirations for the poem. Max length is based on underlying DB."""
     date_created = models.DateField()
     """Date the writing was created."""
-
-class Writing_Author(models.Model):
-    """
-        Writing_Author model. Ties an author to a poem.
-    """
-
-    writing_id = models.ForeignKey(Writing, related_name='writings', on_delete=models.CASCADE)
-    """Stores writing id as FK. related_name is writings""" 
-    author_id = models.ForeignKey(Author, related_name='authors', on_delete=models.CASCADE)
-    """Stores author id as FK. related_name is authors""" 
-
-    #authors = Visual_Poetry_Author_QuerySet.as_manager()
-    """The accessor for the Visual_Poetry_Author_QuerySet."""
+    published = models.BooleanField(null=True, blank=True)
+    """Whether the writing should be published"""
 
 class Article_Category(models.Model):
     """
