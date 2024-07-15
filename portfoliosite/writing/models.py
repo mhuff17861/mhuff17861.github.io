@@ -17,6 +17,9 @@ class Author(models.Model):
     bio = MarkdownxField(null=True, blank=True)
     """Stores author bio."""
 
+    def __str__(self):
+        return self.name
+
 class Writing(models.Model):
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -36,6 +39,9 @@ class Writing(models.Model):
     published = models.BooleanField(null=True, blank=True)
     """Whether the writing should be published"""
 
+    class Meta:
+        abstract = True
+
 class Article_Category(models.Model):
     """
         Article Categories to place articles into.
@@ -45,17 +51,16 @@ class Article_Category(models.Model):
     """Name of the category, used to organize cv_lines. Max length is 100."""
 
     def __str__(self):
-        return self.name
+        return self.category
 
 class Article(Writing):
     """
         Article model, used to create various writings in various categories.
     """
-    article_category = models.ForeignKey(Article_Category, on_delete=models.CASCADE)
-    """Category that the Article belongs to. Foreign key to CV_Cateogory.name"""
+    categories = models.ManyToManyField(Article_Category)
 
     def __str__(self):
-        return str(self.category) + "-" + str(self.entry)
+        return str(self.title)
 
 class Visual_Poetry_QuerySet(models.QuerySet):
     """

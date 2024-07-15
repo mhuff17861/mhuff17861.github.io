@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 
 #helpers 
 def add_writing_context(writing, context):
-    context['authors'] = writing.writing_ptr.authors.all()
-    context['inspirations'] = writing.writing_ptr.inspirations
+    context['authors'] = writing.authors.all()
+    context['inspirations'] = writing.inspirations
 
     return context
 
@@ -49,7 +49,7 @@ def article(request, article_id):
     logger.debug(f'Retrieving article view')
 
     try:
-        article = Article.objects.select_related('writing_ptr').get(pk=article_id, published=True)
+        article = Article.objects.get(pk=article_id, published=True)
     except Article.DoesNotExist:
         raise Http404("Article does not exist")
 
@@ -69,7 +69,7 @@ def visual_poetry(request, poem_id):
     logger.debug(f'Retrieving visual poetry view')
 
     try:
-        poem = Visual_Poetry.objects.select_related('writing_ptr').get(pk=poem_id, published=True)
+        poem = Visual_Poetry.objects.get(pk=poem_id, published=True)
     except Visual_Poetry.DoesNotExist:
         raise Http404("Poem does not exist")
 
