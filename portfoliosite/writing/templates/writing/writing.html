@@ -15,14 +15,21 @@
 
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/core.css' %}" rel="stylesheet" >
-    <link href="{{ poem.poem_css_file.url }}" rel="stylesheet" >
+    {% if writing.writing_css %}
+      <link href="{{ writing.writing_css_file.url }}" rel="stylesheet" >
+    {{% endif %}}
 
 
 
-    <title>{{ poem.title }}</title>
+    <title>{{ writing.title }}</title>
   </head>
+  {% if writing.full_html_override %}
+    <body>
+      {{ writing.body | markdown | safe }}
+    </body>
+  {% else %}
   <body class="d-flex flex-column min-vh-100">
-    {{ poem.body | markdown | safe }}
+    {{ writing.body | markdown | safe }}
 
     <!-- ******************Footer******************** -->
     <footer class="footer mt-auto py-2 bg-dark text-white">
@@ -31,4 +38,5 @@
     <!-- ******************End Footer******************** -->
 
   </body>
+  {% endif %}
 </html>

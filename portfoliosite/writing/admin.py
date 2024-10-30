@@ -11,6 +11,4 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Author)
-admin.site.register(Visual_Poetry, MarkdownxModelAdmin)
-admin.site.register(Article_Category)
-admin.site.register(Article, MarkdownxModelAdmin)
+admin.site.register(Writing, MarkdownxModelAdmin)

@@ -16,9 +16,27 @@ class Author(models.Model):
     """Stores name."""
     bio = MarkdownxField(null=True, blank=True)
     """Stores author bio."""
+    blurb = models.TextField(max_length=200)
+    """Stores author bio."""
 
     def __str__(self):
         return self.name
+
+class Writing_Category(models.Model):
+    name = models.TextField()
+    """Stores category name"""
+
+class Writing_Project(models.Model):
+    name = models.TextField()
+    """Stores project name"""
+    description = models.TextField()
+    """Stores project description"""
+
+class Writing_Topic_Tag(models.Model):
+    name = models.TextField()
+    """Stores tag name"""
+    description = models.TextField()
+    """Stores tag description"""
 
 class Writing(models.Model):
     user_id = models.ForeignKey(
@@ -30,57 +48,24 @@ class Writing(models.Model):
     """Title of the poem. Max length is 200."""
     authors = models.ManyToManyField(Author)
     """The author(s) of the writing"""
+    category = models.ForeignKey(Writing_Category, on_delete=models.CASCADE)
+    """The category of the writing"""
+    project = models.ForeignKey(Writing_Project, null=True, on_delete=models.CASCADE)
+    """The overall project of the writing belongs to"""
+    tag = models.ManyToManyField(Writing_Topic_Tag, null=True)
+    """The tag(s) that apply to the writing"""
     body = MarkdownxField(null=True, blank=True)
     """The text body. Max length is based on underlying DB."""
     inspirations = models.TextField(null=True, blank=True)
     """Inspirations for the poem. Max length is based on underlying DB."""
     date_created = models.DateField()
     """Date the writing was created."""
-    published = models.BooleanField(null=True, blank=True)
+    published = models.BooleanField(null=True, blank=True, default=False)
     """Whether the writing should be published"""
-
-    class Meta:
-        abstract = True
-
-class Article_Category(models.Model):
-    """
-        Article Categories to place articles into.
-    """
-
-    category = models.TextField(max_length=100)
-    """Name of the category, used to organize cv_lines. Max length is 100."""
-
-    def __str__(self):
-        return self.category
-
-class Article(Writing):
-    """
-        Article model, used to create various writings in various categories.
-    """
-    categories = models.ManyToManyField(Article_Category)
-
-    def __str__(self):
-        return str(self.title)
-
-class Visual_Poetry_QuerySet(models.QuerySet):
-    """
-    Poem_QuerySet. Provides functions for common queries on the VisualPoetry table.
-    """
-
-    pass
-
-class Visual_Poetry(Writing):
-    """
-    Visual_Poetry Model. Builds a model that allows the user to enter poetry with title,
-    authorship, inspirations, and CSS for visual modifications.
-    """
-    
-    poem_css_file = models.FileField(upload_to='visual_poetry/poem_css', null=True)
-    """The css file to include. WARNING: Unsafe without filtering, only doing because I'm the only user. Max length is based on underlying DB."""
-
-    #poems = Visual_Poetry_QuerySet.as_manager()
-    """Accessor variable for the Visual_Poetry_QuerySet"""
-
+    full_html_override = models.BooleanField(null=True, blank=True, default=False)
+    """Whether the writing should be given a full html override"""
+    writing_css_file = models.FileField(upload_to='writing/css', null=True)
+    """The included CSS file"""
 
 def __str__(self):
     return self.title

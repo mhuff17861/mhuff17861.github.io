@@ -10,9 +10,8 @@ from . import views
 app_name = 'writing'
 
 urlpatterns = [
-    path('', views.writing, name='writing'),
-    path('article/<int:article_id>', views.article, name='article'),
-    path('poem/<int:poem_id>', views.visual_poetry, name='visual_poetry'),
+    path('', views.writing_landing, name='writing_landing'),
+    path('writing/<int:writing_id>', views.writing, name='writing'),
 ]
 """
     Variable used to direct various urls to their appropriate views. 

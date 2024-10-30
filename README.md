@@ -36,7 +36,7 @@ The purpose of this project is to build a portfolio website for myself using Dja
 - Setup a postgre database
   - Login to postgre as superuser, `sudo -u postgres psql`
   - The setup_files directory has an sql template for database/user setup. Run each command in psql
-    - You cam sub in your own names if you want, but you'll have to change the appropriate settings in dev_settings.py
+    - You can sub in your own names if you want, but you'll have to change the appropriate settings in dev_settings.py
   - `\q` to quit psql
   - **NOTE: The following setup step does not work yet due to a django bug. See known weirdness section below**  Create a .pg_service.conf file and .pgpass file (templates in setup_files directory) and place them in your home directory. Then run `chmod 0600 .pgpass` to make postgre happy.
     - If you run into issues with permissions, try `GRANT postgres TO <user>;`. Can't guarentee it's safe, but dev side it works.
