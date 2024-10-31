@@ -25,7 +25,8 @@ def writing_landing(request):
     writings = Writing.writings.get_writings_by_date_created(10)
 
     context = {
-        'writing_categories': [],
+        'writings': writings,
+        'writing_url_slug': '/writing/piece/',
     }
 
     return render(request, 'writing/landing.html', context)
@@ -36,10 +37,10 @@ def writing(request, writing_id):
     """
     logger.debug(f'Retrieving writing id {writing_id}.')
 
-    try:
-        writing_item = Writing.writings.get_writing_by_id(writing_id)
-    except Writing.DoesNotExist:
-        Http404(f'No writing with id {writing_id} found.')
+    writing_item = Writing.writings.get_writing_by_id(writing_id)
+
+    if not writing_item:
+        raise Http404(f'No writing with id {writing_id} found.')
 
     context = {
         'writing_item': writing_item,
@@ -47,3 +48,23 @@ def writing(request, writing_id):
     }
 
     return render(request, 'writing/writing.html', context)
+
+def writing_category(request, category_id=None):
+    pass
+
+def writing_project(request, project_id=None):
+    pass
+
+def writing_topic_tag(request, topic_tag_id=None):
+    pass
+
+def group_writing_by_field(writing, field="category"):
+    categorized_writing = {}
+
+    for piece in writing:
+        if piece[field] not in categorized_writing:
+            categorized_writing[piece[field]] = []
+
+        categorized_writing[piece[field]].append(piece)
+
+    return categorized_writing

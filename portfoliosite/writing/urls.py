@@ -11,6 +11,9 @@ app_name = 'writing'
 
 urlpatterns = [
     path('', views.writing_landing, name='writing_landing'),
+    path('category/<int:category_id>', views.writing_category, name='writing_category'),
+    path('project/<int:project_id>', views.writing_project, name='writing_project'),
+    path('topic_tag/<int:topic_tag_id>', views.writing_topic_tag, name='writing_topic_tag'),
     path('piece/<int:writing_id>', views.writing, name='piece'),
 ]
 """

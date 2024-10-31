@@ -23,9 +23,12 @@
 
   <!-- ***************Writing Lists*************** -->
    <div class="writing-categories">
-      {% if writings %}
+    {% for category in writing_categories %}
+      <h2>{{ category.title }}</h2>
+  
+      {% if category.items %}
         <ul class="writing-categories__list">
-          {% for list_item in writings %}
+          {% for list_item in category.items %}
             <li class="writing-categories__list-item">
               <a class="text-white" href="{{ writing_url_slug }}{{ list_item.id }}">
                 {{ list_item.title }}
@@ -34,8 +37,10 @@
           {% endfor %}
         </ul>
       {% else %}
-        <p>No writings Found.</p>
+        <p>No {{ category.title }} Found.</p>
       {% endif %}
+      
+    {% endfor %}
    </div>
 
   

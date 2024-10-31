@@ -76,17 +76,13 @@ class Writing_QuerySet(models.QuerySet):
 
         return self.filter(published=True).order_by('-date_created')[offset:offset+num_writings]
 
-    def get_writing_by_id(self, id):
+    def get_writing_by_id(self, writing_id):
         """
-        get_writing_by_id(id) - Retrieves a writing by the given id
+        get_writing_by_id(writing_id) - Retrieves a writing by the given id
         """
-        return self.filter(pk=id).filter(published=True)
+        return self.filter(pk=writing_id).filter(published=True).first()
 
 class Writing(models.Model):
-    user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
     """Stores user id as foreign key."""
     title = models.TextField(max_length=200)
     """Title of the poem. Max length is 200."""
@@ -108,11 +104,11 @@ class Writing(models.Model):
     """Whether the writing should be published"""
     full_html_override = models.BooleanField(null=True, blank=True, default=False)
     """Whether the writing should be given a full html override"""
-    writing_css_file = models.FileField(upload_to='writing/css', null=True)
+    writing_css_file = models.FileField(upload_to='writing/css', null=True, blank=True)
     """The included CSS file"""
 
     writings = Writing_QuerySet.as_manager()
     """Accessor variable for the Writing_QuerySet"""
 
-def __str__(self):
-    return self.title
+    def __str__(self):
+        return self.title

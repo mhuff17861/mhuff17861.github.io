@@ -7,7 +7,7 @@
 {% load markdown_extras %}
 
 
-{% if writing %}
+{% if writing_item %}
   <!doctype html>
   <html lang="en">
     <head>
@@ -17,24 +17,26 @@
 
       <!-- Bootstrap CSS -->
       <link href="{% static 'css/core.css' %}" rel="stylesheet" >
-      {% if writing.writing_css %}
-        <link href="{{ writing.writing_css_file.url }}" rel="stylesheet" >
+      {% if writing_item.writing_css %}
+        <link href="{{ writing_item.writing_css_file.url }}" rel="stylesheet" >
       {% endif %}
 
 
 
-      <title>{{ writing.title }}</title>
+      <title>{{ writing_item.title }}</title>
     </head>
-      {% if writing.full_html_override %}
+      {% if writing_item.full_html_override %}
         <body>
-          {{ writing.body | markdown | safe }}
+          {{ writing_item.body | markdown | safe }}
         </body>
       {% else %}
       <body class="d-flex flex-column min-vh-100">
 
         {% include "main_menu.html" %}
 
-        {{ writing.body | markdown | safe }}
+        <div class="container">
+          {{ writing_item.body | markdown | safe }}
+        </div>
 
         <!-- ******************Footer******************** -->
         <footer class="footer mt-auto py-2 bg-dark text-white">
