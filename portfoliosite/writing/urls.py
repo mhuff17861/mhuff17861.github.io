@@ -11,7 +11,7 @@ app_name = 'writing'
 
 urlpatterns = [
     path('', views.writing_landing, name='writing_landing'),
-    path('writing/<int:writing_id>', views.writing, name='writing'),
+    path('piece/<int:writing_id>', views.writing, name='piece'),
 ]
 """
     Variable used to direct various urls to their appropriate views. 

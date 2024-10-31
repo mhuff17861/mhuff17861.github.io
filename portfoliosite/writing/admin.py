@@ -10,5 +10,8 @@ from .models import *
 
 
 # Register your models here.
-admin.site.register(Author)
+admin.site.register(Author, MarkdownxModelAdmin)
+admin.site.register(Writing_Category)
+admin.site.register(Writing_Project)
+admin.site.register(Writing_Topic_Tag)
 admin.site.register(Writing, MarkdownxModelAdmin)

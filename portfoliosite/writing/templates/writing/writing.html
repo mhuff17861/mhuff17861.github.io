@@ -1,42 +1,51 @@
 {% comment "Overview" %}
-    This is a base html file for visual poems. Built to use the passed template and CSS 
+    This is a base html file for writings. Built to use the passed template and CSS 
     to display the poem. Has a default footer layout to show title, author, inspirations, and date. 
 {% endcomment %}
 
 {% load static %}
 {% load markdown_extras %}
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="{% static 'css/core.css' %}" rel="stylesheet" >
-    {% if writing.writing_css %}
-      <link href="{{ writing.writing_css_file.url }}" rel="stylesheet" >
-    {{% endif %}}
+{% if writing %}
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Bootstrap CSS -->
+      <link href="{% static 'css/core.css' %}" rel="stylesheet" >
+      {% if writing.writing_css %}
+        <link href="{{ writing.writing_css_file.url }}" rel="stylesheet" >
+      {% endif %}
 
 
 
-    <title>{{ writing.title }}</title>
-  </head>
-  {% if writing.full_html_override %}
-    <body>
-      {{ writing.body | markdown | safe }}
-    </body>
-  {% else %}
-  <body class="d-flex flex-column min-vh-100">
-    {{ writing.body | markdown | safe }}
+      <title>{{ writing.title }}</title>
+    </head>
+      {% if writing.full_html_override %}
+        <body>
+          {{ writing.body | markdown | safe }}
+        </body>
+      {% else %}
+      <body class="d-flex flex-column min-vh-100">
 
-    <!-- ******************Footer******************** -->
-    <footer class="footer mt-auto py-2 bg-dark text-white">
-            Test
-    </footer>
-    <!-- ******************End Footer******************** -->
+        {% include "main_menu.html" %}
 
-  </body>
-  {% endif %}
-</html>
+        {{ writing.body | markdown | safe }}
+
+        <!-- ******************Footer******************** -->
+        <footer class="footer mt-auto py-2 bg-dark text-white">
+                Test
+        </footer>
+        <!-- ******************End Footer******************** -->
+
+      </body>
+      {% endif %}
+  </html>
+
+{% else %}
+      <p>No writing with id {{writing_id}} found.</p>
+{% endif %}
