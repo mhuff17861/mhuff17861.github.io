@@ -16,23 +16,24 @@
         {% endfor %}
     </p>
 
-    <div class="writing-item__tags">
+    <h4 class="visually-hidden">Tags</h4>
+    <ul class="writing-item__tags">
         {% if writing_item.project %}
             {% with tag_name=writing_item.project.name tag_url="/writing/project/" tag_id=writing_item.project.id %}
-                {% include 'writing/writing_tag.html' %}
+                <li>{% include 'writing/writing_tag.html' %}</li>
             {% endwith %}
         {% endif %}
 
         {% if writing_item.category %}
             {% with tag_name=writing_item.category.name tag_url="/category/project/" tag_id=writing_item.category.id %}
-                {% include 'writing/writing_tag.html' %}
+                <li>{% include 'writing/writing_tag.html' %}</li>
             {% endwith %}
         {% endif %}
 
         {% for tag in writing_item.tags %}
             {% with tag_name=tag.name tag_url="/writing/topic_tag/" tag_id=tag.id %}
-                {% include 'writing/writing_tag.html' %}
+                <li>{% include 'writing/writing_tag.html' %}</li>
             {% endwith %}
         {% endfor %}
-    </div>
+    </ul>
 </li>

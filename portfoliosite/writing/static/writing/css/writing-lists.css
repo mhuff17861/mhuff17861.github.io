@@ -1,10 +1,11 @@
-ul:has(.writing-item) {
+ul:has(.writing-item, .writing-tag) {
     list-style-type: none;
+    padding-left: 0;
 }
 
 .writing-item {
     border-bottom: 1px solid white;
-    padding-bottom: 0.75rem;
+    padding-bottom: 1rem;
     margin-bottom: 1.5rem;
 }
 
@@ -18,4 +19,10 @@ ul:has(.writing-item) {
 
 .writing-item__authors {
     font-size: 1.2rem;
+}
+
+.writing-item__tags {
+    display: flex;
+    flex-direction: row;
+    gap: 0 0.75rem;
 }
