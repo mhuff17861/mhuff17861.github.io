@@ -1,0 +1,21 @@
+ul:has(.writing-item) {
+    list-style-type: none;
+}
+
+.writing-item {
+    border-bottom: 1px solid white;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.writing-item__link {
+    text-decoration: none;
+}
+
+.writing-item__link:hover {
+    text-decoration: underline;
+}
+
+.writing-item__authors {
+    font-size: 1.2rem;
+}

@@ -7,6 +7,10 @@
 
 {% load static %}
 
+{% block head-add %}
+<link href="{% static 'css/writing-lists.css' %}" rel="stylesheet" >
+{% endblock %}
+
 {% block title %} Projects {% endblock %}
 
 {% block main-content %}
@@ -28,12 +32,8 @@
   
       {% if category.items %}
         <ul class="writing-categories__list">
-          {% for list_item in category.items %}
-            <li class="writing-categories__list-item">
-              <a class="text-white" href="{{ writing_url_slug }}{{ list_item.id }}">
-                {{ list_item.title }}
-              </a>
-            </li>
+          {% for writing_item in category.items %}
+            {% include 'writing/writing_item.html' %}
           {% endfor %}
         </ul>
       {% else %}

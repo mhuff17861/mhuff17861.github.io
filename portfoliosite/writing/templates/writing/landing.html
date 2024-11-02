@@ -7,7 +7,11 @@
 
 {% load static %}
 
-{% block title %} Projects {% endblock %}
+{% block title %} Writing {% endblock %}
+
+{% block head-add %}
+<link href="{% static 'writing/css/writing-lists.css' %}" rel="stylesheet" >
+{% endblock %}
 
 {% block main-content %}
 <!-- *************Start of Main Container********************** -->
@@ -22,22 +26,16 @@
 
 
   <!-- ***************Writing Lists*************** -->
-   <div class="writing-categories">
+
       {% if writings %}
-        <ul class="writing-categories__list">
-          {% for list_item in writings %}
-            <li class="writing-categories__list-item">
-              <a class="text-white" href="{{ writing_url_slug }}{{ list_item.id }}">
-                {{ list_item.title }}
-              </a>
-            </li>
+        <ul class="writing-list">
+          {% for writing_item in writings %}
+            {% include 'writing/writing_item.html' %}
           {% endfor %}
         </ul>
       {% else %}
         <p>No writings Found.</p>
       {% endif %}
-   </div>
-
   
 
   <!-- ***************End of Writing Lists*************** -->

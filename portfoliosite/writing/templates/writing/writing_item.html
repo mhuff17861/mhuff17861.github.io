@@ -1,0 +1,38 @@
+<li class="writing-item">
+    <h3 class="writing-item__heading">
+        <a class="text-white writing-item__link" href="{{ writing_url_slug }}{{ writing_item.id }}">
+            {{ writing_item.title }} - {{ writing_item.date_created }}
+        </a>
+    </h3>
+
+    <p class="writing-item__authors">
+        By 
+        {% for author in writing_item.authors %}
+            {% if not forloop.last %}
+                {{ author }},
+            {% else %}
+                {{ author }}
+            {% endif %}
+        {% endfor %}
+    </p>
+
+    <div class="writing-item__tags">
+        {% if writing_item.project %}
+            {% with tag_name=writing_item.project.name tag_url="/writing/project/" tag_id=writing_item.project.id %}
+                {% include 'writing/writing_tag.html' %}
+            {% endwith %}
+        {% endif %}
+
+        {% if writing_item.category %}
+            {% with tag_name=writing_item.category.name tag_url="/category/project/" tag_id=writing_item.category.id %}
+                {% include 'writing/writing_tag.html' %}
+            {% endwith %}
+        {% endif %}
+
+        {% for tag in writing_item.tags %}
+            {% with tag_name=tag.name tag_url="/writing/topic_tag/" tag_id=tag.id %}
+                {% include 'writing/writing_tag.html' %}
+            {% endwith %}
+        {% endfor %}
+    </div>
+</li>

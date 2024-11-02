@@ -16,7 +16,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
       <!-- Bootstrap CSS -->
-      <link href="{% static 'css/core.css' %}" rel="stylesheet" >
+      <link href="{% static 'writing/css/core.css' %}" rel="stylesheet" >
       {% if writing_item.writing_css %}
         <link href="{{ writing_item.writing_css_file.url }}" rel="stylesheet" >
       {% endif %}
@@ -30,7 +30,7 @@
           {{ writing_item.body | markdown | safe }}
         </body>
       {% else %}
-      <body class="d-flex flex-column min-vh-100">
+      <body class="d-flex flex-column min-vh-100 text-white bg-primary">
 
         {% include "main_menu.html" %}
 

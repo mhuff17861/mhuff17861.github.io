@@ -80,7 +80,7 @@ class Writing_QuerySet(models.QuerySet):
         """
         get_writing_by_id(writing_id) - Retrieves a writing by the given id
         """
-        return self.filter(pk=writing_id).filter(published=True).first()
+        return self.filter(pk=writing_id).filter(published=True)
 
 class Writing(models.Model):
     """Stores user id as foreign key."""
@@ -92,7 +92,7 @@ class Writing(models.Model):
     """The category of the writing"""
     project = models.ForeignKey(Writing_Project, null=True, blank=True, on_delete=models.CASCADE)
     """The overall project of the writing belongs to"""
-    tag = models.ManyToManyField(Writing_Topic_Tag, null=True, blank=True)
+    tags = models.ManyToManyField(Writing_Topic_Tag, null=True, blank=True)
     """The tag(s) that apply to the writing"""
     body = MarkdownxField(null=True, blank=True)
     """The text body. Max length is based on underlying DB."""
